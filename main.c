@@ -1,38 +1,92 @@
 #include "map.h"
-#define CAPACITY 10000000
+#include <stdlib.h>
+#include <stdio.h>
+#include <time.h>
+#define CAPACITY 10000
+#define CONFLICTS 3
 
 // For the map table
-int busybit[CAPACITY];
-int* keyps[CAPACITY];
-int khs[CAPACITY];
-int vals[CAPACITY];
+int *busybit;
+int** keyps;
+int *khs;
+int *vals;
 
-
-// keys
-int keys[CAPACITY];
+unsigned int capacity = CAPACITY;
+unsigned int conflict = CONFLICTS;
 
 int compare(void* key1, void* key2)
 {
-	return key1 == key2;
+  return key1 == key2;
 }
 
-int main(void)
+int main(int argc, char* argv[])
 {
-	int i = 0;
-	int resPut = 0, resGet = 0;
-	map_initialize(busybit, &compare, keyps, khs, vals, CAPACITY);
-	for(; i < CAPACITY; ++i)
-	{
-		keys[i] = i;
-		resPut |= !map_put(busybit, keyps, khs, vals, &keys[i], keys[i], i, CAPACITY);
-	}
+  if(argc >= 2)
+    capacity = atoi(argv[1]);
+  if(argc >= 3)
+    conflict = atoi(argv[2]);
 
-	for(; i < CAPACITY; ++i)
-	{
-		int j;
-		resGet |= !map_get(busybit, keyps, khs, vals, &keys[i], compare, i, &j, CAPACITY);
-		resGet |= j == i;
-	}
+  busybit = malloc(capacity * sizeof(int));
+  keyps = malloc(capacity * sizeof(int*));
+  khs = malloc(capacity * sizeof(int));
+  vals = malloc(capacity * sizeof(int));
 
-	return resGet || resPut;
+  printf("CAPACITY = %d; CONFLICTS = %d\n", capacity, conflict);
+  srand(42); // Pseudo random number, deterministic seed for debugging
+
+  // keys initialization
+  int *keys = malloc((capacity) * sizeof(int));
+  int i = 0;
+  for(; i < capacity; i++)
+    keys[i] = i;
+
+  run(keys, 0, 0);
 }
+
+int run(int* keys, int nb_insert_conflict, int nb_get) 
+{
+  int res = 0;
+  clock_t fill_init, fill_end, get;
+
+  map_initialize(busybit, &compare, (void**) keyps, khs, vals, capacity);
+  fill_init = clock();
+  res |= fillTable(keys); // First, fill the table
+  fill_end = clock();
+  getTable(keys);
+  get = clock();
+
+  printf("fill: %f, get: %f\n", ((double)fill_end - fill_init)/CLOCKS_PER_SEC, ((double)get - fill_end)/CLOCKS_PER_SEC);
+  return res;
+
+}
+
+int hashKey(int key)
+{
+  return (key%conflict)%capacity;
+}
+
+int fillTable(int* keys) 
+{ 
+  int i = 0;
+  int resPut = 0;
+  for(; i < capacity; ++i)
+  {
+    resPut |= !map_put(busybit, (void**)keyps, khs, vals, &keys[i], hashKey(keys[i]), i, capacity);
+  }
+
+
+  return resPut;
+}
+
+int getTable(int* keys)
+{
+  int i = 0, resGet = 0;
+  for(; i < capacity; ++i)
+  {
+    int j;
+    resGet |= !map_get(busybit, (void**)keyps, khs, vals, &keys[i], compare, hashKey(keys[i]), &j, capacity);
+    resGet |= j == i;
+  }
+  return resGet;
+}
+

@@ -1,6 +1,10 @@
 #include <stdint.h>
 #include <string.h>
 
+#ifndef IGNORE
+#define IGNORE(x)
+#endif
+
 #include "map.h"
 //#include "include_ignored_by_verifast.h"
 //#include "lib/ignore.h"
