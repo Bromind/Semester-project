@@ -5,6 +5,9 @@
 #define CAPACITY 10000
 #define CONFLICTS 3
 
+#undef DEBUG
+#undef VERBOSE
+
 // For the map table
 int *busybit;
 int** keyps;
@@ -31,8 +34,12 @@ int main(int argc, char* argv[])
   khs = malloc(capacity * sizeof(int));
   vals = malloc(capacity * sizeof(int));
 
+#ifdef VERBOSE
+#ifdef DEBUG
   printf("CAPACITY = %d; CONFLICTS = %d\n", capacity, conflict);
   srand(42); // Pseudo random number, deterministic seed for debugging
+#endif
+#endif
 
   // keys initialization
   int *keys = malloc((capacity) * sizeof(int));
@@ -46,16 +53,25 @@ int main(int argc, char* argv[])
 int run(int* keys, int nb_insert_conflict, int nb_get) 
 {
   int n_res = 0;
+#ifdef DEBUG
   clock_t fill_init, fill_end, get;
+#endif
 
   map_initialize(busybit, &compare, (void**) keyps, khs, vals, capacity);
+#ifdef DEBUG
   fill_init = clock();
+#endif
   n_res |= fillTable(keys); // First, fill the table
+#ifdef DEBUG
   fill_end = clock();
+#endif
   getTable(keys);
+#ifdef DEBUG
   get = clock();
-
+#ifdef VERBOSE
   printf("fill: %f, get: %f\n", ((double)fill_end - fill_init)/CLOCKS_PER_SEC, ((double)get - fill_end)/CLOCKS_PER_SEC);
+#endif
+#endif
   return n_res;
 
 }
