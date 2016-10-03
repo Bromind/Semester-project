@@ -47,12 +47,14 @@ int main(int argc, char* argv[])
   for(; i < capacity; i++)
     keys[i] = i;
 
-  run(keys, 0, 0);
+  return run(keys, 0, 0) == 0;
 }
 
+
+/* Returns 1 if O.K., 0 o/w */
 int run(int* keys, int nb_insert_conflict, int nb_get) 
 {
-  int n_res = 0;
+  int res = 1;
 #ifdef DEBUG
   clock_t fill_init, fill_end, get;
 #endif
@@ -61,18 +63,18 @@ int run(int* keys, int nb_insert_conflict, int nb_get)
 #ifdef DEBUG
   fill_init = clock();
 #endif
-  n_res |= fillTable(keys); // First, fill the table
+  res &= fillTable(keys); // First, fill the table
 #ifdef DEBUG
   fill_end = clock();
 #endif
-  getTable(keys);
+  res &= getTable(keys);
 #ifdef DEBUG
   get = clock();
 #ifdef VERBOSE
   printf("fill: %f, get: %f\n", ((double)fill_end - fill_init)/CLOCKS_PER_SEC, ((double)get - fill_end)/CLOCKS_PER_SEC);
 #endif
 #endif
-  return n_res;
+  return res;
 
 }
 
@@ -84,25 +86,25 @@ int hashKey(int key)
 int fillTable(int* keys) 
 { 
   int i = 0;
-  int n_resPut = 0;
+  int resPut = 1;
   for(; i < capacity; ++i)
   {
-    n_resPut |= !map_put(busybit, (void**)keyps, khs, vals, &keys[i], hashKey(keys[i]), i, capacity);
+    resPut &= map_put(busybit, (void**)keyps, khs, vals, &keys[i], hashKey(keys[i]), i, capacity);
   }
 
 
-  return n_resPut;
+  return resPut;
 }
 
 int getTable(int* keys)
 {
-  int i = 0, n_resGet = 0;
+  int i = 0, resGet = 1;
   for(; i < capacity; ++i)
   {
     int j;
-    n_resGet |= !map_get(busybit, (void**)keyps, khs, vals, &keys[i], compare, hashKey(keys[i]), &j, capacity);
-    n_resGet |= j == i;
+    resGet &= map_get(busybit, (void**)keyps, khs, vals, &keys[i], compare, hashKey(keys[i]), &j, capacity);
+    resGet &= j == i;
   }
-  return n_resGet;
+  return resGet;
 }
 

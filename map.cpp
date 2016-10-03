@@ -20,11 +20,29 @@ inline void initTable(void)
     keys[i]= i;
 }
 
-void run(std::unordered_map<int, int, IntHasher> map_table)
+void fillTable(std::unordered_map<int, int, IntHasher> map_table)
 {
   for(int i = 0; i < CAPACITY; i++)
     map_table[keys[i]] = i;
+}
 
+bool getTable(std::unordered_map<int, int, IntHasher> map_table)
+{
+  bool res = true;
+  for(int i = 0; i < CAPACITY; i++)
+  {
+    res |= map_table[keys[i]] == i;
+  }
+
+  return res;
+}
+
+bool run(std::unordered_map<int, int, IntHasher> map_table)
+{
+  bool res = true;
+  fillTable(map_table);
+  res |= getTable(map_table);
+  return res;
 }
 
 int main()
@@ -33,8 +51,11 @@ int main()
   std::unordered_map<int, int, IntHasher> map_table;
 
   initTable();
-  run(map_table);
+  bool res = run(map_table);
 
-  return 0;
+  if(res)
+    return 0;
+  else 
+    return -1;
 }
 

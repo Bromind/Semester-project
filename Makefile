@@ -8,12 +8,6 @@ cpp:
 c:
 	gcc $(CC_ARGS) map.c main.c -o c_map
 
-test: all cpp_map.png c_map.png
-
-clean:
-	-rm a.out c_map cpp_map *.o
-	-rm *.gmon.out *.gpout *.dot *.png
-
 %.png: %.dot
 	dot -Tpng $^ -o $@
 
@@ -26,3 +20,10 @@ clean:
 %.gmon.out: % 
 	./$^
 	mv gmon.out $@
+
+test: all cpp_map.png c_map.png
+
+clean:
+	-rm a.out c_map cpp_map *.o
+	-rm *.gmon.out *.gpout *.dot *.png
+
