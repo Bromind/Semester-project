@@ -13,8 +13,10 @@ struct IntHasher
   }
 };
 
-void parseFile(std::string filename, std::unordered_map<int, int, IntHasher> map_table)
+clock_t parseFile(std::string filename, std::unordered_map<int, int, IntHasher> map_table)
 {
+  clock_t total, tmp;
+
   std::ifstream infile(filename);
 
   while(! infile.eof()) {
@@ -24,17 +26,25 @@ void parseFile(std::string filename, std::unordered_map<int, int, IntHasher> map
     if (operation == "insert") {
       infile >> value;
       std::cout << "put key " << key << " with value " << value << std::endl;
+      tmp = clock();
       map_table[key] = value;
+      total += clock() - tmp;
     } else 
       if (operation == "assert") {
-        infile >> value;
-        std::cout << "assert key " << key << " has value " << value << std::endl;
-        assert(map_table[key] == value);
+        int expected;
+        infile >> expected;
+        std::cout << "assert key " << key << " has value " << expected << std::endl;
+        tmp = clock();
+        value = map_table[key];
+        total += clock() - tmp;
+        assert(expected == value);
       } else 
         if (operation == "delete")
        {
           std::cout << "remove key " << key << std::endl;
+          tmp = clock();
           map_table.erase(key);
+          total += clock() - tmp;
         } else 
           std::cout << "command is not understood" << std::endl;
 
@@ -49,7 +59,8 @@ int main(int argc, char* argv[])
   }
   std::unordered_map<int, int, IntHasher> map_table;
 
-  parseFile("/tmp/test.mapctrl", map_table);
+  clock_t elapsed = parseFile(argv[1], map_table);
+  std::cout << "Time used for map operations: " << elapsed << std::endl;
 
   return 0;
 }
