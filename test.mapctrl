@@ -1,0 +1,6 @@
+insert 1 1
+insert 2 2
+assert 2 1
+assert 2 2 
+remove 1
+remove 2

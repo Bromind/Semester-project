@@ -1,9 +1,10 @@
 #include <iostream>
+#include <assert.h>
+#include <fstream>
 #include <string>
 #include <unordered_map>
 
-#define CONFLICT 3
-#define CAPACITY 10000
+#define CONFLICT 5
 
 struct IntHasher
 {
@@ -12,50 +13,44 @@ struct IntHasher
   }
 };
 
-int keys[CAPACITY];
-
-inline void initTable(void)
+void parseFile(std::string filename, std::unordered_map<int, int, IntHasher> map_table)
 {
-  for(int i = 0; i < CAPACITY; i++)
-    keys[i]= i;
-}
+  std::ifstream infile(filename);
 
-void fillTable(std::unordered_map<int, int, IntHasher> map_table)
-{
-  for(int i = 0; i < CAPACITY; i++)
-    map_table[keys[i]] = i;
-}
+  while(! infile.eof()) {
+    int key, value;
+    std::string operation;
+    infile >> operation >> key;
+    if (operation == "insert") {
+      infile >> value;
+      std::cout << "put key " << key << " with value " << value << std::endl;
+      map_table[key] = value;
+    } else 
+      if (operation == "assert") {
+        infile >> value;
+        std::cout << "assert key " << key << " has value " << value << std::endl;
+        assert(map_table[key] == value);
+      } else 
+        if (operation == "delete")
+       {
+          std::cout << "remove key " << key << std::endl;
+          map_table.erase(key);
+        } else 
+          std::cout << "command is not understood" << std::endl;
 
-bool getTable(std::unordered_map<int, int, IntHasher> map_table)
-{
-  bool res = true;
-  for(int i = 0; i < CAPACITY; i++)
-  {
-    res |= map_table[keys[i]] == i;
   }
-
-  return res;
 }
 
-bool run(std::unordered_map<int, int, IntHasher> map_table)
+int main(int argc, char* argv[])
 {
-  bool res = true;
-  fillTable(map_table);
-  res |= getTable(map_table);
-  return res;
-}
-
-int main()
-{
-  int capacity, conflicts;
+  if(argc != 2) {
+    std::cout << "Usage: " << argv[0] << " testfile" << std::endl;
+    return -1;
+  }
   std::unordered_map<int, int, IntHasher> map_table;
 
-  initTable();
-  bool res = run(map_table);
+  parseFile("/tmp/test.mapctrl", map_table);
 
-  if(res)
-    return 0;
-  else 
-    return -1;
+  return 0;
 }
 
