@@ -1,6 +1,8 @@
 #include "map.h"
-#include <stdlib.h>
+#include <assert.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <time.h>
 #define CAPACITY 10000
 #define CONFLICTS 3
@@ -10,24 +12,36 @@
 
 // For the map table
 int *busybit;
-int** keyps;
+void** keyps;
 int *khs;
 int *vals;
 
-unsigned int capacity = CAPACITY;
-unsigned int conflict = CONFLICTS;
+size_t capacity = CAPACITY;
+size_t conflict = CONFLICTS;
+
+struct myInt {
+  int value;
+};
+
+clock_t parseFile(const char* filename, struct myInt keys[], size_t capacity);
 
 int compare(void* key1, void* key2)
 {
-  return key1 == key2;
+  return ((struct myInt*)key1)->value == ((struct myInt*)key2)->value;
 }
 
 int main(int argc, char* argv[])
 {
-  if(argc >= 2)
-    capacity = atoi(argv[1]);
+  if(argc < 2)
+  {
+    fprintf(stderr, "Usage: %s testfile [capacity] [conflicts]\n", argv[0]);
+    return -1;
+  }
+  char* filename = argv[1];
   if(argc >= 3)
-    conflict = atoi(argv[2]);
+    capacity = atoi(argv[2]);
+  if(argc >= 4)
+    conflict = atoi(argv[3]);
 
   busybit = malloc(capacity * sizeof(int));
   keyps = malloc(capacity * sizeof(int*));
@@ -42,69 +56,85 @@ int main(int argc, char* argv[])
 #endif
 
   // keys initialization
-  int *keys = malloc((capacity) * sizeof(int));
+  struct myInt* keys = malloc((capacity) * sizeof(struct myInt));
   int i = 0;
   for(; i < capacity; i++)
-    keys[i] = i;
-
-  return run(keys, 0, 0) == 0;
-}
-
-
-/* Returns 1 if O.K., 0 o/w */
-int run(int* keys, int nb_insert_conflict, int nb_get) 
-{
-  int res = 1;
-#ifdef DEBUG
-  clock_t fill_init, fill_end, get;
-#endif
-
-  map_initialize(busybit, &compare, (void**) keyps, khs, vals, capacity);
-#ifdef DEBUG
-  fill_init = clock();
-#endif
-  res &= fillTable(keys); // First, fill the table
-#ifdef DEBUG
-  fill_end = clock();
-#endif
-  res &= getTable(keys);
-#ifdef DEBUG
-  get = clock();
-#ifdef VERBOSE
-  printf("fill: %f, get: %f\n", ((double)fill_end - fill_init)/CLOCKS_PER_SEC, ((double)get - fill_end)/CLOCKS_PER_SEC);
-#endif
-#endif
-  return res;
-
-}
-
-int hashKey(int key)
-{
-  return (key%conflict)%capacity;
-}
-
-int fillTable(int* keys) 
-{ 
-  int i = 0;
-  int resPut = 1;
-  for(; i < capacity; ++i)
   {
-    resPut &= map_put(busybit, (void**)keyps, khs, vals, &keys[i], hashKey(keys[i]), i, capacity);
+    keys[i].value = i;
   }
 
-
-  return resPut;
+  //return run(keys, 0, 0) == 0;
+  clock_t time = parseFile(filename, keys, capacity);
+  printf("Time used for map operations: %Lfms\n", (long double) time*1000/CLOCKS_PER_SEC);
+  return 0;
 }
 
-int getTable(int* keys)
+int hashKey(const struct myInt key)
 {
-  int i = 0, resGet = 1;
-  for(; i < capacity; ++i)
-  {
-    int j;
-    resGet &= map_get(busybit, (void**)keyps, khs, vals, &keys[i], compare, hashKey(keys[i]), &j, capacity);
-    resGet &= j == i;
-  }
-  return resGet;
+  return (key.value %conflict)%capacity;
 }
 
+clock_t put(struct myInt keys[], int key, int value, size_t capacity)
+{
+  clock_t begin, end;
+  begin = clock();
+  map_put(busybit, keyps, khs, vals, &keys[key], hashKey(keys[key]), value, capacity);
+  end = clock();
+
+  return end - begin;
+}
+
+clock_t getAndCheck(struct myInt keys[], int key, int expected, size_t capacity)
+{
+  clock_t begin, end;
+  int value, res;
+  begin = clock();
+  res = map_get(busybit, keyps, khs, vals, &keys[key], compare, hashKey(keys[key]), &value, capacity);
+  if(res)
+    assert(value == expected);
+  end = clock();
+  return end - begin;
+}
+
+clock_t removeKey(struct myInt keys[], int key, size_t capacity)
+{
+  clock_t begin, end;
+  struct myInt* deleted;
+  begin = clock();
+  map_erase(busybit, keyps, khs, &keys[key], compare, hashKey(keys[key]), capacity, (void**) &deleted);
+  end = clock();
+  return end - begin;
+}
+
+clock_t parseFile(const char* filename, struct myInt keys[], size_t capacity)
+{
+  clock_t total = 0;
+  FILE* file;
+  file = fopen(filename, "r");
+  char* operation;
+  int key;
+  while(EOF != fscanf(file, "%ms %i", &operation, &key))
+  {
+    if(strncmp(operation, "insert", 6) == 0) {
+      int value;
+      fscanf(file, "%i \n", &value);
+      printf("put key %i with value %i\n", key, value);
+      total += put(keys, key, value, capacity);
+    } else if(strncmp(operation, "assert", 6) == 0) {
+      int expected;
+      fscanf(file, "%i \n", &expected);
+      printf("assert key %i has value %i\n", key, expected);
+      total += getAndCheck(keys, key, expected, capacity);
+    } else if(strncmp(operation, "remove", 6) == 0) {
+      fscanf(file, "\n");
+      printf("remove key %i\n", key);
+      total += removeKey(keys, key, capacity);
+    } else {
+      printf("command is not understood\n");
+    }
+    free(operation);
+  }
+
+  fclose(file);
+  return total;
+}

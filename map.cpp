@@ -47,8 +47,8 @@ clock_t parseFile(std::string filename, std::unordered_map<int, int, IntHasher> 
           total += clock() - tmp;
         } else 
           std::cout << "command is not understood" << std::endl;
-
   }
+  return total;
 }
 
 int main(int argc, char* argv[])
@@ -60,7 +60,7 @@ int main(int argc, char* argv[])
   std::unordered_map<int, int, IntHasher> map_table;
 
   clock_t elapsed = parseFile(argv[1], map_table);
-  std::cout << "Time used for map operations: " << elapsed << std::endl;
+std::cout << "Time used for map operations: " << (long double) elapsed*1000/CLOCKS_PER_SEC << "ms" << std::endl;
 
   return 0;
 }

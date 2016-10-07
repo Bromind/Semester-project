@@ -1,4 +1,4 @@
-CC_ARGS=-g -pg
+CC_ARGS=-g -pg -Wall -Werror
 
 all: c cpp
 
