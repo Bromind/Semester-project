@@ -2,7 +2,7 @@
 # Author: Martin Vassor
 # Description: Generate a payload to test hashmap implementations
 # Creation date: 07-10-2016
-# Last modified: Fri Oct  7 17:31:03 2016
+# Last modified: Mon Oct 10 17:06:44 2016
 # Known bugs: 
 
 print_help() {
@@ -11,6 +11,65 @@ print_help() {
 
 terminate() {
 	./Bash-collections/map.sh "$ARGS" remove
+	./Bash-collections/map.sh "$MAP" remove
+	./Bash-collections/list.sh "$OPS" remove
+}
+
+generate_all() {
+	for i in $(seq $(./Bash-collections/map.sh "$ARGS" get length)); do
+		generate_single
+	done;
+
+	./Bash-collections/list.sh "$OPS" iterate "cat" # >> $(./Bash-collections/map.sh "$ARGS" get "outfile")"
+}
+
+generate_single() {
+	RW="$(echo "$RANDOM 100 %p" | dc)"
+	RW_THRES="$(echo "$(./Bash-collections/map.sh "$ARGS" get "read") 100 * 1/p" | dc)"
+
+	KEY="$(echo "$RANDOM $(./Bash-collections/map.sh "$ARGS" get "range") %p" | dc)"
+
+
+	if [ $RW -lt $RW_THRES ]; then
+		# Read operation case
+		# Try to read the value at $KEY
+		if ./Bash-collections/map.sh "$MAP" get "$KEY" >> /dev/null ; then 
+			VALUE="$(./Bash-collections/map.sh "$MAP" get "$KEY")"
+		else
+			VALUE="-1"
+		fi;
+
+		./Bash-collections/list.sh "$OPS" append "assert $KEY $VALUE"
+	else 
+		# Write operation case
+		CURRENT_LOAD="$(./Bash-collections/map.sh "$MAP" size)"
+		CAPACITY="$(./Bash-collections/map.sh "$ARGS" get "capacity")"
+		TARGET_LOAD="$(echo "$(./Bash-collections/map.sh "$ARGS" get "load") $(./Bash-collections/map.sh "$ARGS" get "capacity") * 1/p" | dc)"
+		TRY="$(echo "$RANDOM 100 %p" | dc)"
+
+		if [ $CURRENT_LOAD  -gt $TARGET_LOAD ] ; then
+			PROBA_REMOVE="$(echo "$CURRENT_LOAD $TARGET_LOAD - 100 * $CAPACITY $TARGET_LOAD - / 2 / 50 +p" | dc )"
+		else 
+			PROBA_REMOVE="$(echo "$CURRENT_LOAD 100 * $TARGET_LOAD / 2 / p" | dc)"
+		fi;
+		#echo "Current load: $CURRENT_LOAD, target: $TARGET_LOAD, capacity: $CAPACITY, proba remove: $PROBA_REMOVE, random = $TRY"
+
+		if [ $TRY -lt $PROBA_REMOVE ] ; then
+			TO_REMOVE="$(./Bash-collections/map.sh "$MAP" getRandomKey)"
+			./Bash-collections/list.sh "$OPS" append "remove $TO_REMOVE"
+			./Bash-collections/map.sh "$MAP" delete "$TO_REMOVE"
+		else 
+			if ./Bash-collections/map.sh "$MAP" get "$KEY" > /dev/null; then 
+			# if key already exists, remove to avoid different semantics between c++ and verified C
+				./Bash-collections/list.sh "$OPS" append "remove $KEY"
+				./Bash-collections/map.sh "$MAP" delete "$KEY";
+			fi;
+
+			NEW_VALUE="$(echo $RANDOM)"
+			./Bash-collections/list.sh "$OPS" append "insert $KEY $NEW_VALUE"
+			./Bash-collections/map.sh "$MAP" put "$KEY" "$NEW_VALUE";
+		fi;
+	fi;
 }
 
 if [ $# -lt 1 ]; then
@@ -19,9 +78,18 @@ if [ $# -lt 1 ]; then
 fi
 
 ARGS=$(./Bash-collections/map.sh new)
+MAP=$(./Bash-collections/map.sh new)
+OPS=$(./Bash-collections/list.sh new)
 
 ./Bash-collections/map.sh "$ARGS" put length "$1"
 shift
+
+# Put default values
+./Bash-collections/map.sh "$ARGS" put "capacity" "50"
+./Bash-collections/map.sh "$ARGS" put "read" "0.5"
+./Bash-collections/map.sh "$ARGS" put "load" "0.5"
+./Bash-collections/map.sh "$ARGS" put "range" "1000"
+./Bash-collections/map.sh "$ARGS" put "outfile" "./hashmap_test_file"
 
 for i in `seq $#`; do
 	ARGNAME=$(echo "$1" | cut -c 3- | cut -d "=" -f1)
@@ -29,6 +97,8 @@ for i in `seq $#`; do
 	./Bash-collections/map.sh "$ARGS" put "$ARGNAME" "$ARGVAL"
 	shift
 done;
+
+generate_all
 
 terminate
 
@@ -48,11 +118,15 @@ C<./generate LENGTH [OPTION]>
 
 =over 4
 
-=item C<--capacity=capacity> Sets the capacity of the table. Used to compute the average load. The test will insert integer from 0 up to I<capacity>
+=item C<--capacity=capacity> Sets the capacity of the table. Used to compute the average load.
 
-=item C<--load=load> The target load. Does not guarantee to maintain this load all the time, to tries to achieve it.
+=item C<--range=range> The test will insert values with keys from 0 up to I<range>-1
+
+=item C<--load=load> The target load. Does not guarantee to maintain this load all the time, it tries to achieve it.
 
 =item C<--read=read> Proportion of read request versus write requests.
+
+=item C<--outfile=file> Output file
 
 =back
 
