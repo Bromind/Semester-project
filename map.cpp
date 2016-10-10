@@ -33,20 +33,24 @@ clock_t parseFile(std::string filename, std::unordered_map<int, int, IntHasher> 
       if (operation == "assert") {
         int expected;
         infile >> expected;
-        std::cout << "assert key " << key << " has value " << expected << std::endl;
         tmp = clock();
         value = map_table[key];
         total += clock() - tmp;
-        assert(expected == value);
+        if(expected >= 0) {
+          std::cout << "assert key " << key << " has value " << expected << std::endl;
+          assert(expected == value);
+        } else {
+          std::cout << "assert key " << key << " is undefined" << std::endl;
+        }
       } else 
-        if (operation == "delete")
+        if (operation == "remove")
        {
           std::cout << "remove key " << key << std::endl;
           tmp = clock();
           map_table.erase(key);
           total += clock() - tmp;
         } else 
-          std::cout << "command is not understood" << std::endl;
+          std::cout << "command is not understood: " << operation << std::endl;
   }
   return total;
 }

@@ -5,6 +5,7 @@
 #include <string.h>
 #include <time.h>
 #define CAPACITY 10000
+#define RANGE CAPACITY
 #define CONFLICTS 3
 
 #undef DEBUG
@@ -18,6 +19,7 @@ int *vals;
 
 size_t capacity = CAPACITY;
 size_t conflict = CONFLICTS;
+size_t range = RANGE;
 
 struct myInt {
   int value;
@@ -34,14 +36,16 @@ int main(int argc, char* argv[])
 {
   if(argc < 2)
   {
-    fprintf(stderr, "Usage: %s testfile [capacity] [conflicts]\n", argv[0]);
+    fprintf(stderr, "Usage: %s testfile [capacity] [range] [conflicts]\n", argv[0]);
     return -1;
   }
   char* filename = argv[1];
   if(argc >= 3)
     capacity = atoi(argv[2]);
   if(argc >= 4)
-    conflict = atoi(argv[3]);
+    range = atoi(argv[3]);
+  if(argc >= 5)
+    conflict= atoi(argv[4]);
 
   busybit = malloc(capacity * sizeof(int));
   keyps = malloc(capacity * sizeof(int*));
@@ -56,9 +60,9 @@ int main(int argc, char* argv[])
 #endif
 
   // keys initialization
-  struct myInt* keys = malloc((capacity) * sizeof(struct myInt));
+  struct myInt* keys = malloc((range) * sizeof(struct myInt));
   int i = 0;
-  for(; i < capacity; i++)
+  for(; i < range; i++)
   {
     keys[i].value = i;
   }
@@ -90,8 +94,12 @@ clock_t getAndCheck(struct myInt keys[], int key, int expected, size_t capacity)
   int value, res;
   begin = clock();
   res = map_get(busybit, keyps, khs, vals, &keys[key], compare, hashKey(keys[key]), &value, capacity);
-  if(res)
-    assert(value == expected);
+  if(expected < 0) // Case not expected to be in the map
+  {
+    assert(res == 0);
+  } else {
+    assert((value == expected));
+  }
   end = clock();
   return end - begin;
 }
@@ -123,14 +131,19 @@ clock_t parseFile(const char* filename, struct myInt keys[], size_t capacity)
     } else if(strncmp(operation, "assert", 6) == 0) {
       int expected;
       fscanf(file, "%i \n", &expected);
-      printf("assert key %i has value %i\n", key, expected);
+      if(expected < 0) 
+      {
+        printf("assert key %i is undefined\n", key);
+      } else {
+        printf("assert key %i has value %i\n", key, expected);
+      }
       total += getAndCheck(keys, key, expected, capacity);
     } else if(strncmp(operation, "remove", 6) == 0) {
       fscanf(file, "\n");
       printf("remove key %i\n", key);
       total += removeKey(keys, key, capacity);
     } else {
-      printf("command is not understood\n");
+      printf("command is not understood: %s\n", operation);
     }
     free(operation);
   }
