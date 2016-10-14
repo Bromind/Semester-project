@@ -1,6 +1,6 @@
 CC_ARGS=-O3 -pg -Wall -Werror
 
-all: c cpp c_generator
+all: c cpp c_generator cpp_default
 
 cpp:
 	g++ $(CC_ARGS) -std=c++11 map.cpp -o cpp_map

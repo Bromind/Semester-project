@@ -141,28 +141,36 @@ clock_t parseFile(const char* filename, struct myInt keys[], size_t capacity)
       if(fscanf(file, "%i \n", &value) == EOF){
         perror(NULL);
       }
+#ifdef VERBOSE
       printf("put key %i with value %i\n", key, value);
+#endif
       total += put(keys, key, value, capacity);
     } else if(strncmp(operation, "assert", 6) == 0) {
       int expected;
       if(fscanf(file, "%i \n", &expected) == EOF) {
         perror(NULL);
       }
+#ifdef VERBOSE
       if(expected < 0) 
       {
         printf("assert key %i is undefined\n", key);
       } else {
         printf("assert key %i has value %i\n", key, expected);
       }
+#endif
       total += getAndCheck(keys, key, expected, capacity);
     } else if(strncmp(operation, "remove", 6) == 0) {
       if(fscanf(file, "\n") == EOF) {
         perror(NULL);
       }
+#ifdef VERBOSE
       printf("remove key %i\n", key);
+#endif
       total += removeKey(keys, key, capacity);
     } else {
+#ifdef VERBOSE
       printf("command is not understood: %s\n", operation);
+#endif
     }
     free(operation);
   }

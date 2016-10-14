@@ -5,6 +5,7 @@
 #include <unordered_map>
 
 #define CONFLICT 5
+#undef VERBOSE
 
 struct IntHasher
 {
@@ -29,7 +30,9 @@ clock_t parseFile(std::string filename, std::unordered_map<int, int, IntHasher> 
     infile >> operation >> key;
     if (operation == "insert") {
       infile >> value;
+#ifdef VERBOSE
       std::cout << "put key " << key << " with value " << value << std::endl;
+#endif
       tmp = clock();
       map_table[key] = value;
       total += clock() - tmp;
@@ -41,20 +44,29 @@ clock_t parseFile(std::string filename, std::unordered_map<int, int, IntHasher> 
         value = map_table[key];
         total += clock() - tmp;
         if(expected >= 0) {
+#ifdef VERBOSE
           std::cout << "assert key " << key << " has value " << expected << std::endl;
+#endif
           assert(expected == value);
         } else {
+#ifdef VERBOSE
           std::cout << "assert key " << key << " is undefined" << std::endl;
+#endif
         }
       } else 
         if (operation == "remove")
        {
+#ifdef VERBOSE
           std::cout << "remove key " << key << std::endl;
+#endif
           tmp = clock();
           map_table.erase(key);
           total += clock() - tmp;
-        } else 
+        } else {
+#ifdef VERBOSE
           std::cout << "command is not understood: " << operation << std::endl;
+#endif
+        }
   }
   return total;
 }
