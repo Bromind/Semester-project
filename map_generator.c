@@ -84,7 +84,7 @@ int map_get (int* busybits, void** keyps, hash_t* k_hashes, int* values,
   };
 
   int start = loop(gen.initial_position, capacity);
-  int index = find_key(busybits, keyps, k_hashes, gen.initial_position,
+  int index = find_key(busybits, keyps, k_hashes, start,
       keyp, eq, hash, capacity);
   if (-1 == index)
   {

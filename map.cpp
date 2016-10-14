@@ -9,13 +9,17 @@
 struct IntHasher
 {
   size_t operator() (const int &i) const {
-    return i/CONFLICT;
+    return i;
   }
 };
 
+#ifdef DEFAULT_HASH
+clock_t parseFile(std::string filename, std::unordered_map<int, int> map_table)
+#else
 clock_t parseFile(std::string filename, std::unordered_map<int, int, IntHasher> map_table)
+#endif
 {
-  clock_t total, tmp;
+  clock_t total = 0, tmp;
 
   std::ifstream infile(filename);
 
@@ -61,7 +65,11 @@ int main(int argc, char* argv[])
     std::cout << "Usage: " << argv[0] << " testfile" << std::endl;
     return -1;
   }
+#ifdef DEFAULT_HASH
+  std::unordered_map<int, int> map_table;
+#else
   std::unordered_map<int, int, IntHasher> map_table;
+#endif
 
   clock_t elapsed = parseFile(argv[1], map_table);
 std::cout << "Time used for map operations: " << (long double) elapsed*1000/CLOCKS_PER_SEC << "ms" << std::endl;

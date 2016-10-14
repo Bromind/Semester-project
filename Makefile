@@ -1,15 +1,18 @@
-CC_ARGS=-g -pg -Wall -Werror
+CC_ARGS=-O3 -pg -Wall -Werror
 
-all: c cpp generator
+all: c cpp c_generator
 
 cpp:
 	g++ $(CC_ARGS) -std=c++11 map.cpp -o cpp_map
 
+cpp_default:
+	g++ $(CC_ARGS) -std=c++11 -DDEFAULT map.cpp -o cpp_map_default
+
 c:
 	gcc $(CC_ARGS) map.c main.c -o c_map
 
-generator: 
-	gcc $(CC_ARGS) -DGENERATOR main.c map_generator -o c_map_generator
+c_generator: 
+	gcc $(CC_ARGS) -DGENERATOR main.c map_generator.c -o c_map_generator
 
 %.png: %.dot
 	dot -Tpng $^ -o $@
@@ -24,9 +27,9 @@ generator:
 	./$^ test.mapctrl
 	mv gmon.out $@
 
-test: all cpp_map.png c_map.png c_map_generator.png test.mapctrl
+test: all cpp_map.png c_map.png c_map_generator.png cpp_map_default.png test.mapctrl
 
 clean:
-	-rm a.out c_map* cpp_map *.o
+	-rm a.out c_map* cpp_map* *.o
 	-rm *.gmon.out *.gpout *.dot *.png
 

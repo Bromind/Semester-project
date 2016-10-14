@@ -87,6 +87,7 @@ hash_t hashKey(const struct myInt key)
     .entry_point_hash = key.value,
     .offset_hash = ((key.value*3%(capacity+1))*7)%capacity, // Somehow mix them, obviously not perfect, but better than nothing.
   };
+  return gen;
 #endif
 }
 
@@ -137,12 +138,16 @@ clock_t parseFile(const char* filename, struct myInt keys[], size_t capacity)
   {
     if(strncmp(operation, "insert", 6) == 0) {
       int value;
-      fscanf(file, "%i \n", &value);
+      if(fscanf(file, "%i \n", &value) == EOF){
+        perror(NULL);
+      }
       printf("put key %i with value %i\n", key, value);
       total += put(keys, key, value, capacity);
     } else if(strncmp(operation, "assert", 6) == 0) {
       int expected;
-      fscanf(file, "%i \n", &expected);
+      if(fscanf(file, "%i \n", &expected) == EOF) {
+        perror(NULL);
+      }
       if(expected < 0) 
       {
         printf("assert key %i is undefined\n", key);
@@ -151,7 +156,9 @@ clock_t parseFile(const char* filename, struct myInt keys[], size_t capacity)
       }
       total += getAndCheck(keys, key, expected, capacity);
     } else if(strncmp(operation, "remove", 6) == 0) {
-      fscanf(file, "\n");
+      if(fscanf(file, "\n") == EOF) {
+        perror(NULL);
+      }
       printf("remove key %i\n", key);
       total += removeKey(keys, key, capacity);
     } else {
