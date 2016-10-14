@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cmath>
 #include <assert.h>
 #include <fstream>
 #include <string>
@@ -82,6 +83,8 @@ int main(int argc, char* argv[])
 #else
   std::unordered_map<int, int, IntHasher> map_table;
 #endif
+
+  map_table.max_load_factor(INFINITY);
 
   clock_t elapsed = parseFile(argv[1], map_table);
 std::cout << "Time used for map operations: " << (long double) elapsed*1000/CLOCKS_PER_SEC << "ms" << std::endl;

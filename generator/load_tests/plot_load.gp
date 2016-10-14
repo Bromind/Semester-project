@@ -15,7 +15,7 @@ if (!exists("filename")) filename='load_results'
 set title filename
 
 set xrange [0:1]
-set yrange [0:1.3*A_max]
+set yrange [0:1.35*A_max]
 set xlabel "Load [percentage]"
 set ylabel "Time [ms]"
 
