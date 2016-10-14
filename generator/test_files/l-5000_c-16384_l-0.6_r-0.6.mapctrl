@@ -1,0 +1,6073 @@
+assert 97 -1
+insert 706 12525
+assert 714 -1
+assert 784 -1
+assert 732 -1
+insert 995 20950
+assert 696 -1
+insert 670 4717
+assert 578 -1
+assert 488 -1
+insert 622 23602
+insert 43 15679
+assert 250 -1
+assert 359 -1
+insert 415 392
+insert 383 2572
+insert 412 10434
+insert 338 7032
+insert 554 1266
+insert 166 9371
+insert 778 18600
+assert 542 -1
+assert 887 -1
+insert 122 30436
+insert 976 3974
+insert 186 23017
+assert 915 -1
+assert 642 -1
+assert 549 -1
+insert 690 28617
+assert 681 -1
+insert 631 9877
+assert 944 -1
+assert 153 -1
+assert 238 -1
+assert 856 -1
+insert 796 25677
+assert 661 -1
+insert 220 11735
+assert 142 -1
+assert 460 -1
+assert 132 -1
+assert 161 -1
+insert 333 14164
+assert 848 -1
+assert 677 -1
+insert 625 14379
+assert 370 -1
+assert 829 -1
+assert 480 -1
+insert 494 12567
+remove 333
+insert 333 25566
+assert 751 -1
+insert 373 12027
+insert 960 31127
+assert 274 -1
+insert 653 31039
+assert 528 -1
+assert 577 -1
+assert 821 -1
+assert 633 -1
+insert 143 25962
+insert 299 23690
+insert 830 10249
+insert 135 18433
+insert 472 9618
+assert 401 -1
+insert 867 4981
+insert 141 21486
+insert 367 24084
+assert 549 -1
+assert 914 -1
+assert 929 -1
+assert 697 -1
+assert 245 -1
+assert 670 4717
+insert 750 26301
+insert 21 24061
+assert 365 -1
+remove 778
+insert 778 30301
+assert 811 -1
+insert 626 27885
+assert 488 -1
+insert 213 7027
+insert 797 444
+insert 250 16065
+insert 580 10104
+insert 954 11812
+assert 337 -1
+insert 743 28065
+insert 800 25376
+insert 634 20088
+assert 135 18433
+insert 506 17907
+assert 765 -1
+insert 36 13460
+assert 806 -1
+assert 320 -1
+assert 371 -1
+insert 936 9968
+insert 189 4905
+insert 635 26743
+assert 861 -1
+assert 739 -1
+insert 105 21565
+assert 570 -1
+assert 915 -1
+assert 463 -1
+insert 181 18580
+assert 281 -1
+assert 513 -1
+assert 815 -1
+assert 345 -1
+assert 883 -1
+insert 9 22263
+assert 660 -1
+insert 523 30839
+insert 334 32302
+assert 471 -1
+assert 887 -1
+assert 267 -1
+assert 785 -1
+insert 886 23034
+assert 920 -1
+insert 187 21669
+insert 474 1206
+insert 435 21251
+assert 164 -1
+assert 401 -1
+insert 545 7667
+assert 44 -1
+insert 63 12941
+assert 313 -1
+assert 555 -1
+insert 627 32635
+assert 889 -1
+insert 310 13389
+insert 535 16170
+assert 113 -1
+assert 293 -1
+assert 356 -1
+insert 332 19176
+assert 483 -1
+assert 596 -1
+insert 40 21554
+assert 918 -1
+assert 57 -1
+assert 933 -1
+insert 239 18609
+insert 22 5254
+assert 378 -1
+insert 832 12171
+assert 747 -1
+insert 249 4491
+assert 860 -1
+assert 969 -1
+assert 749 -1
+assert 462 -1
+assert 854 -1
+assert 873 -1
+assert 648 -1
+insert 431 22025
+insert 16 21940
+assert 777 -1
+assert 486 -1
+assert 711 -1
+assert 932 -1
+insert 498 3732
+assert 110 -1
+assert 937 -1
+insert 222 27957
+assert 139 -1
+assert 448 -1
+insert 347 6409
+insert 808 24302
+insert 172 177
+assert 534 -1
+assert 773 -1
+assert 229 -1
+insert 768 6180
+assert 701 -1
+assert 260 -1
+insert 437 28193
+assert 879 -1
+assert 842 -1
+assert 821 -1
+assert 585 -1
+insert 683 14216
+assert 329 -1
+insert 308 8810
+insert 39 13502
+assert 486 -1
+assert 376 -1
+assert 168 -1
+assert 469 -1
+assert 632 -1
+insert 583 9879
+insert 434 22414
+assert 357 -1
+assert 946 -1
+insert 253 25143
+assert 818 -1
+assert 544 -1
+insert 970 7936
+assert 956 -1
+assert 562 -1
+assert 403 -1
+assert 567 -1
+insert 838 15495
+assert 836 -1
+insert 302 28045
+assert 118 -1
+assert 259 -1
+assert 982 -1
+assert 349 -1
+assert 330 -1
+assert 545 7667
+assert 770 -1
+assert 125 -1
+assert 483 -1
+assert 996 -1
+assert 623 -1
+insert 904 1013
+insert 860 29687
+assert 6 -1
+insert 538 18422
+assert 781 -1
+assert 101 -1
+assert 47 -1
+remove 838
+insert 838 32075
+insert 767 30345
+insert 54 23706
+insert 992 6631
+assert 92 -1
+assert 820 -1
+assert 668 -1
+assert 586 -1
+assert 191 -1
+assert 365 -1
+insert 529 27555
+assert 394 -1
+insert 895 22216
+insert 238 31702
+insert 477 18135
+assert 760 -1
+assert 183 -1
+assert 959 -1
+assert 185 -1
+assert 690 28617
+assert 566 -1
+insert 801 30660
+assert 320 -1
+assert 288 -1
+insert 641 18859
+assert 850 -1
+assert 548 -1
+insert 906 5034
+insert 695 7235
+assert 142 -1
+insert 304 28962
+assert 885 -1
+assert 218 -1
+insert 102 32700
+insert 894 1556
+insert 526 11024
+assert 606 -1
+assert 273 -1
+assert 688 -1
+assert 345 -1
+assert 411 -1
+assert 236 -1
+assert 655 -1
+assert 584 -1
+assert 468 -1
+insert 251 10164
+insert 458 7659
+insert 384 15987
+insert 83 10502
+assert 44 -1
+insert 603 15755
+insert 286 31648
+assert 982 -1
+assert 614 -1
+insert 802 10622
+assert 980 -1
+assert 639 -1
+assert 971 -1
+insert 315 14553
+insert 585 8844
+assert 493 -1
+assert 329 -1
+assert 432 -1
+insert 792 8222
+assert 750 26301
+assert 725 -1
+insert 243 26580
+assert 129 -1
+assert 491 -1
+insert 519 2897
+assert 531 -1
+assert 833 -1
+assert 711 -1
+insert 475 18281
+assert 35 -1
+insert 858 20965
+assert 554 1266
+insert 735 27912
+insert 872 2122
+insert 107 22526
+assert 804 -1
+assert 556 -1
+assert 891 -1
+assert 187 21669
+assert 867 4981
+insert 759 5300
+assert 744 -1
+insert 127 11940
+assert 208 -1
+assert 115 -1
+assert 134 -1
+assert 533 -1
+assert 941 -1
+remove 332
+insert 332 5876
+assert 517 -1
+assert 833 -1
+assert 840 -1
+remove 796
+insert 796 28849
+assert 513 -1
+assert 924 -1
+assert 78 -1
+assert 272 -1
+assert 546 -1
+assert 473 -1
+assert 498 3732
+assert 181 18580
+assert 460 -1
+assert 58 -1
+insert 997 8656
+assert 811 -1
+assert 786 -1
+insert 765 14186
+assert 511 -1
+assert 500 -1
+insert 268 17889
+assert 803 -1
+assert 294 -1
+assert 150 -1
+assert 205 -1
+assert 733 -1
+insert 731 21815
+assert 352 -1
+assert 844 -1
+insert 507 13854
+remove 434
+insert 434 7624
+assert 575 -1
+insert 295 28008
+assert 874 -1
+assert 583 9879
+assert 594 -1
+assert 878 -1
+assert 153 -1
+assert 801 30660
+insert 7 20391
+insert 719 29009
+insert 119 4627
+assert 312 -1
+insert 64 1097
+insert 884 20659
+assert 355 -1
+assert 6 -1
+assert 557 -1
+assert 825 -1
+assert 937 -1
+insert 74 170
+remove 830
+insert 830 31102
+insert 655 4185
+insert 773 30058
+insert 420 13406
+assert 802 10622
+insert 892 28979
+assert 824 -1
+insert 613 26450
+assert 429 -1
+assert 297 -1
+assert 97 -1
+assert 784 -1
+insert 856 9133
+insert 125 2129
+insert 182 6274
+remove 122
+insert 122 28520
+assert 235 -1
+assert 353 -1
+remove 250
+insert 250 5878
+assert 180 -1
+assert 665 -1
+assert 724 -1
+insert 279 25269
+insert 225 17642
+insert 813 29020
+assert 626 27885
+insert 732 28093
+insert 729 24019
+assert 141 21486
+assert 551 -1
+assert 933 -1
+assert 807 -1
+assert 747 -1
+assert 970 7936
+insert 335 23765
+assert 605 -1
+assert 891 -1
+assert 886 23034
+remove 268
+insert 268 322
+assert 751 -1
+assert 791 -1
+insert 433 23501
+assert 254 -1
+insert 237 32215
+assert 341 -1
+assert 664 -1
+assert 953 -1
+assert 97 -1
+insert 401 21673
+assert 383 2572
+assert 126 -1
+insert 109 10988
+assert 965 -1
+insert 837 17066
+assert 838 32075
+assert 693 -1
+assert 169 -1
+insert 394 1478
+assert 395 -1
+assert 736 -1
+assert 552 -1
+insert 849 21866
+insert 149 26732
+assert 37 -1
+assert 613 26450
+insert 445 1949
+insert 903 12227
+assert 474 1206
+remove 735
+insert 735 7536
+assert 163 -1
+assert 120 -1
+assert 46 -1
+assert 646 -1
+assert 417 -1
+assert 160 -1
+assert 388 -1
+assert 123 -1
+insert 707 18360
+assert 61 -1
+assert 152 -1
+assert 537 -1
+insert 776 32061
+assert 987 -1
+assert 114 -1
+remove 189
+insert 189 16194
+insert 158 27154
+insert 911 5058
+insert 805 11276
+insert 825 19872
+assert 273 -1
+assert 17 -1
+insert 362 24673
+assert 278 -1
+insert 248 7374
+assert 691 -1
+assert 80 -1
+assert 89 -1
+remove 802
+insert 802 29795
+assert 82 -1
+assert 739 -1
+assert 966 -1
+assert 584 -1
+assert 757 -1
+assert 746 -1
+insert 981 24611
+assert 383 2572
+assert 972 -1
+assert 923 -1
+assert 940 -1
+assert 926 -1
+remove 849
+insert 849 29882
+assert 668 -1
+assert 890 -1
+assert 4 -1
+insert 214 31531
+insert 234 17728
+insert 986 30996
+assert 577 -1
+assert 658 -1
+assert 2 -1
+assert 238 31702
+insert 485 13035
+assert 556 -1
+insert 171 13213
+assert 918 -1
+assert 489 -1
+assert 800 25376
+insert 170 20197
+assert 918 -1
+insert 271 1726
+assert 685 -1
+assert 812 -1
+assert 474 1206
+insert 405 18306
+assert 795 -1
+assert 799 -1
+insert 183 17415
+assert 683 14216
+assert 699 -1
+assert 665 -1
+insert 913 17573
+assert 467 -1
+assert 59 -1
+assert 1 -1
+insert 865 20292
+assert 970 7936
+assert 811 -1
+assert 713 -1
+assert 105 21565
+assert 278 -1
+assert 125 2129
+insert 589 18809
+insert 479 15044
+insert 176 5075
+insert 510 28291
+assert 78 -1
+insert 715 14442
+assert 901 -1
+insert 513 25565
+insert 848 17570
+remove 373
+insert 373 14659
+assert 561 -1
+assert 764 -1
+remove 773
+insert 773 21680
+insert 540 24347
+assert 648 -1
+assert 343 -1
+insert 531 16861
+insert 762 11517
+assert 849 29882
+assert 448 -1
+insert 53 25367
+remove 279
+insert 279 15691
+insert 568 8481
+assert 700 -1
+assert 182 6274
+assert 825 19872
+assert 360 -1
+assert 187 21669
+assert 871 -1
+insert 873 19300
+assert 638 -1
+assert 868 -1
+assert 834 -1
+insert 679 13410
+assert 803 -1
+assert 605 -1
+assert 544 -1
+assert 793 -1
+assert 97 -1
+insert 483 20800
+assert 953 -1
+assert 741 -1
+insert 325 28484
+assert 879 -1
+insert 880 28499
+insert 20 16521
+assert 244 -1
+insert 889 26286
+assert 20 16521
+assert 212 -1
+assert 670 4717
+assert 135 18433
+remove 498
+insert 498 16283
+insert 941 1464
+assert 965 -1
+insert 283 7259
+insert 207 5358
+assert 170 20197
+assert 9 22263
+insert 649 24920
+insert 788 6489
+assert 884 20659
+assert 961 -1
+assert 461 -1
+assert 583 9879
+assert 931 -1
+assert 665 -1
+assert 952 -1
+insert 684 27610
+assert 950 -1
+remove 603
+insert 603 14238
+insert 971 26208
+assert 231 -1
+insert 624 26090
+assert 12 -1
+assert 195 -1
+insert 883 19805
+assert 187 21669
+assert 408 -1
+insert 897 4848
+assert 930 -1
+insert 702 11425
+assert 744 -1
+insert 25 29318
+assert 428 -1
+assert 590 -1
+assert 614 -1
+insert 73 31252
+assert 280 -1
+insert 23 31974
+insert 605 28603
+assert 873 19300
+assert 175 -1
+remove 670
+insert 670 32416
+insert 19 17853
+insert 650 5825
+remove 941
+insert 941 26727
+assert 524 -1
+assert 352 -1
+insert 129 25254
+insert 48 28895
+insert 900 173
+remove 702
+insert 702 14486
+insert 859 1222
+assert 194 -1
+assert 441 -1
+insert 65 21616
+remove 479
+insert 479 22496
+insert 150 27565
+remove 626
+insert 626 25122
+insert 932 7008
+assert 552 -1
+assert 798 -1
+assert 149 26732
+insert 917 17993
+assert 479 22496
+assert 260 -1
+assert 665 -1
+assert 667 -1
+remove 171
+insert 171 977
+remove 445
+insert 445 26084
+insert 461 12984
+assert 191 -1
+assert 790 -1
+assert 540 24347
+remove 932
+insert 932 3266
+insert 191 7829
+remove 801
+insert 801 3042
+insert 782 23321
+remove 127
+insert 127 23522
+insert 828 2189
+assert 698 -1
+assert 730 -1
+assert 486 -1
+assert 545 7667
+assert 220 11735
+assert 665 -1
+insert 359 30284
+remove 207
+insert 207 28693
+remove 359
+insert 359 20975
+assert 851 -1
+assert 774 -1
+assert 45 -1
+remove 986
+insert 986 31493
+assert 882 -1
+remove 283
+assert 986 31493
+assert 482 -1
+assert 430 -1
+insert 609 27642
+assert 298 -1
+assert 653 31039
+assert 459 -1
+assert 897 4848
+assert 758 -1
+assert 700 -1
+assert 463 -1
+assert 575 -1
+insert 443 371
+assert 247 -1
+insert 194 31039
+assert 545 7667
+insert 790 11777
+assert 854 -1
+insert 169 17070
+assert 170 20197
+assert 763 -1
+assert 586 -1
+assert 343 -1
+remove 859
+insert 859 22275
+assert 385 -1
+assert 766 -1
+insert 113 29586
+assert 175 -1
+assert 826 -1
+insert 616 19677
+assert 99 -1
+remove 695
+insert 695 10359
+assert 313 -1
+remove 250
+insert 250 22321
+insert 37 16160
+assert 894 1556
+assert 326 -1
+insert 429 126
+assert 976 3974
+assert 380 -1
+remove 394
+insert 394 24600
+assert 86 -1
+insert 839 2106
+assert 13 -1
+insert 151 27789
+assert 481 -1
+assert 216 -1
+assert 212 -1
+assert 754 -1
+assert 2 -1
+assert 892 28979
+assert 806 -1
+insert 712 6750
+insert 756 4932
+assert 130 -1
+assert 243 26580
+remove 683
+insert 683 201
+assert 267 -1
+remove 759
+insert 759 20564
+insert 503 14064
+assert 494 12567
+remove 802
+insert 802 29434
+assert 236 -1
+remove 401
+insert 401 29602
+assert 151 27789
+insert 416 27801
+remove 776
+insert 600 18305
+assert 115 -1
+assert 700 -1
+assert 671 -1
+assert 621 -1
+insert 921 29785
+assert 487 -1
+assert 826 -1
+assert 811 -1
+assert 743 28065
+insert 562 10476
+insert 327 16046
+insert 945 10281
+assert 157 -1
+assert 508 -1
+insert 964 15683
+assert 122 28520
+remove 519
+insert 519 21726
+assert 676 -1
+assert 309 -1
+assert 216 -1
+insert 10 5696
+assert 254 -1
+assert 598 -1
+insert 82 13127
+insert 311 2116
+assert 94 -1
+assert 774 -1
+assert 277 -1
+assert 503 14064
+assert 874 -1
+remove 7
+insert 7 31294
+insert 836 27669
+insert 473 23991
+assert 644 -1
+insert 357 14035
+insert 221 16676
+assert 847 -1
+assert 742 -1
+assert 626 25122
+insert 806 32668
+assert 803 -1
+assert 98 -1
+assert 520 -1
+assert 647 -1
+insert 817 31195
+assert 208 -1
+insert 968 17481
+assert 467 -1
+insert 389 10967
+assert 934 -1
+remove 805
+insert 805 15206
+assert 932 3266
+assert 456 -1
+assert 457 -1
+insert 61 30084
+assert 212 -1
+insert 985 6398
+assert 94 -1
+insert 854 5000
+assert 156 -1
+assert 428 -1
+assert 803 -1
+remove 437
+insert 437 25119
+assert 410 -1
+assert 746 -1
+assert 170 20197
+assert 179 -1
+assert 679 13410
+insert 145 22553
+assert 647 -1
+assert 55 -1
+assert 424 -1
+assert 194 31039
+assert 15 -1
+assert 788 6489
+assert 78 -1
+insert 770 10345
+insert 958 9348
+insert 424 31922
+assert 896 -1
+assert 689 -1
+assert 791 -1
+assert 660 -1
+assert 844 -1
+remove 900
+insert 900 649
+insert 165 156
+assert 15 -1
+assert 882 -1
+remove 171
+assert 841 -1
+assert 559 -1
+insert 552 27369
+assert 409 -1
+assert 519 21726
+insert 571 18487
+insert 870 16197
+insert 905 4461
+remove 729
+insert 729 3820
+insert 647 19287
+assert 299 23690
+assert 731 21815
+assert 890 -1
+assert 467 -1
+insert 297 21874
+assert 984 -1
+assert 203 -1
+assert 544 -1
+insert 50 11115
+insert 578 29344
+insert 460 24675
+insert 570 14239
+assert 417 -1
+assert 340 -1
+assert 440 -1
+insert 944 29011
+assert 847 -1
+assert 825 19872
+assert 238 31702
+assert 693 -1
+assert 311 2116
+assert 122 28520
+insert 8 21602
+assert 409 -1
+remove 221
+insert 221 31882
+assert 304 28962
+insert 741 28377
+assert 278 -1
+assert 881 -1
+assert 28 -1
+insert 610 15531
+insert 345 3144
+assert 350 -1
+assert 390 -1
+insert 430 30545
+assert 728 -1
+assert 222 27957
+assert 365 -1
+insert 701 869
+assert 124 -1
+remove 311
+insert 311 29364
+assert 581 -1
+remove 510
+insert 510 28825
+insert 532 8132
+insert 784 31779
+assert 519 21726
+assert 69 -1
+assert 590 -1
+assert 638 -1
+insert 502 16785
+assert 52 -1
+insert 660 11920
+assert 268 322
+assert 755 -1
+assert 200 -1
+insert 965 28524
+assert 700 -1
+assert 463 -1
+assert 207 28693
+assert 270 -1
+insert 594 7098
+remove 828
+insert 828 27904
+assert 125 2129
+insert 409 3520
+insert 343 24799
+insert 457 27350
+remove 460
+insert 460 30868
+assert 899 -1
+assert 984 -1
+assert 890 -1
+assert 787 -1
+assert 561 -1
+insert 86 327
+assert 20 16521
+assert 749 -1
+assert 348 -1
+assert 261 -1
+assert 125 2129
+remove 545
+insert 545 13715
+remove 631
+insert 631 15709
+assert 954 11812
+assert 579 -1
+assert 444 -1
+remove 238
+insert 238 22876
+assert 982 -1
+assert 812 -1
+assert 899 -1
+assert 376 -1
+remove 832
+insert 832 27270
+assert 76 -1
+assert 802 29434
+insert 184 6880
+insert 942 18288
+assert 285 -1
+assert 609 27642
+assert 777 -1
+insert 601 13659
+assert 864 -1
+insert 559 24049
+assert 298 -1
+insert 270 2093
+insert 950 27706
+assert 10 5696
+assert 782 23321
+assert 436 -1
+assert 379 -1
+assert 517 -1
+insert 179 5189
+assert 303 -1
+assert 230 -1
+assert 607 -1
+insert 935 21832
+assert 642 -1
+remove 48
+insert 48 3055
+assert 943 -1
+assert 512 -1
+insert 611 10959
+remove 856
+insert 856 8558
+assert 415 392
+assert 653 31039
+insert 197 7671
+assert 234 17728
+assert 348 -1
+insert 116 6165
+assert 242 -1
+assert 555 -1
+remove 552
+insert 552 16528
+insert 967 25398
+insert 811 27055
+assert 598 -1
+assert 577 -1
+assert 745 -1
+assert 289 -1
+remove 299
+insert 299 31485
+remove 895
+insert 895 28984
+assert 737 -1
+assert 277 -1
+assert 60 -1
+remove 702
+insert 702 24704
+remove 416
+insert 416 32257
+insert 29 4718
+assert 255 -1
+assert 741 28377
+assert 725 -1
+assert 456 -1
+assert 588 -1
+assert 86 327
+assert 90 -1
+insert 155 6811
+assert 169 17070
+assert 688 -1
+assert 165 156
+insert 840 2025
+assert 761 -1
+insert 977 28011
+assert 501 -1
+assert 504 -1
+assert 953 -1
+insert 481 4815
+assert 53 25367
+assert 450 -1
+remove 8
+insert 8 30865
+insert 71 628
+assert 939 -1
+insert 414 5239
+insert 758 24467
+insert 464 17005
+assert 844 -1
+assert 548 -1
+assert 716 -1
+remove 429
+insert 429 27609
+remove 74
+insert 74 15829
+assert 56 -1
+assert 600 18305
+assert 555 -1
+insert 548 15239
+assert 192 -1
+assert 815 -1
+insert 632 29849
+insert 908 1222
+assert 414 5239
+assert 568 8481
+assert 38 -1
+assert 607 -1
+assert 199 -1
+insert 878 17252
+assert 70 -1
+assert 398 -1
+insert 602 16445
+insert 354 10559
+assert 0 -1
+insert 888 5942
+assert 576 -1
+assert 591 -1
+assert 945 10281
+insert 134 11183
+remove 183
+insert 183 28498
+assert 810 -1
+insert 436 17172
+assert 711 -1
+remove 683
+assert 299 31485
+assert 872 2122
+insert 927 5036
+remove 401
+insert 401 30512
+assert 549 -1
+assert 512 -1
+assert 259 -1
+assert 259 -1
+assert 349 -1
+insert 245 2217
+assert 675 -1
+assert 418 -1
+insert 561 10126
+assert 858 20965
+remove 892
+insert 892 27509
+insert 203 4666
+insert 659 15764
+remove 880
+insert 880 7212
+insert 168 11985
+assert 308 8810
+assert 159 -1
+insert 857 21608
+assert 75 -1
+assert 270 2093
+assert 43 15679
+assert 638 -1
+assert 312 -1
+assert 72 -1
+assert 779 -1
+assert 605 28603
+assert 436 17172
+assert 686 -1
+assert 91 -1
+insert 864 16502
+assert 222 27957
+insert 331 26190
+insert 208 12418
+assert 723 -1
+insert 734 14930
+assert 682 -1
+insert 745 19683
+insert 868 25609
+assert 968 17481
+remove 86
+insert 86 25568
+assert 960 31127
+assert 322 -1
+insert 543 25830
+assert 467 -1
+assert 424 31922
+remove 529
+insert 529 16267
+remove 856
+insert 856 7205
+insert 619 32462
+insert 996 23357
+insert 630 32253
+insert 339 1614
+assert 268 322
+assert 835 -1
+assert 948 -1
+assert 821 -1
+assert 943 -1
+remove 892
+insert 892 29082
+assert 317 -1
+remove 729
+insert 729 11959
+insert 262 32192
+assert 287 -1
+insert 565 26646
+insert 391 2319
+assert 454 -1
+insert 454 8281
+assert 754 -1
+assert 92 -1
+insert 929 16047
+insert 319 8973
+remove 338
+insert 338 314
+assert 906 5034
+insert 440 7893
+insert 476 816
+remove 932
+insert 932 3882
+insert 912 17069
+assert 869 -1
+remove 535
+insert 535 27631
+assert 429 27609
+assert 756 4932
+assert 942 18288
+assert 410 -1
+insert 642 2082
+assert 545 13715
+assert 311 29364
+assert 607 -1
+insert 342 17619
+insert 661 29056
+assert 422 -1
+assert 890 -1
+remove 619
+insert 619 8118
+assert 386 -1
+insert 69 12149
+insert 536 16793
+assert 607 -1
+assert 289 -1
+remove 172
+insert 172 5604
+insert 15 4985
+assert 41 -1
+assert 647 19287
+assert 538 18422
+insert 520 15431
+assert 337 -1
+insert 722 10248
+assert 204 -1
+insert 714 15630
+insert 999 18691
+assert 617 -1
+assert 895 28984
+assert 569 -1
+insert 953 32765
+remove 472
+insert 472 24959
+assert 515 -1
+assert 669 -1
+assert 337 -1
+remove 54
+insert 54 13095
+insert 185 32006
+assert 545 13715
+assert 546 -1
+assert 54 13095
+assert 125 2129
+assert 302 28045
+insert 341 997
+insert 351 30345
+assert 699 -1
+remove 347
+insert 347 17071
+remove 929
+insert 929 13834
+remove 953
+insert 953 9141
+assert 431 22025
+assert 354 10559
+assert 143 25962
+assert 717 -1
+insert 949 2913
+remove 565
+insert 565 1404
+assert 490 -1
+assert 866 -1
+assert 986 31493
+insert 821 30793
+assert 385 -1
+assert 425 -1
+insert 978 22597
+remove 481
+insert 481 31321
+assert 956 -1
+assert 240 -1
+assert 511 -1
+assert 786 -1
+assert 267 -1
+assert 184 6880
+remove 473
+insert 473 18421
+insert 769 16164
+assert 633 -1
+remove 626
+insert 626 19610
+assert 426 -1
+remove 187
+insert 187 8614
+assert 732 28093
+insert 78 1703
+assert 35 -1
+assert 424 31922
+assert 990 -1
+remove 10
+insert 10 16036
+insert 378 1731
+insert 242 24178
+assert 155 6811
+assert 111 -1
+assert 238 22876
+remove 37
+insert 37 30697
+remove 479
+insert 479 22104
+remove 873
+insert 873 16159
+remove 333
+insert 333 23248
+assert 701 869
+insert 206 16430
+assert 821 30793
+insert 256 32080
+assert 837 17066
+assert 214 31531
+remove 61
+insert 61 23835
+assert 830 31102
+assert 340 -1
+insert 803 14769
+remove 460
+insert 460 22152
+assert 613 26450
+assert 886 23034
+assert 441 -1
+remove 461
+insert 461 847
+assert 692 -1
+assert 408 -1
+insert 742 6841
+insert 101 2282
+insert 4 2256
+assert 327 16046
+assert 911 5058
+remove 610
+insert 610 903
+insert 671 15418
+assert 883 19805
+assert 300 -1
+assert 67 -1
+assert 67 -1
+assert 507 13854
+assert 260 -1
+insert 453 8514
+assert 995 20950
+remove 695
+insert 695 5761
+insert 448 22022
+remove 429
+insert 429 28980
+remove 999
+assert 944 29011
+insert 340 27585
+assert 771 -1
+assert 88 -1
+assert 163 -1
+assert 414 5239
+insert 174 222
+insert 755 15124
+assert 819 -1
+remove 837
+insert 837 12186
+assert 727 -1
+insert 17 7654
+assert 337 -1
+assert 470 -1
+assert 213 7027
+assert 707 18360
+insert 419 8655
+insert 717 7313
+assert 577 -1
+remove 706
+insert 706 14068
+remove 191
+insert 191 5910
+assert 886 23034
+assert 57 -1
+remove 445
+insert 445 895
+assert 477 18135
+assert 342 17619
+assert 852 -1
+assert 315 14553
+assert 576 -1
+remove 414
+insert 414 19291
+assert 95 -1
+remove 295
+insert 295 23164
+assert 171 -1
+insert 920 16630
+insert 142 30524
+assert 128 -1
+assert 349 -1
+assert 630 32253
+assert 487 -1
+assert 678 -1
+insert 525 1848
+remove 848
+insert 848 28532
+insert 566 1235
+insert 404 23137
+insert 255 32610
+assert 330 -1
+assert 790 11777
+assert 789 -1
+assert 540 24347
+assert 923 -1
+insert 752 30109
+insert 829 13078
+assert 884 20659
+assert 692 -1
+assert 613 26450
+insert 751 31992
+remove 169
+insert 169 6191
+insert 534 23908
+assert 393 -1
+assert 573 -1
+insert 926 1138
+assert 21 24061
+assert 855 -1
+assert 294 -1
+insert 881 22705
+insert 132 30637
+assert 881 22705
+assert 12 -1
+remove 101
+insert 101 18026
+assert 143 25962
+assert 721 -1
+assert 92 -1
+assert 672 -1
+assert 749 -1
+insert 596 31204
+assert 665 -1
+assert 293 -1
+remove 169
+insert 169 28979
+remove 105
+insert 105 27669
+remove 859
+insert 859 17297
+assert 908 1222
+assert 392 -1
+assert 456 -1
+remove 911
+insert 911 28121
+remove 773
+insert 773 14564
+assert 518 -1
+assert 756 4932
+insert 52 3428
+assert 588 -1
+insert 685 17379
+assert 962 -1
+insert 212 3101
+assert 120 -1
+assert 399 -1
+assert 554 1266
+assert 868 25609
+assert 710 -1
+assert 355 -1
+assert 265 -1
+assert 243 26580
+remove 485
+insert 485 27120
+assert 133 -1
+insert 126 11125
+remove 719
+insert 719 7886
+assert 245 2217
+insert 121 19526
+assert 445 895
+assert 946 -1
+insert 152 14302
+insert 363 15
+assert 671 15418
+assert 292 -1
+assert 919 -1
+assert 63 12941
+remove 73
+insert 73 2880
+assert 116 6165
+assert 734 14930
+insert 244 220
+assert 663 -1
+insert 386 4754
+insert 991 15667
+assert 85 -1
+assert 959 -1
+assert 129 25254
+insert 549 13335
+remove 545
+insert 545 30880
+remove 578
+insert 578 19757
+assert 864 16502
+assert 758 24467
+assert 713 -1
+assert 781 -1
+insert 136 17376
+assert 558 -1
+remove 950
+insert 950 75
+assert 95 -1
+assert 952 -1
+assert 747 -1
+insert 45 19845
+insert 348 21412
+remove 394
+insert 394 13440
+assert 661 29056
+assert 681 -1
+insert 439 5962
+insert 228 18939
+insert 779 18526
+assert 30 -1
+remove 921
+insert 921 8842
+insert 418 7638
+assert 722 10248
+remove 354
+insert 354 3731
+assert 539 -1
+remove 995
+insert 995 7577
+assert 77 -1
+assert 750 26301
+assert 979 -1
+insert 681 24014
+assert 635 26743
+remove 15
+insert 15 7459
+insert 154 14068
+remove 315
+insert 315 8338
+assert 431 22025
+assert 608 -1
+assert 31 -1
+insert 558 29125
+insert 844 7956
+assert 648 -1
+insert 710 6472
+assert 996 23357
+insert 665 9598
+assert 634 20088
+assert 813 29020
+insert 791 8120
+insert 651 7400
+assert 71 628
+assert 748 -1
+insert 92 4391
+assert 534 23908
+assert 41 -1
+insert 564 23331
+remove 684
+insert 684 3904
+assert 517 -1
+assert 464 17005
+assert 386 4754
+assert 113 29586
+insert 471 17604
+insert 344 22321
+remove 825
+insert 825 13596
+assert 139 -1
+assert 742 6841
+insert 246 25238
+assert 638 -1
+assert 891 -1
+assert 32 -1
+assert 430 30545
+insert 72 10652
+assert 785 -1
+assert 566 1235
+insert 546 14964
+assert 351 30345
+assert 683 -1
+assert 402 -1
+assert 341 997
+assert 279 15691
+insert 257 9313
+insert 227 19459
+insert 388 1152
+assert 120 -1
+assert 480 -1
+assert 614 -1
+assert 69 12149
+assert 59 -1
+assert 450 -1
+assert 984 -1
+insert 490 27636
+assert 812 -1
+remove 476
+insert 476 13041
+insert 866 13239
+assert 220 11735
+remove 859
+insert 859 1906
+remove 74
+insert 74 16655
+remove 911
+insert 911 23032
+remove 526
+insert 526 1628
+assert 360 -1
+assert 597 -1
+insert 240 25907
+assert 17 7654
+insert 232 4450
+assert 186 23017
+assert 876 -1
+assert 662 -1
+assert 585 8844
+assert 126 11125
+assert 130 -1
+assert 913 17573
+assert 736 -1
+insert 645 6957
+assert 701 869
+remove 132
+insert 132 2497
+insert 32 4108
+assert 181 18580
+remove 460
+insert 460 31219
+assert 516 -1
+assert 334 32302
+remove 483
+insert 483 6179
+remove 141
+insert 141 23036
+remove 64
+insert 64 17661
+assert 666 -1
+insert 658 28390
+assert 624 26090
+assert 187 8614
+insert 833 6157
+insert 200 15202
+insert 591 17759
+insert 226 23254
+insert 379 22708
+assert 880 7212
+assert 251 10164
+insert 13 6343
+assert 936 9968
+assert 85 -1
+assert 199 -1
+remove 513
+insert 513 27770
+assert 69 12149
+assert 796 28849
+assert 686 -1
+assert 866 13239
+assert 260 -1
+assert 885 -1
+assert 411 -1
+remove 409
+insert 409 29731
+assert 977 28011
+insert 114 29419
+remove 16
+insert 16 22725
+insert 746 4911
+insert 709 16307
+assert 668 -1
+assert 728 -1
+assert 361 -1
+assert 435 21251
+assert 26 -1
+remove 502
+insert 502 1132
+assert 572 -1
+assert 871 -1
+remove 742
+insert 742 28609
+insert 708 20037
+assert 553 -1
+assert 129 25254
+assert 697 -1
+assert 70 -1
+assert 70 -1
+assert 159 -1
+remove 255
+insert 255 21949
+insert 349 22867
+insert 517 13223
+assert 554 1266
+assert 278 -1
+assert 907 -1
+remove 649
+insert 649 22544
+insert 901 9519
+insert 318 27833
+remove 214
+insert 214 969
+assert 707 18360
+assert 230 -1
+assert 562 10476
+insert 44 8156
+insert 81 6035
+insert 851 8005
+insert 682 9933
+remove 658
+insert 658 3507
+assert 760 -1
+assert 850 -1
+assert 797 444
+assert 473 18421
+assert 636 -1
+remove 613
+insert 613 26428
+remove 357
+insert 357 6649
+assert 385 -1
+remove 36
+insert 36 13572
+insert 516 24807
+assert 868 25609
+insert 925 28676
+assert 400 -1
+insert 969 29009
+insert 646 4427
+insert 395 3936
+assert 130 -1
+insert 396 31827
+insert 943 26376
+assert 593 -1
+assert 154 14068
+assert 589 18809
+assert 438 -1
+assert 162 -1
+remove 708
+insert 708 15013
+remove 183
+insert 183 23274
+assert 905 4461
+remove 389
+insert 389 29474
+remove 348
+insert 348 25859
+assert 403 -1
+insert 140 12743
+assert 267 -1
+remove 214
+insert 214 1317
+remove 461
+insert 461 15798
+remove 142
+insert 142 21715
+assert 289 -1
+insert 403 11412
+assert 917 17993
+assert 263 -1
+remove 295
+insert 295 19539
+assert 235 -1
+remove 960
+insert 960 5764
+insert 492 26866
+assert 710 6472
+assert 323 -1
+assert 100 -1
+assert 306 -1
+assert 18 -1
+assert 39 13502
+insert 449 29414
+assert 48 3055
+assert 853 -1
+assert 540 24347
+assert 473 18421
+assert 399 -1
+assert 833 6157
+remove 762
+insert 762 30532
+assert 645 6957
+insert 484 3175
+assert 631 15709
+insert 231 17486
+insert 951 23601
+assert 366 -1
+remove 443
+insert 443 26851
+assert 469 -1
+assert 28 -1
+insert 287 21636
+assert 959 -1
+assert 751 31992
+insert 890 24876
+assert 651 7400
+assert 15 7459
+insert 656 19869
+assert 470 -1
+insert 317 8388
+remove 354
+insert 354 11037
+assert 126 11125
+remove 784
+insert 784 11012
+assert 750 26301
+insert 560 6290
+assert 539 -1
+assert 547 -1
+assert 623 -1
+assert 6 -1
+insert 785 26550
+assert 932 3882
+insert 713 4897
+assert 74 16655
+assert 666 -1
+assert 31 -1
+assert 198 -1
+assert 622 23602
+assert 84 -1
+insert 393 25705
+remove 295
+insert 295 9698
+insert 826 31519
+assert 793 -1
+insert 676 4608
+assert 830 31102
+assert 59 -1
+assert 174 222
+remove 92
+insert 92 30898
+assert 490 27636
+remove 256
+insert 256 31205
+insert 93 25311
+assert 889 26286
+assert 181 18580
+assert 194 31039
+insert 793 20238
+assert 644 -1
+assert 557 -1
+assert 361 -1
+insert 514 26890
+assert 277 -1
+remove 659
+insert 659 30455
+assert 280 -1
+assert 135 18433
+assert 84 -1
+assert 80 -1
+assert 55 -1
+remove 386
+insert 386 23904
+insert 205 3584
+assert 654 -1
+assert 747 -1
+assert 770 10345
+assert 440 7893
+insert 521 20056
+assert 842 -1
+assert 827 -1
+remove 769
+insert 769 12328
+insert 94 4246
+assert 233 -1
+assert 308 8810
+insert 70 6432
+assert 756 4932
+assert 547 -1
+remove 403
+insert 403 15627
+remove 443
+insert 443 6862
+assert 139 -1
+assert 136 17376
+assert 999 -1
+remove 743
+insert 743 31620
+remove 803
+insert 803 22383
+assert 661 29056
+insert 518 7025
+assert 532 8132
+assert 850 -1
+insert 381 31164
+remove 752
+insert 752 25275
+insert 614 18330
+assert 122 28520
+assert 878 17252
+assert 883 19805
+assert 466 -1
+assert 436 17172
+assert 533 -1
+remove 650
+insert 650 678
+assert 369 -1
+assert 341 997
+assert 998 -1
+assert 650 678
+assert 892 29082
+insert 495 30573
+assert 213 7027
+assert 620 -1
+assert 251 10164
+assert 150 27565
+remove 200
+insert 200 18309
+assert 780 -1
+insert 305 639
+assert 960 5764
+assert 830 31102
+assert 511 -1
+assert 33 -1
+assert 714 15630
+assert 248 7374
+assert 878 17252
+insert 763 5754
+insert 236 4269
+assert 356 -1
+assert 452 -1
+assert 673 -1
+remove 332
+insert 332 15991
+assert 175 -1
+insert 219 23029
+assert 887 -1
+assert 368 -1
+assert 913 17573
+remove 548
+insert 548 18237
+assert 967 25398
+insert 62 894
+assert 664 -1
+assert 783 -1
+assert 272 -1
+remove 367
+insert 367 11421
+assert 833 6157
+insert 794 7088
+remove 715
+insert 715 29409
+assert 195 -1
+insert 737 15457
+assert 957 -1
+assert 625 14379
+assert 644 -1
+remove 154
+insert 154 29334
+insert 727 4964
+insert 938 767
+insert 592 3285
+remove 240
+insert 240 11141
+assert 946 -1
+remove 713
+insert 713 3770
+insert 783 13112
+assert 737 15457
+assert 427 -1
+assert 322 -1
+assert 814 -1
+assert 227 19459
+remove 745
+insert 745 25222
+insert 667 19733
+insert 99 22921
+assert 762 30532
+assert 115 -1
+insert 266 24184
+insert 597 6008
+assert 484 3175
+remove 811
+insert 811 17506
+assert 799 -1
+assert 53 25367
+insert 24 12181
+remove 518
+insert 518 25158
+insert 493 29984
+assert 59 -1
+assert 585 8844
+insert 666 13704
+remove 717
+insert 717 21852
+assert 461 15798
+insert 983 15938
+assert 615 -1
+insert 918 27590
+assert 83 10502
+assert 383 2572
+insert 455 13143
+insert 366 27668
+remove 65
+insert 65 30904
+insert 998 4946
+remove 890
+insert 890 17578
+remove 143
+insert 143 8588
+assert 366 27668
+assert 749 -1
+assert 879 -1
+assert 347 17071
+assert 967 25398
+insert 124 19923
+assert 620 -1
+assert 614 18330
+assert 242 24178
+remove 62
+insert 62 21402
+assert 479 22104
+remove 681
+insert 681 6735
+assert 687 -1
+assert 873 16159
+insert 426 14953
+assert 812 -1
+assert 612 -1
+assert 44 8156
+assert 814 -1
+insert 850 14381
+remove 449
+insert 449 29762
+assert 585 8844
+assert 988 -1
+assert 27 -1
+assert 396 31827
+remove 722
+insert 722 6937
+assert 245 2217
+assert 342 17619
+assert 832 27270
+assert 628 -1
+assert 402 -1
+assert 252 -1
+insert 827 19754
+assert 97 -1
+assert 555 -1
+insert 47 19163
+remove 991
+insert 991 31560
+assert 869 -1
+assert 454 8281
+remove 840
+insert 840 31730
+insert 59 3836
+assert 981 24611
+assert 294 -1
+assert 158 27154
+assert 645 6957
+assert 196 -1
+assert 677 -1
+assert 390 -1
+insert 496 584
+assert 851 8005
+assert 364 -1
+remove 176
+insert 176 4822
+assert 708 15013
+assert 735 7536
+assert 338 314
+assert 884 20659
+assert 658 3507
+assert 750 26301
+remove 935
+insert 935 6611
+assert 118 -1
+assert 682 9933
+insert 694 29815
+assert 467 -1
+remove 344
+insert 344 1658
+assert 932 3882
+remove 481
+insert 481 16223
+assert 994 -1
+assert 448 22022
+assert 154 29334
+assert 732 28093
+assert 271 1726
+insert 618 16841
+insert 686 786
+assert 583 9879
+assert 332 15991
+assert 254 -1
+assert 460 31219
+assert 417 -1
+assert 872 2122
+insert 553 24044
+assert 249 4491
+insert 278 26280
+assert 760 -1
+assert 367 11421
+remove 436
+insert 436 13139
+assert 518 25158
+assert 560 6290
+remove 976
+insert 976 18396
+insert 224 23421
+assert 340 27585
+insert 350 17655
+insert 586 2039
+assert 452 -1
+assert 638 -1
+assert 782 23321
+remove 755
+insert 755 24262
+insert 501 27674
+assert 270 2093
+assert 279 15691
+remove 319
+insert 319 7328
+assert 520 15431
+remove 412
+insert 412 10386
+remove 911
+insert 911 14182
+assert 522 -1
+assert 532 8132
+assert 662 -1
+assert 440 7893
+assert 192 -1
+assert 470 -1
+assert 456 -1
+remove 840
+insert 840 18809
+assert 768 6180
+assert 78 1703
+assert 471 17604
+assert 293 -1
+assert 803 22383
+insert 963 23324
+assert 690 28617
+remove 184
+insert 184 24568
+assert 885 -1
+assert 220 11735
+assert 478 -1
+insert 216 9672
+assert 290 -1
+insert 456 11276
+assert 91 -1
+assert 622 23602
+assert 522 -1
+insert 504 27713
+assert 871 -1
+remove 165
+insert 165 11459
+assert 359 20975
+insert 577 20756
+assert 931 -1
+remove 490
+insert 490 4312
+assert 819 -1
+assert 123 -1
+remove 516
+insert 516 4127
+assert 354 11037
+assert 124 19923
+remove 297
+insert 297 4988
+assert 180 -1
+insert 291 3554
+assert 852 -1
+remove 206
+insert 206 27114
+remove 641
+insert 641 27074
+remove 897
+insert 897 1092
+insert 324 27994
+assert 327 16046
+assert 360 -1
+assert 542 -1
+assert 511 -1
+assert 540 24347
+assert 325 28484
+insert 940 29781
+assert 704 -1
+remove 545
+insert 545 8561
+assert 208 12418
+assert 725 -1
+assert 638 -1
+assert 219 23029
+assert 65 30904
+remove 248
+insert 248 4750
+assert 339 1614
+assert 778 30301
+assert 0 -1
+remove 927
+insert 927 26600
+assert 492 26866
+assert 471 17604
+assert 155 6811
+insert 879 24148
+remove 750
+insert 750 11089
+assert 974 -1
+assert 778 30301
+insert 916 12403
+remove 439
+insert 439 18820
+assert 541 -1
+assert 623 -1
+assert 272 -1
+assert 309 -1
+remove 145
+assert 452 -1
+insert 100 10440
+assert 927 26600
+assert 252 -1
+assert 113 29586
+assert 329 -1
+remove 332
+insert 332 16604
+assert 957 -1
+assert 613 26428
+assert 206 27114
+assert 949 2913
+insert 680 25947
+insert 88 30038
+assert 497 -1
+insert 999 4166
+assert 228 18939
+insert 952 19737
+assert 388 1152
+assert 237 32215
+assert 801 3042
+assert 147 -1
+remove 960
+insert 960 7877
+remove 366
+insert 366 9890
+assert 881 22705
+insert 372 10633
+assert 73 2880
+assert 530 -1
+remove 991
+insert 991 10357
+remove 256
+insert 256 10110
+assert 231 17486
+assert 475 18281
+assert 699 -1
+assert 294 -1
+assert 264 -1
+assert 408 -1
+assert 638 -1
+insert 876 32136
+remove 783
+insert 783 32007
+insert 623 17750
+assert 442 -1
+assert 567 -1
+assert 229 -1
+assert 755 24262
+insert 678 7540
+remove 965
+insert 720 22710
+assert 136 17376
+assert 840 18809
+assert 681 6735
+insert 161 31558
+insert 444 17512
+assert 315 8338
+assert 726 -1
+remove 363
+insert 363 8694
+assert 488 -1
+insert 294 12357
+remove 827
+remove 750
+insert 750 11953
+assert 323 -1
+assert 537 -1
+assert 915 -1
+insert 965 27300
+assert 60 -1
+insert 346 32141
+insert 276 22133
+assert 192 -1
+insert 328 26055
+assert 838 32075
+remove 333
+insert 333 692
+assert 739 -1
+assert 214 1317
+insert 289 9364
+assert 429 28980
+assert 95 -1
+remove 113
+insert 113 2792
+assert 763 5754
+insert 375 26603
+assert 998 4946
+assert 597 6008
+remove 837
+insert 837 5044
+assert 704 -1
+remove 553
+insert 553 22618
+assert 612 -1
+assert 953 9141
+assert 987 -1
+assert 325 28484
+assert 496 584
+assert 41 -1
+assert 623 17750
+remove 586
+insert 586 14842
+assert 879 24148
+assert 223 -1
+remove 69
+insert 69 13174
+remove 185
+insert 185 29113
+assert 790 11777
+insert 139 21054
+assert 563 -1
+assert 477 18135
+assert 361 -1
+assert 797 444
+insert 282 22626
+assert 216 9672
+assert 284 -1
+insert 175 3545
+assert 647 19287
+assert 987 -1
+insert 723 26774
+insert 380 27278
+remove 59
+insert 59 31025
+assert 116 6165
+assert 734 14930
+insert 563 20034
+remove 676
+insert 676 6820
+assert 993 -1
+remove 825
+insert 825 5429
+assert 665 9598
+assert 953 9141
+assert 448 22022
+remove 534
+insert 534 23241
+assert 264 -1
+assert 113 2792
+remove 184
+assert 255 21949
+remove 825
+insert 825 2507
+assert 213 7027
+assert 92 30898
+assert 990 -1
+insert 316 30539
+remove 917
+insert 917 24855
+assert 338 314
+insert 947 5532
+assert 237 32215
+assert 950 75
+insert 843 9034
+remove 206
+assert 743 31620
+assert 259 -1
+assert 670 32416
+assert 920 16630
+insert 824 11137
+assert 892 29082
+assert 190 -1
+assert 206 -1
+insert 699 14031
+assert 86 25568
+assert 909 -1
+remove 71
+insert 71 23293
+assert 81 6035
+assert 615 -1
+assert 665 9598
+assert 520 15431
+assert 401 30512
+assert 163 -1
+assert 45 19845
+insert 254 19419
+assert 262 32192
+assert 942 18288
+assert 282 22626
+assert 986 31493
+assert 663 -1
+assert 256 10110
+assert 253 25143
+assert 506 17907
+remove 83
+insert 83 14990
+assert 246 25238
+insert 672 18405
+assert 782 23321
+assert 579 -1
+assert 232 4450
+assert 4 2256
+assert 490 4312
+remove 4
+insert 4 4226
+assert 503 14064
+assert 50 11115
+assert 414 19291
+assert 612 -1
+assert 994 -1
+insert 931 9034
+insert 757 7031
+assert 578 19757
+insert 654 2096
+remove 952
+insert 952 29556
+assert 23 31974
+remove 540
+insert 540 13713
+remove 737
+insert 737 14084
+insert 812 13996
+assert 188 -1
+assert 803 22383
+assert 372 10633
+remove 921
+insert 921 23442
+insert 112 22942
+assert 199 -1
+remove 155
+insert 155 6132
+assert 932 3882
+assert 105 27669
+insert 321 2740
+assert 509 -1
+assert 115 -1
+insert 12 30850
+remove 625
+insert 625 22891
+assert 70 6432
+remove 784
+insert 784 20178
+assert 77 -1
+assert 272 -1
+assert 309 -1
+assert 919 -1
+assert 338 314
+insert 217 11554
+insert 118 13556
+remove 308
+insert 308 14727
+insert 842 4826
+assert 100 10440
+assert 297 4988
+assert 225 17642
+assert 253 25143
+assert 917 24855
+remove 645
+insert 645 11149
+assert 878 17252
+remove 712
+insert 712 19281
+assert 250 22321
+assert 231 17486
+insert 575 17407
+assert 106 -1
+insert 163 20532
+assert 933 -1
+assert 47 19163
+insert 643 31266
+assert 362 24673
+assert 753 -1
+remove 404
+insert 404 2698
+insert 662 21883
+insert 56 2997
+insert 810 4796
+assert 169 28979
+remove 21
+insert 21 26825
+remove 800
+insert 800 7539
+insert 994 1004
+assert 850 14381
+assert 618 16841
+remove 436
+insert 436 32049
+assert 174 222
+remove 366
+insert 366 28106
+remove 405
+insert 405 1396
+assert 683 -1
+insert 705 2547
+assert 148 -1
+assert 132 2497
+assert 544 -1
+insert 413 14376
+remove 872
+insert 872 14499
+remove 949
+insert 949 7298
+remove 632
+insert 632 28934
+assert 371 -1
+remove 836
+insert 467 6360
+assert 729 11959
+assert 644 -1
+insert 556 14352
+insert 595 10051
+assert 284 -1
+insert 284 7188
+assert 4 4226
+assert 560 6290
+assert 332 16604
+remove 348
+insert 348 32275
+remove 308
+insert 308 19574
+assert 246 25238
+assert 581 -1
+remove 805
+insert 805 12458
+remove 242
+insert 242 27617
+insert 887 16128
+remove 970
+insert 970 11893
+remove 65
+insert 65 24949
+assert 578 19757
+assert 408 -1
+remove 526
+insert 526 31947
+insert 814 23910
+assert 389 29474
+assert 800 7539
+remove 694
+insert 694 16025
+assert 392 -1
+assert 774 -1
+assert 488 -1
+assert 575 17407
+assert 83 14990
+assert 432 -1
+assert 35 -1
+assert 611 10959
+assert 481 16223
+remove 43
+insert 43 25457
+assert 329 -1
+insert 608 18248
+remove 362
+insert 362 7234
+remove 655
+insert 655 9277
+assert 538 18422
+assert 561 10126
+remove 676
+insert 676 22487
+remove 715
+insert 715 21205
+remove 154
+insert 154 10277
+insert 223 19251
+assert 932 3882
+assert 356 -1
+remove 101
+insert 101 29146
+assert 740 -1
+assert 307 -1
+remove 545
+insert 545 26021
+assert 807 -1
+assert 995 7577
+remove 770
+insert 770 28919
+assert 785 26550
+assert 732 28093
+assert 906 5034
+insert 31 27224
+remove 828
+assert 963 23324
+assert 518 25158
+assert 203 4666
+assert 501 27674
+insert 480 24036
+remove 154
+insert 154 1718
+assert 349 22867
+assert 217 11554
+assert 82 13127
+assert 339 1614
+assert 598 -1
+remove 431
+insert 431 2839
+assert 99 22921
+insert 831 23120
+assert 943 26376
+assert 411 -1
+remove 944
+insert 944 28223
+assert 456 11276
+remove 685
+insert 685 32425
+assert 946 -1
+remove 479
+insert 479 25325
+assert 533 -1
+assert 439 18820
+remove 474
+insert 474 16349
+assert 852 -1
+remove 93
+insert 93 19807
+remove 25
+insert 25 7667
+assert 542 -1
+assert 777 -1
+insert 6 7978
+assert 695 5761
+assert 247 -1
+assert 36 13572
+assert 265 -1
+assert 822 -1
+assert 362 7234
+assert 676 22487
+remove 316
+insert 316 28539
+assert 599 -1
+insert 820 10623
+assert 955 -1
+assert 603 14238
+assert 136 17376
+remove 52
+insert 52 21687
+remove 860
+insert 860 325
+assert 530 -1
+assert 7 31294
+assert 934 -1
+assert 460 31219
+assert 370 -1
+remove 992
+assert 496 584
+assert 145 -1
+assert 73 2880
+assert 198 -1
+remove 901
+insert 901 19272
+remove 243
+insert 243 18542
+assert 804 -1
+assert 114 29419
+remove 383
+insert 383 18358
+assert 58 -1
+assert 601 13659
+assert 926 1138
+assert 42 -1
+assert 609 27642
+assert 756 4932
+insert 836 19304
+assert 394 13440
+assert 90 -1
+assert 299 31485
+remove 520
+insert 520 26323
+assert 887 16128
+insert 711 27514
+assert 717 21852
+assert 592 3285
+assert 150 27565
+remove 880
+insert 880 22406
+assert 711 27514
+insert 14 25693
+assert 267 -1
+remove 763
+insert 763 28987
+assert 55 -1
+assert 316 28539
+insert 307 16931
+assert 532 8132
+insert 211 32175
+remove 15
+insert 15 2401
+insert 111 28379
+assert 385 -1
+insert 199 6686
+insert 358 8579
+remove 813
+insert 813 15052
+assert 141 23036
+remove 472
+insert 472 18803
+assert 521 20056
+insert 974 25282
+remove 707
+insert 707 25493
+assert 314 -1
+assert 357 6649
+assert 69 13174
+assert 546 14964
+remove 384
+insert 384 18345
+assert 95 -1
+assert 270 2093
+assert 804 -1
+insert 303 27722
+assert 653 31039
+insert 153 14492
+assert 47 19163
+assert 927 26600
+remove 856
+insert 856 31391
+assert 768 6180
+assert 524 -1
+assert 164 -1
+assert 503 14064
+assert 985 6398
+insert 365 4376
+assert 232 4450
+assert 854 5000
+remove 580
+insert 580 25682
+remove 974
+insert 974 3558
+insert 427 3670
+assert 140 12743
+assert 428 -1
+remove 905
+insert 905 7176
+insert 267 22755
+assert 704 -1
+assert 24 12181
+assert 172 5604
+assert 213 7027
+remove 380
+insert 380 24085
+assert 34 -1
+remove 477
+insert 477 22242
+remove 24
+insert 24 12905
+assert 726 -1
+assert 646 4427
+assert 577 20756
+insert 772 26290
+assert 954 11812
+insert 3 8170
+assert 636 -1
+insert 195 5718
+insert 700 15848
+assert 663 -1
+remove 21
+insert 21 32107
+assert 589 18809
+insert 421 13343
+insert 296 9711
+assert 771 -1
+remove 86
+insert 86 19556
+remove 270
+insert 270 11620
+assert 979 -1
+assert 181 18580
+assert 191 5910
+assert 559 24049
+remove 116
+insert 116 3072
+insert 698 22340
+remove 833
+insert 833 25570
+insert 993 24315
+assert 982 -1
+assert 693 -1
+assert 650 678
+assert 979 -1
+insert 987 9162
+assert 986 31493
+insert 146 15262
+assert 0 -1
+assert 129 25254
+assert 245 2217
+insert 406 1797
+remove 653
+insert 653 5581
+assert 425 -1
+assert 952 29556
+remove 129
+insert 129 4395
+assert 312 -1
+remove 831
+insert 831 20770
+assert 899 -1
+assert 828 -1
+assert 973 -1
+remove 750
+insert 750 11982
+remove 199
+insert 199 19276
+assert 775 -1
+remove 770
+insert 770 5050
+remove 243
+insert 243 2393
+remove 548
+insert 548 19512
+insert 18 22530
+insert 190 16899
+remove 995
+insert 995 16549
+assert 31 27224
+remove 327
+insert 327 29195
+assert 616 19677
+assert 415 392
+remove 389
+insert 389 31413
+remove 583
+insert 583 22533
+assert 766 -1
+assert 818 -1
+assert 607 -1
+assert 781 -1
+remove 256
+insert 256 30785
+assert 362 7234
+assert 889 26286
+remove 350
+assert 297 4988
+insert 789 19827
+assert 780 -1
+assert 75 -1
+assert 305 639
+assert 441 -1
+remove 484
+insert 484 16333
+insert 275 26336
+remove 405
+assert 23 31974
+remove 987
+insert 987 11423
+assert 763 28987
+remove 287
+insert 287 26985
+assert 441 -1
+remove 996
+insert 996 19194
+assert 100 10440
+assert 368 -1
+remove 681
+insert 681 6463
+assert 447 -1
+remove 485
+insert 485 27991
+assert 979 -1
+assert 161 31558
+assert 264 -1
+assert 138 -1
+assert 329 -1
+remove 997
+insert 997 1956
+assert 258 -1
+insert 798 28255
+assert 793 20238
+assert 198 -1
+remove 805
+insert 805 22035
+remove 471
+insert 471 30246
+assert 333 692
+insert 946 31200
+remove 859
+insert 859 30435
+insert 497 18475
+assert 183 23274
+remove 183
+insert 183 12187
+assert 817 31195
+remove 977
+insert 977 22512
+assert 905 7176
+remove 900
+insert 900 19081
+remove 647
+insert 647 9422
+remove 342
+insert 342 19748
+assert 591 17759
+remove 642
+insert 642 16416
+remove 40
+insert 40 12928
+assert 537 -1
+assert 607 -1
+assert 351 30345
+assert 104 -1
+insert 87 2986
+remove 44
+insert 44 12559
+assert 86 19556
+remove 868
+insert 868 7855
+insert 628 6517
+insert 491 27113
+insert 392 25560
+remove 630
+insert 630 30315
+insert 230 23191
+insert 468 12899
+assert 708 15013
+insert 96 31199
+assert 10 16036
+insert 992 6940
+assert 364 -1
+insert 469 2260
+assert 33 -1
+assert 387 -1
+remove 393
+insert 393 14258
+assert 945 10281
+assert 928 -1
+assert 879 24148
+insert 2 2247
+assert 21 32107
+insert 137 31215
+assert 29 4718
+assert 284 7188
+insert 766 6519
+assert 268 322
+insert 937 30075
+remove 900
+insert 900 11038
+remove 386
+insert 386 22260
+remove 419
+insert 419 31032
+remove 717
+insert 717 31072
+assert 702 24704
+assert 603 14238
+remove 727
+insert 727 12940
+insert 263 14836
+assert 828 -1
+assert 679 13410
+remove 679
+insert 679 32591
+remove 839
+insert 839 15785
+remove 458
+insert 458 30463
+remove 205
+remove 892
+insert 892 26197
+assert 877 -1
+assert 815 -1
+assert 481 16223
+remove 351
+insert 351 29515
+assert 423 -1
+assert 430 30545
+assert 450 -1
+remove 735
+insert 735 1927
+insert 487 10652
+remove 406
+insert 406 32748
+assert 603 14238
+assert 53 25367
+assert 626 19610
+insert 290 31554
+remove 362
+insert 362 28356
+assert 808 24302
+assert 595 10051
+remove 219
+insert 219 28758
+remove 903
+insert 903 26684
+remove 506
+insert 506 29898
+assert 261 -1
+remove 318
+insert 318 27246
+assert 778 30301
+assert 125 2129
+assert 851 8005
+assert 489 -1
+assert 575 17407
+remove 367
+insert 367 21304
+remove 439
+insert 439 2607
+assert 122 28520
+remove 647
+insert 647 18641
+remove 9
+insert 9 24291
+assert 28 -1
+assert 643 31266
+remove 426
+insert 426 13713
+insert 451 19148
+remove 659
+insert 659 31603
+assert 833 25570
+assert 843 9034
+assert 399 -1
+remove 994
+assert 145 -1
+remove 6
+insert 6 2743
+assert 657 -1
+assert 806 32668
+assert 306 -1
+remove 496
+insert 496 12636
+assert 524 -1
+insert 696 28331
+assert 652 -1
+assert 242 27617
+assert 386 22260
+insert 587 1146
+remove 346
+remove 797
+insert 797 25326
+insert 907 30850
+assert 615 -1
+assert 199 19276
+remove 332
+insert 332 7138
+assert 663 -1
+assert 72 10652
+assert 101 29146
+assert 133 -1
+assert 44 12559
+assert 448 22022
+remove 88
+insert 88 13650
+assert 337 -1
+assert 282 22626
+insert 385 7860
+remove 318
+insert 318 4267
+remove 743
+insert 743 23370
+assert 820 10623
+assert 607 -1
+insert 551 19296
+remove 464
+insert 464 30618
+assert 725 -1
+assert 463 -1
+assert 290 31554
+insert 229 30429
+assert 891 -1
+assert 307 16931
+assert 267 22755
+assert 342 19748
+remove 451
+insert 451 16791
+remove 756
+insert 756 15520
+remove 616
+insert 616 20712
+insert 621 25664
+assert 471 30246
+assert 40 12928
+assert 517 13223
+remove 878
+insert 878 25218
+assert 228 18939
+assert 908 1222
+remove 96
+insert 96 9135
+assert 78 1703
+insert 522 21618
+assert 380 24085
+assert 852 -1
+remove 681
+insert 681 15592
+remove 920
+insert 920 16072
+assert 493 29984
+assert 533 -1
+insert 173 27584
+assert 763 28987
+assert 132 2497
+assert 847 -1
+assert 148 -1
+remove 254
+insert 254 25241
+assert 611 10959
+remove 74
+insert 74 18028
+assert 869 -1
+remove 974
+insert 974 4396
+insert 463 8993
+insert 138 22406
+assert 38 -1
+assert 35 -1
+remove 719
+insert 719 12530
+remove 4
+insert 4 6927
+assert 553 22618
+assert 812 13996
+insert 399 332
+assert 958 9348
+assert 89 -1
+assert 982 -1
+remove 116
+insert 116 23697
+remove 129
+insert 129 11303
+assert 956 -1
+assert 862 -1
+remove 359
+insert 359 21065
+assert 819 -1
+assert 144 -1
+remove 949
+insert 949 26212
+assert 446 -1
+assert 271 1726
+assert 640 -1
+assert 295 9698
+assert 776 -1
+assert 150 27565
+assert 412 10386
+assert 209 -1
+assert 422 -1
+insert 869 19113
+insert 948 9067
+insert 677 5163
+assert 264 -1
+assert 339 1614
+remove 597
+insert 597 21945
+remove 414
+insert 414 4610
+assert 737 14084
+assert 421 13343
+assert 100 10440
+remove 225
+insert 225 323
+assert 554 1266
+assert 137 31215
+assert 286 31648
+remove 237
+insert 237 17814
+assert 89 -1
+insert 804 9957
+assert 584 -1
+assert 116 23697
+assert 997 1956
+remove 906
+assert 997 1956
+insert 58 15096
+assert 297 4988
+assert 798 28255
+assert 149 26732
+remove 921
+insert 921 14276
+remove 983
+insert 983 28557
+assert 389 31413
+remove 603
+insert 603 805
+insert 852 2247
+assert 981 24611
+assert 856 31391
+remove 72
+insert 72 24053
+insert 407 348
+assert 107 22526
+assert 208 12418
+assert 435 21251
+assert 485 27991
+insert 330 22488
+assert 558 29125
+remove 646
+insert 646 19205
+assert 651 7400
+assert 453 8514
+assert 186 23017
+remove 792
+insert 792 9361
+assert 496 12636
+insert 147 4484
+assert 672 18405
+insert 38 25482
+assert 768 6180
+assert 699 14031
+assert 154 1718
+assert 8 30865
+insert 795 3968
+insert 90 14712
+assert 679 32591
+remove 23
+insert 23 15493
+assert 311 29364
+assert 408 -1
+remove 852
+insert 852 11821
+remove 302
+insert 302 7921
+assert 570 14239
+assert 200 18309
+remove 998
+insert 998 20759
+insert 828 32010
+assert 414 4610
+assert 36 13572
+assert 423 -1
+assert 808 24302
+assert 777 -1
+remove 785
+insert 785 4195
+assert 62 21402
+assert 435 21251
+remove 45
+insert 45 24961
+remove 626
+remove 836
+insert 836 18213
+remove 649
+insert 649 18540
+assert 846 -1
+insert 131 16588
+assert 733 -1
+insert 30 20608
+insert 355 29545
+remove 714
+insert 714 18593
+assert 257 9313
+assert 433 23501
+assert 228 18939
+insert 691 17757
+remove 50
+insert 50 21584
+remove 543
+insert 543 4090
+insert 201 26615
+remove 216
+insert 216 15318
+assert 991 10357
+insert 35 11916
+assert 948 9067
+remove 6
+insert 6 29119
+assert 975 -1
+remove 793
+insert 793 7504
+assert 50 21584
+insert 145 773
+assert 391 2319
+remove 477
+insert 477 2791
+assert 306 -1
+assert 576 -1
+assert 797 25326
+assert 516 4127
+assert 974 4396
+assert 459 -1
+assert 74 18028
+assert 376 -1
+assert 619 8118
+remove 433
+insert 433 31732
+assert 260 -1
+assert 734 14930
+insert 582 10657
+assert 198 -1
+assert 21 32107
+assert 680 25947
+remove 601
+insert 601 20323
+remove 463
+insert 463 7698
+assert 175 3545
+remove 890
+insert 890 31736
+assert 935 6611
+remove 719
+insert 719 22069
+assert 443 6862
+insert 902 20698
+assert 372 10633
+assert 461 15798
+assert 637 -1
+insert 891 4452
+remove 594
+insert 594 30410
+insert 309 6287
+remove 779
+insert 779 27184
+assert 944 28223
+assert 34 -1
+assert 489 -1
+assert 328 26055
+insert 450 32659
+insert 593 10539
+assert 114 29419
+insert 716 2179
+assert 505 -1
+assert 120 -1
+remove 946
+insert 946 25248
+assert 12 30850
+remove 395
+insert 395 19748
+insert 853 1216
+assert 320 -1
+insert 896 11993
+assert 83 14990
+assert 197 7671
+remove 296
+insert 296 24444
+assert 97 -1
+remove 545
+insert 545 9597
+remove 47
+insert 47 11823
+remove 630
+insert 630 16380
+remove 30
+insert 30 29304
+assert 991 10357
+remove 191
+insert 191 2957
+insert 776 17933
+assert 929 13834
+assert 658 3507
+insert 98 4579
+assert 219 28758
+insert 398 15508
+assert 168 11985
+insert 861 8494
+remove 251
+insert 251 29183
+assert 291 3554
+assert 939 -1
+assert 705 2547
+assert 923 -1
+assert 320 -1
+assert 394 13440
+remove 867
+insert 867 5819
+remove 230
+insert 230 27112
+assert 175 3545
+insert 49 3856
+assert 152 14302
+assert 992 6940
+assert 150 27565
+assert 714 18593
+insert 664 7271
+assert 479 25325
+assert 239 18609
+assert 239 18609
+remove 222
+insert 222 21235
+assert 424 31922
+insert 730 20380
+insert 60 20920
+assert 52 21687
+assert 891 4452
+assert 685 32425
+assert 186 23017
+remove 707
+assert 158 27154
+remove 437
+insert 437 17141
+remove 158
+insert 158 4912
+remove 999
+insert 999 9012
+assert 988 -1
+assert 998 20759
+assert 475 18281
+insert 906 5064
+assert 800 7539
+remove 519
+insert 519 30778
+remove 276
+insert 276 8006
+insert 573 27347
+insert 544 392
+assert 412 10386
+remove 344
+insert 344 31860
+remove 696
+insert 696 29003
+remove 580
+insert 580 27653
+insert 470 21732
+assert 614 18330
+assert 872 14499
+assert 343 24799
+assert 405 -1
+assert 409 29731
+remove 825
+insert 825 28797
+assert 756 15520
+remove 791
+insert 791 23738
+assert 777 -1
+assert 207 28693
+assert 991 10357
+assert 462 -1
+assert 791 23738
+remove 254
+insert 254 138
+insert 984 10737
+insert 241 8535
+insert 898 21716
+assert 556 14352
+assert 942 18288
+assert 483 6179
+assert 819 -1
+assert 283 -1
+assert 237 17814
+assert 696 29003
+remove 849
+insert 849 1290
+assert 701 869
+assert 853 1216
+assert 864 16502
+assert 911 14182
+assert 447 -1
+assert 110 -1
+assert 976 18396
+remove 563
+insert 563 7128
+assert 140 12743
+assert 391 2319
+assert 746 4911
+remove 207
+insert 207 32748
+assert 311 29364
+remove 911
+remove 443
+insert 443 29614
+assert 674 -1
+assert 370 -1
+assert 89 -1
+remove 325
+insert 325 31020
+assert 440 7893
+assert 403 15627
+remove 801
+assert 685 32425
+assert 576 -1
+assert 805 22035
+remove 632
+insert 632 16227
+assert 362 28356
+remove 175
+insert 175 27089
+remove 444
+insert 444 17230
+assert 805 22035
+remove 421
+assert 137 31215
+remove 519
+assert 310 13389
+assert 529 16267
+assert 870 16197
+assert 827 -1
+assert 666 13704
+assert 167 -1
+assert 807 -1
+assert 492 26866
+assert 672 18405
+assert 924 -1
+insert 541 13015
+remove 426
+insert 426 23221
+assert 184 -1
+assert 0 -1
+assert 482 -1
+assert 813 15052
+remove 439
+insert 439 5882
+remove 770
+insert 770 19895
+assert 154 1718
+assert 803 22383
+remove 39
+insert 39 6627
+assert 146 15262
+remove 54
+insert 54 700
+insert 110 11108
+insert 728 10702
+assert 910 -1
+assert 592 3285
+assert 878 25218
+assert 58 15096
+assert 298 -1
+assert 694 16025
+assert 67 -1
+assert 205 -1
+assert 362 28356
+assert 670 32416
+assert 569 -1
+assert 909 -1
+assert 280 -1
+assert 422 -1
+assert 248 4750
+insert 915 27555
+assert 928 -1
+assert 727 12940
+insert 657 10872
+assert 77 -1
+assert 798 28255
+assert 919 -1
+assert 360 -1
+remove 291
+insert 291 27474
+remove 137
+insert 137 23149
+remove 715
+assert 987 11423
+assert 175 27089
+insert 447 28334
+assert 385 7860
+assert 355 29545
+insert 57 14130
+remove 242
+insert 242 13196
+assert 864 16502
+assert 609 27642
+assert 990 -1
+assert 359 21065
+assert 259 -1
+assert 528 -1
+remove 141
+insert 141 16823
+remove 700
+insert 700 21552
+assert 90 14712
+remove 384
+insert 384 2516
+remove 491
+insert 491 23766
+insert 202 2781
+assert 323 -1
+remove 216
+insert 216 14813
+remove 15
+insert 15 24614
+assert 390 -1
+remove 257
+insert 257 18824
+assert 263 14836
+assert 99 22921
+remove 494
+insert 494 7353
+assert 126 11125
+remove 380
+insert 380 5488
+remove 503
+insert 503 19827
+assert 457 27350
+assert 488 -1
+insert 956 26610
+insert 33 11861
+assert 439 5882
+assert 507 13854
+assert 62 21402
+assert 579 -1
+remove 621
+assert 773 14564
+assert 667 19733
+assert 220 11735
+remove 936
+insert 936 2903
+remove 628
+insert 628 19209
+assert 220 11735
+assert 722 6937
+remove 854
+insert 854 23314
+assert 412 10386
+assert 884 20659
+assert 437 17141
+assert 160 -1
+assert 730 20380
+insert 961 16522
+assert 450 32659
+assert 94 4246
+assert 473 18421
+insert 780 23852
+insert 252 2097
+insert 787 12958
+assert 411 -1
+assert 466 -1
+assert 425 -1
+assert 907 30850
+assert 781 -1
+assert 261 -1
+assert 623 17750
+remove 830
+insert 830 2726
+remove 266
+insert 266 13869
+assert 906 5064
+assert 392 25560
+remove 296
+insert 296 21380
+assert 955 -1
+assert 242 13196
+remove 109
+insert 109 30407
+remove 902
+insert 902 24253
+assert 87 2986
+remove 679
+insert 679 7100
+assert 443 29614
+remove 553
+insert 553 28317
+assert 93 19807
+assert 605 28603
+assert 451 16791
+insert 809 8879
+assert 863 -1
+remove 494
+insert 494 9093
+assert 713 3770
+remove 722
+insert 722 8708
+assert 415 392
+assert 912 17069
+assert 577 20756
+assert 442 -1
+remove 479
+insert 479 24814
+assert 36 13572
+remove 895
+insert 895 9250
+remove 86
+insert 86 6074
+remove 8
+insert 8 4831
+remove 90
+insert 90 27090
+assert 234 17728
+remove 190
+insert 190 9724
+assert 196 -1
+remove 876
+insert 876 26634
+assert 870 16197
+assert 44 12559
+assert 300 -1
+remove 59
+insert 59 6767
+assert 751 31992
+remove 318
+insert 318 30060
+assert 956 26610
+remove 65
+assert 641 27074
+assert 464 30618
+remove 141
+insert 141 27641
+assert 973 -1
+assert 911 -1
+assert 610 903
+insert 621 19488
+assert 20 16521
+insert 421 922
+assert 270 11620
+assert 621 19488
+assert 338 314
+assert 620 -1
+insert 980 30515
+assert 768 6180
+remove 190
+insert 190 29507
+assert 23 15493
+assert 803 22383
+remove 149
+insert 149 29960
+remove 112
+insert 112 4464
+insert 599 13777
+assert 344 31860
+remove 448
+insert 448 10849
+assert 335 23765
+assert 509 -1
+remove 987
+insert 987 15301
+remove 497
+insert 497 26596
+assert 309 6287
+assert 720 22710
+assert 220 11735
+assert 616 20712
+assert 831 20770
+remove 656
+insert 656 3687
+assert 487 10652
+insert 91 20983
+assert 565 1404
+assert 204 -1
+assert 84 -1
+remove 880
+insert 880 2343
+insert 885 14906
+assert 127 23522
+assert 694 16025
+remove 671
+insert 671 208
+remove 778
+assert 174 222
+assert 207 32748
+assert 862 -1
+assert 28 -1
+remove 830
+insert 830 18052
+assert 46 -1
+assert 315 8338
+remove 340
+insert 340 4872
+remove 234
+insert 234 21047
+assert 397 -1
+assert 886 23034
+assert 950 75
+remove 310
+insert 310 28866
+assert 27 -1
+insert 990 22791
+assert 659 31603
+insert 724 373
+assert 826 31519
+remove 111
+insert 111 2761
+assert 481 16223
+remove 349
+insert 349 30617
+insert 761 18001
+assert 390 -1
+assert 699 14031
+remove 24
+insert 24 24159
+insert 34 17135
+remove 321
+insert 321 30218
+assert 332 7138
+remove 197
+insert 197 21972
+insert 786 28101
+remove 358
+insert 358 13523
+assert 413 14376
+remove 695
+insert 695 15408
+assert 818 -1
+assert 317 8388
+assert 704 -1
+remove 149
+insert 149 3236
+assert 228 18939
+assert 764 -1
+remove 14
+insert 14 14286
+assert 282 22626
+remove 129
+insert 129 24152
+assert 964 15683
+assert 639 -1
+assert 563 7128
+assert 294 12357
+remove 888
+insert 888 12439
+assert 644 -1
+remove 122
+insert 122 2607
+insert 159 24125
+assert 375 26603
+assert 499 -1
+remove 183
+insert 183 27866
+insert 590 11626
+assert 416 32257
+remove 925
+insert 925 3049
+remove 348
+insert 348 25776
+remove 890
+insert 890 17437
+remove 278
+insert 278 22865
+remove 578
+insert 578 2678
+remove 520
+insert 520 27534
+remove 695
+insert 695 5339
+assert 887 16128
+remove 912
+insert 912 7556
+assert 463 7698
+assert 423 -1
+assert 713 3770
+assert 502 1132
+remove 655
+insert 655 3654
+insert 67 14091
+remove 852
+insert 852 13246
+assert 421 922
+assert 866 13239
+remove 812
+insert 812 27445
+assert 49 3856
+insert 27 15614
+assert 854 23314
+assert 264 -1
+assert 721 -1
+assert 674 -1
+remove 597
+insert 597 18520
+assert 373 14659
+remove 729
+insert 729 5447
+remove 49
+insert 49 19339
+assert 182 6274
+assert 789 19827
+assert 869 19113
+assert 278 22865
+remove 354
+insert 354 32216
+insert 704 24488
+assert 986 31493
+insert 707 28502
+assert 444 17230
+assert 391 2319
+insert 818 4851
+assert 952 29556
+remove 359
+insert 359 13926
+assert 31 27224
+assert 709 16307
+remove 395
+insert 395 3257
+assert 717 31072
+insert 528 16018
+remove 571
+insert 571 2822
+assert 161 31558
+remove 246
+insert 246 26115
+remove 429
+insert 429 14342
+assert 237 17814
+remove 251
+insert 251 26077
+assert 26 -1
+remove 471
+insert 471 9967
+assert 199 19276
+assert 362 28356
+assert 727 12940
+remove 136
+insert 136 12680
+assert 829 13078
+remove 892
+insert 892 22980
+assert 809 8879
+assert 83 14990
+assert 969 29009
+assert 352 -1
+assert 572 -1
+assert 982 -1
+assert 796 28849
+assert 883 19805
+remove 549
+insert 549 10170
+remove 737
+insert 737 3075
+assert 584 -1
+remove 504
+insert 504 6579
+assert 840 18809
+remove 608
+insert 608 30082
+assert 600 18305
+assert 489 -1
+remove 562
+insert 562 12661
+assert 737 3075
+assert 609 27642
+assert 183 27866
+remove 953
+insert 953 8619
+assert 648 -1
+assert 153 14492
+remove 763
+insert 763 26882
+remove 262
+insert 262 27682
+assert 641 27074
+assert 858 20965
+remove 616
+insert 616 5375
+assert 390 -1
+remove 487
+insert 487 24629
+assert 665 9598
+remove 905
+insert 905 19997
+remove 716
+insert 716 8895
+remove 27
+insert 27 31197
+assert 51 -1
+insert 423 27334
+insert 703 815
+assert 283 -1
+assert 944 28223
+assert 763 26882
+insert 167 17686
+assert 325 31020
+assert 959 -1
+assert 207 32748
+insert 1 24623
+assert 143 8588
+remove 503
+insert 503 11424
+assert 6 29119
+assert 282 22626
+assert 170 20197
+assert 181 18580
+remove 517
+insert 517 16793
+remove 759
+assert 628 19209
+assert 761 18001
+remove 755
+insert 755 19855
+remove 529
+insert 529 6363
+assert 367 21304
+insert 574 8211
+remove 173
+insert 173 11307
+assert 563 7128
+remove 657
+insert 657 16997
+assert 287 26985
+insert 192 24957
+assert 843 9034
+assert 882 -1
+remove 363
+insert 363 17424
+assert 995 16549
+assert 561 10126
+assert 556 14352
+remove 473
+insert 473 29893
+remove 540
+insert 540 2192
+assert 519 -1
+assert 109 30407
+assert 816 -1
+assert 567 -1
+assert 715 -1
+assert 431 2839
+remove 765
+insert 765 27228
+remove 501
+insert 501 19770
+assert 237 17814
+assert 544 392
+remove 341
+insert 341 17931
+remove 566
+insert 566 18452
+assert 413 14376
+assert 257 18824
+remove 978
+insert 978 25017
+insert 718 26067
+assert 601 20323
+assert 779 27184
+assert 307 16931
+insert 178 12339
+assert 111 2761
+remove 906
+insert 906 14824
+assert 131 16588
+insert 177 23685
+assert 906 14824
+assert 761 18001
+assert 830 18052
+remove 920
+insert 920 8987
+assert 661 29056
+remove 564
+insert 564 6377
+remove 40
+insert 40 11917
+assert 319 7328
+assert 542 -1
+assert 284 7188
+assert 228 18939
+assert 173 11307
+assert 866 13239
+assert 642 16416
+assert 14 14286
+assert 689 -1
+remove 434
+insert 434 11874
+assert 83 14990
+remove 236
+insert 236 25739
+assert 365 4376
+assert 793 7504
+assert 644 -1
+remove 812
+remove 999
+insert 999 976
+assert 68 -1
+assert 315 8338
+assert 364 -1
+remove 658
+insert 658 24944
+assert 845 -1
+remove 53
+insert 53 27991
+assert 37 30697
+assert 513 27770
+remove 43
+insert 43 12853
+remove 600
+insert 600 31847
+assert 832 27270
+assert 207 32748
+remove 475
+insert 475 6966
+insert 637 26898
+assert 160 -1
+assert 640 -1
+insert 204 29636
+assert 758 24467
+assert 53 27991
+remove 680
+insert 680 2422
+assert 240 11141
+assert 869 19113
+assert 481 16223
+assert 438 -1
+remove 667
+insert 667 19545
+assert 48 3055
+assert 939 -1
+assert 664 7271
+assert 584 -1
+insert 500 264
+assert 919 -1
+insert 606 1809
+assert 960 7877
+remove 809
+insert 809 6555
+remove 996
+insert 996 3107
+remove 39
+insert 39 15110
+assert 491 23766
+assert 527 -1
+insert 569 20399
+remove 485
+insert 485 761
+assert 288 -1
+assert 743 23370
+assert 805 22035
+remove 745
+insert 745 11505
+assert 443 29614
+insert 261 15445
+remove 16
+insert 16 28331
+remove 949
+insert 949 12721
+insert 417 4998
+assert 602 16445
+remove 600
+insert 600 7154
+remove 325
+insert 325 17163
+remove 389
+insert 389 30653
+remove 6
+insert 6 30113
+remove 14
+insert 14 12922
+assert 210 -1
+assert 362 28356
+assert 501 19770
+assert 388 1152
+remove 851
+assert 380 5488
+assert 612 -1
+remove 149
+insert 149 6979
+insert 320 23211
+assert 455 13143
+insert 846 11230
+assert 629 -1
+assert 382 -1
+remove 961
+insert 961 8630
+insert 581 21537
+remove 616
+insert 616 28666
+remove 255
+insert 255 22586
+remove 155
+insert 155 361
+assert 687 -1
+assert 657 16997
+assert 164 -1
+assert 515 -1
+remove 843
+insert 843 1710
+remove 950
+insert 950 6347
+remove 517
+insert 517 8476
+assert 888 12439
+remove 435
+insert 435 11095
+remove 424
+insert 424 31714
+assert 619 8118
+assert 131 16588
+assert 307 16931
+assert 290 31554
+assert 138 22406
+remove 906
+insert 906 30567
+remove 381
+insert 381 14875
+remove 166
+insert 166 524
+assert 140 12743
+assert 130 -1
+insert 966 14624
+assert 376 -1
+assert 845 -1
+assert 613 26428
+remove 291
+insert 291 2398
+assert 926 1138
+assert 528 16018
+assert 706 14068
+assert 233 -1
+insert 128 14210
+assert 980 30515
+assert 41 -1
+assert 924 -1
+assert 960 7877
+assert 465 -1
+assert 517 8476
+assert 523 30839
+assert 900 11038
+insert 283 27143
+remove 161
+insert 161 16488
+remove 900
+insert 900 15688
+assert 431 2839
+insert 425 11106
+assert 88 13650
+insert 68 27055
+assert 546 14964
+remove 474
+insert 474 30095
+assert 779 27184
+remove 956
+insert 956 20077
+assert 866 13239
+remove 563
+insert 563 911
+assert 411 -1
+assert 662 21883
+remove 860
+insert 860 22273
+assert 521 20056
+assert 206 -1
+insert 640 23607
+insert 428 4770
+remove 596
+insert 596 323
+remove 81
+insert 81 10649
+remove 655
+insert 655 10219
+assert 152 14302
+remove 194
+insert 194 21623
+remove 514
+insert 514 1218
+assert 576 -1
+assert 619 8118
+insert 346 1000
+assert 438 -1
+remove 347
+insert 347 15500
+assert 430 30545
+remove 59
+insert 59 15184
+assert 430 30545
+remove 401
+insert 401 17835
+assert 619 8118
+remove 407
+insert 407 8153
+assert 909 -1
+assert 185 29113
+assert 671 208
+assert 923 -1
+assert 185 29113
+insert 512 8172
+assert 14 12922
+assert 980 30515
+assert 928 -1
+assert 153 14492
+assert 105 27669
+insert 598 18833
+remove 627
+insert 627 3956
+remove 44
+insert 44 3231
+assert 873 16159
+assert 46 -1
+assert 46 -1
+remove 879
+insert 879 15444
+assert 156 -1
+assert 27 31197
+assert 666 13704
+assert 907 30850
+assert 685 32425
+remove 38
+insert 38 819
+assert 33 11861
+assert 428 4770
+remove 147
+insert 147 13280
+assert 93 19807
+assert 458 30463
+assert 507 13854
+remove 711
+insert 711 1446
+assert 574 8211
+assert 649 18540
+assert 687 -1
+assert 439 5882
+assert 500 264
+assert 404 2698
+assert 306 -1
+remove 116
+insert 116 9344
+assert 935 6611
+assert 29 4718
+remove 838
+insert 838 15547
+assert 382 -1
+remove 200
+insert 200 11820
+assert 931 9034
+assert 671 208
+remove 9
+insert 9 4038
+insert 928 23440
+remove 701
+insert 701 15306
+assert 964 15683
+insert 863 13521
+assert 458 30463
+insert 28 24872
+remove 961
+insert 961 15517
+assert 707 28502
+assert 156 -1
+assert 488 -1
+assert 402 -1
+assert 775 -1
+assert 975 -1
+remove 700
+insert 700 18940
+insert 871 5024
+remove 720
+insert 720 32686
+insert 688 24992
+assert 844 7956
+assert 786 28101
+remove 686
+insert 686 32484
+remove 647
+insert 647 5515
+insert 924 8045
+assert 452 -1
+assert 524 -1
+insert 370 4454
+assert 429 14342
+assert 226 23254
+assert 724 373
+assert 496 12636
+remove 703
+insert 703 6654
+assert 555 -1
+insert 847 32437
+assert 628 19209
+remove 784
+insert 784 20973
+assert 651 7400
+remove 751
+insert 751 23520
+assert 49 19339
+assert 812 -1
+insert 515 24129
+assert 947 5532
+insert 957 22285
+assert 700 18940
+remove 8
+insert 8 5093
+assert 891 4452
+assert 467 6360
+insert 874 25958
+assert 724 373
+insert 432 702
+remove 31
+insert 31 31469
+assert 48 3055
+remove 158
+insert 158 29772
+assert 908 1222
+assert 65 -1
+assert 972 -1
+remove 658
+insert 658 22068
+remove 427
+insert 427 9357
+remove 613
+insert 613 279
+remove 91
+insert 91 14023
+insert 725 4265
+assert 490 4312
+assert 874 25958
+insert 781 477
+assert 66 -1
+remove 381
+insert 381 22307
+insert 509 2280
+assert 321 30218
+insert 801 3897
+assert 586 14842
+insert 371 15877
+assert 829 13078
+remove 420
+insert 420 18801
+assert 114 29419
+assert 619 8118
+assert 250 22321
+assert 635 26743
+assert 249 4491
+assert 676 22487
+assert 497 26596
+remove 436
+insert 436 29354
+insert 144 23499
+assert 309 6287
+remove 365
+insert 365 27840
+assert 552 16528
+insert 51 849
+assert 811 17506
+remove 86
+insert 86 28393
+assert 99 22921
+assert 168 11985
+remove 926
+insert 926 32370
+assert 897 1092
+assert 75 -1
+insert 567 18103
+assert 576 -1
+assert 626 -1
+assert 525 1848
+assert 703 6654
+assert 746 4911
+remove 561
+insert 561 26173
+insert 180 15086
+assert 123 -1
+remove 145
+insert 145 3029
+assert 615 -1
+remove 942
+insert 942 16955
+assert 729 5447
+assert 979 -1
+assert 147 13280
+assert 357 6649
+remove 48
+insert 48 2135
+insert 629 32158
+assert 896 11993
+assert 142 21715
+insert 376 2547
+assert 876 26634
+remove 62
+insert 62 27929
+assert 59 15184
+assert 298 -1
+assert 605 28603
+assert 454 8281
+remove 814
+insert 814 9041
+assert 214 1317
+remove 629
+insert 629 10277
+remove 475
+insert 475 30819
+remove 237
+assert 562 12661
+assert 877 -1
+assert 577 20756
+remove 246
+insert 246 16136
+assert 396 31827
+remove 967
+insert 967 29126
+assert 699 14031
+remove 713
+insert 713 11595
+assert 957 22285
+remove 121
+insert 121 14472
+assert 883 19805
+assert 308 19574
+assert 485 761
+assert 293 -1
+assert 860 22273
+remove 859
+insert 859 14726
+assert 452 -1
+assert 429 14342
+assert 52 21687
+assert 901 19272
+assert 965 27300
+assert 473 29893
+assert 468 12899
+assert 790 11777
+assert 527 -1
+remove 461
+insert 461 14102
+remove 430
+insert 430 25329
+remove 200
+insert 200 18210
+assert 533 -1
+assert 576 -1
+assert 731 21815
+assert 599 13777
+assert 136 12680
+assert 646 19205
+remove 643
+insert 643 31834
+assert 442 -1
+remove 666
+insert 666 10173
+assert 345 3144
+assert 559 24049
+remove 137
+insert 137 24752
+insert 533 30085
+remove 98
+insert 98 16391
+assert 622 23602
+assert 560 6290
+assert 70 6432
+assert 150 27565
+remove 430
+insert 430 26211
+assert 61 23835
+assert 775 -1
+assert 42 -1
+remove 944
+insert 944 26468
+assert 231 17486
+assert 22 5254
+assert 878 25218
+insert 117 9508
+insert 46 753
+remove 865
+insert 865 15325
+assert 776 17933
+remove 401
+insert 401 6497
+assert 883 19805
+assert 101 29146
+remove 677
+assert 279 15691
+assert 196 -1
+assert 52 21687
+remove 199
+insert 199 3972
+remove 885
+insert 885 11424
+insert 530 8946
+remove 351
+insert 351 12831
+assert 105 27669
+remove 297
+insert 297 25697
+remove 495
+insert 495 2986
+insert 636 28820
+remove 591
+insert 591 12584
+remove 903
+insert 903 30686
+remove 216
+insert 216 23946
+assert 141 27641
+remove 671
+insert 671 30103
+assert 621 19488
+remove 299
+insert 299 17534
+assert 979 -1
+assert 296 21380
+assert 563 911
+assert 739 -1
+assert 550 -1
+assert 982 -1
+remove 415
+assert 636 28820
+remove 128
+insert 128 6808
+assert 927 26600
+assert 823 -1
+assert 137 24752
+remove 454
+insert 454 21262
+assert 222 21235
+remove 129
+insert 129 29013
+assert 998 20759
+assert 774 -1
+remove 179
+insert 179 11480
+assert 910 -1
+assert 477 2791
+assert 172 5604
+assert 758 24467
+assert 68 27055
+insert 482 21187
+assert 285 -1
+remove 878
+insert 878 16332
+assert 787 12958
+assert 753 -1
+remove 781
+insert 781 27231
+assert 964 15683
+assert 851 -1
+assert 927 26600
+assert 282 22626
+assert 740 -1
+assert 457 27350
+remove 825
+insert 825 23917
+assert 955 -1
+insert 749 9695
+assert 4 6927
+assert 908 1222
+remove 212
+insert 212 26355
+assert 409 29731
+assert 305 639
+assert 929 13834
+remove 710
+insert 710 233
+assert 907 30850
+remove 46
+insert 46 31220
+remove 64
+insert 64 25344
+insert 77 22488
+assert 969 29009
+remove 453
+insert 453 1360
+insert 350 819
+insert 922 11705
+insert 76 11196
+remove 398
+insert 398 9062
+insert 374 1869
+assert 494 9093
+remove 821
+insert 821 14486
+remove 44
+insert 44 5131
+assert 177 23685
+remove 824
+insert 824 8727
+remove 632
+insert 632 27006
+remove 935
+insert 935 9667
+assert 369 -1
+assert 330 22488
+remove 429
+insert 429 10705
+assert 823 -1
+assert 745 11505
+remove 346
+insert 346 8124
+assert 435 11095
+assert 361 -1
+assert 77 22488
+assert 417 4998
+remove 709
+insert 709 20735
+assert 502 1132
+assert 148 -1
+remove 241
+insert 241 29380
+assert 941 26727
+remove 425
+insert 425 7014
+remove 102
+insert 102 21613
+remove 583
+insert 583 7863
+assert 860 22273
+assert 927 26600
+assert 70 6432
+assert 870 16197
+remove 838
+assert 360 -1
+remove 201
+remove 63
+insert 63 7231
+remove 885
+insert 885 11898
+assert 687 -1
+remove 679
+insert 679 21009
+assert 41 -1
+insert 760 22083
+remove 458
+insert 458 4699
+assert 709 20735
+remove 912
+insert 912 12177
+assert 869 19113
+assert 280 -1
+assert 821 14486
+remove 936
+insert 936 11863
+remove 458
+insert 458 24883
+remove 384
+insert 384 25079
+remove 800
+insert 800 15141
+assert 153 14492
+assert 1 24623
+assert 710 233
+assert 373 14659
+remove 348
+insert 348 14890
+assert 561 26173
+assert 373 14659
+remove 967
+insert 967 14331
+assert 27 31197
+remove 667
+insert 667 24824
+assert 973 -1
+assert 76 11196
+assert 418 7638
+assert 442 -1
+insert 264 31700
+assert 811 17506
+remove 467
+insert 467 25785
+assert 706 14068
+remove 182
+insert 182 27293
+assert 900 15688
+assert 584 -1
+remove 348
+insert 348 22314
+remove 17
+insert 17 5549
+assert 912 12177
+remove 447
+insert 447 25243
+assert 174 222
+insert 909 16002
+assert 959 -1
+assert 579 -1
+assert 699 14031
+assert 192 24957
+assert 576 -1
+remove 98
+insert 98 30226
+remove 632
+insert 632 8462
+assert 227 19459
+remove 802
+insert 802 26039
+remove 169
+insert 169 18337
+assert 964 15683
+remove 723
+insert 723 27614
+assert 425 7014
+assert 402 -1
+assert 840 18809
+assert 629 10277
+assert 23 15493
+assert 201 -1
+assert 726 -1
+remove 341
+insert 341 4373
+assert 285 -1
+assert 838 -1
+assert 162 -1
+assert 656 3687
+insert 323 26083
+assert 37 30697
+remove 392
+insert 392 10868
+assert 209 -1
+assert 221 31882
+assert 835 -1
+insert 923 15308
+remove 448
+insert 448 4154
+assert 381 22307
+assert 259 -1
+assert 265 -1
+assert 432 702
+assert 465 -1
+remove 857
+insert 857 2193
+assert 941 26727
+assert 813 15052
+assert 302 7921
+remove 463
+insert 463 2466
+assert 694 16025
+remove 506
+insert 506 25862
+assert 550 -1
+remove 254
+insert 254 20996
+assert 316 28539
+insert 360 29203
+assert 300 -1
+assert 551 19296
+remove 63
+insert 63 9110
+assert 916 12403
+assert 794 7088
+remove 348
+insert 348 28516
+remove 522
+insert 522 29255
+assert 710 233
+remove 256
+insert 256 13458
+assert 626 -1
+assert 57 14130
+assert 307 16931
+remove 667
+insert 667 22352
+assert 379 22708
+assert 797 25326
+assert 533 30085
+remove 35
+insert 35 15287
+assert 955 -1
+remove 804
+insert 804 25855
+assert 193 -1
+assert 451 16791
+assert 252 2097
+remove 802
+insert 802 20558
+assert 256 13458
+assert 670 32416
+remove 485
+insert 485 12161
+remove 551
+insert 551 19730
+assert 562 12661
+assert 636 28820
+remove 182
+insert 182 21097
+remove 618
+insert 618 22261
+remove 932
+insert 932 31837
+assert 554 1266
+assert 201 -1
+assert 26 -1
+assert 949 12721
+assert 355 29545
+assert 411 -1
+insert 674 9414
+assert 883 19805
+assert 939 -1
+assert 673 -1
+remove 741
+insert 741 32569
+remove 183
+insert 183 9567
+remove 296
+insert 296 15670
+remove 463
+insert 463 31241
+remove 324
+insert 324 29442
+assert 662 21883
+remove 577
+insert 577 22724
+assert 821 14486
+remove 6
+insert 6 23450
+remove 396
+insert 396 12006
+remove 504
+insert 504 30841
+remove 126
+insert 126 25551
+assert 70 6432
+assert 870 16197
+remove 589
+insert 589 17751
+remove 310
+insert 310 23682
+insert 771 11855
+assert 430 26211
+remove 359
+assert 740 -1
+assert 615 -1
+assert 597 18520
+assert 793 7504
+remove 577
+insert 577 20637
+assert 713 11595
+assert 130 -1
+assert 390 -1
+assert 743 23370
+assert 182 21097
+assert 609 27642
+assert 720 32686
+assert 854 23314
+insert 617 7548
+assert 996 3107
+assert 76 11196
+assert 697 -1
+insert 834 8283
+assert 469 2260
+assert 120 -1
+remove 69
+insert 69 20157
+assert 594 30410
+assert 198 -1
+assert 108 -1
+assert 38 819
+assert 752 25275
+assert 29 4718
+remove 88
+insert 88 8837
+remove 6
+insert 6 5289
+assert 116 9344
+assert 980 30515
+assert 518 25158
+assert 24 24159
+remove 318
+insert 318 1628
+assert 192 24957
+assert 670 32416
+assert 501 19770
+assert 972 -1
+remove 591
+insert 591 16391
+assert 49 19339
+assert 587 1146
+remove 439
+insert 439 14055
+assert 127 23522
+assert 501 19770
+assert 549 10170
+assert 468 12899
+assert 992 6940
+remove 294
+insert 294 8274
+assert 314 -1
+insert 422 18802
+insert 778 32085
+assert 307 16931
+remove 830
+insert 830 2317
+insert 537 16725
+assert 94 4246
+assert 67 14091
+assert 967 14331
+remove 302
+insert 302 17064
+assert 494 9093
+assert 373 14659
+assert 290 31554
+assert 999 976
+assert 333 692
+remove 212
+insert 212 20293
+assert 916 12403
+assert 861 8494
+assert 870 16197
+assert 718 26067
+assert 132 2497
+assert 693 -1
+insert 11 19755
+assert 632 8462
+insert 123 22957
+assert 209 -1
+assert 643 31834
+assert 963 23324
+assert 396 12006
+assert 55 -1
+assert 252 2097
+insert 489 28556
+assert 122 2607
+assert 333 692
+remove 200
+insert 200 22000
+assert 168 11985
+remove 805
+insert 805 4230
+assert 885 11898
+remove 983
+insert 983 15794
+remove 773
+insert 773 1981
+assert 957 22285
+assert 718 26067
+assert 365 27840
+assert 523 30839
+insert 519 11914
+assert 189 16194
+remove 974
+insert 974 32264
+assert 463 31241
+assert 949 12721
+remove 682
+insert 682 9533
+assert 337 -1
+assert 324 29442
+remove 23
+insert 23 23253
+assert 736 -1
+assert 318 1628
+remove 592
+insert 592 21147
+remove 906
+insert 906 16114
+remove 236
+insert 236 25250
+assert 448 4154
+remove 38
+insert 38 29727
+remove 6
+insert 6 32631
+assert 747 -1
+remove 502
+insert 502 5698
+remove 553
+insert 553 2593
+assert 777 -1
+assert 93 19807
+assert 379 22708
+assert 735 1927
+remove 125
+insert 125 20245
+assert 347 15500
+remove 338
+insert 338 190
+assert 134 11183
+assert 180 15086
+assert 906 16114
+assert 95 -1
+remove 204
+insert 204 27552
+assert 655 10219
+assert 502 5698
+insert 188 6186
+insert 198 25503
+assert 670 32416
+assert 990 22791
+assert 650 678
+assert 975 -1
+remove 200
+insert 200 25994
+remove 168
+insert 168 26214
+assert 883 19805
+remove 378
+insert 378 29060
+assert 75 -1
+assert 453 1360
+assert 364 -1
+insert 300 12706
+remove 950
+insert 950 10332
+assert 362 28356
+remove 778
+assert 5 -1
+assert 695 5339
+assert 592 21147
+assert 679 21009
+assert 574 8211
+assert 920 8987
+remove 460
+insert 460 5163
+insert 292 27048
+assert 522 29255
+remove 765
+insert 765 26979
+assert 400 -1
+assert 196 -1
+assert 93 19807
+assert 895 9250
+assert 16 28331
+assert 758 24467
+remove 252
+insert 911 12397
+assert 495 2986
+remove 978
+insert 978 30937
+assert 450 32659
+assert 173 11307
+remove 971
+insert 971 17464
+assert 124 19923
+assert 583 7863
+assert 120 -1
+remove 483
+insert 483 3439
+assert 176 4822
+remove 580
+insert 580 15260
+assert 471 9967
+assert 816 -1
+assert 771 11855
+remove 881
+insert 881 26536
+remove 793
+insert 793 24830
+remove 284
+insert 284 27212
+assert 516 4127
+assert 870 16197
+remove 760
+insert 760 1724
+remove 217
+insert 217 8657
+remove 165
+insert 165 26438
+assert 418 7638
+assert 218 -1
+assert 520 27534
+assert 777 -1
+remove 554
+insert 554 32236
+remove 24
+insert 24 25986
+assert 562 12661
+assert 734 14930
+assert 767 30345
+assert 476 13041
+assert 45 24961
+assert 449 29762
+remove 820
+insert 820 5826
+remove 589
+insert 589 19398
+remove 559
+insert 559 1865
+assert 620 -1
+remove 821
+insert 821 26877
+remove 767
+insert 767 23826
+assert 609 27642
+remove 251
+insert 251 5370
+remove 842
+insert 842 32146
+assert 491 23766
+remove 177
+insert 177 7908
+assert 794 7088
+assert 224 23421
+assert 911 12397
+remove 946
+insert 946 12334
+assert 634 20088
+assert 493 29984
+remove 828
+insert 828 14142
+insert 816 4470
+assert 392 10868
+remove 865
+insert 865 13835
+assert 72 24053
+assert 320 23211
+assert 191 2957
+assert 827 -1
+remove 458
+insert 458 21934
+assert 807 -1
+remove 395
+insert 395 31820
+assert 80 -1
+remove 867
+insert 867 29283
+assert 621 19488
+assert 529 6363
+insert 442 29787
+assert 780 23852
+remove 308
+insert 308 25362
+insert 441 26923
+remove 925
+insert 925 19993
+remove 101
+insert 101 1381
+remove 371
+insert 371 5049
+assert 208 12418
+assert 371 5049
+remove 189
+insert 189 25954
+assert 421 922
+remove 756
+insert 756 20404
+remove 559
+insert 559 32224
+remove 613
+insert 613 25621
+assert 783 32007
+remove 343
+insert 343 13643
+remove 331
+insert 331 19071
+assert 484 16333
+remove 674
+insert 674 15453
+remove 797
+insert 797 21898
+assert 5 -1
+remove 660
+insert 660 29743
+remove 502
+insert 502 27834
+assert 274 -1
+remove 772
+insert 772 18028
+assert 597 18520
+remove 232
+insert 232 22807
+assert 429 10705
+insert 882 23795
+assert 593 10539
+assert 774 -1
+remove 394
+insert 394 28931
+assert 881 26536
+remove 240
+insert 240 19876
+assert 433 31732
+assert 151 27789
+assert 771 11855
+assert 656 3687
+assert 539 -1
+assert 14 12922
+remove 716
+insert 716 6304
+assert 244 220
+assert 905 19997
+assert 550 -1
+remove 996
+insert 996 11652
+assert 695 5339
+assert 895 9250
+remove 271
+insert 271 11619
+assert 566 18452
+assert 688 24992
+remove 728
+insert 728 23765
+assert 396 12006
+assert 388 1152
+assert 270 11620
+assert 123 22957
+insert 281 18578
+assert 683 -1
+assert 571 2822
+remove 943
+insert 943 17330
+assert 205 -1
+assert 170 20197
+assert 948 9067
+assert 478 -1
+assert 404 2698
+assert 252 -1
+assert 62 27929
+insert 337 23175
+assert 560 6290
+assert 755 19855
+remove 957
+insert 957 20753
+insert 390 14445
+assert 624 26090
+remove 192
+insert 192 29608
+assert 972 -1
+remove 227
+insert 227 32255
+assert 655 10219
+assert 404 2698
+assert 506 25862
+remove 936
+insert 936 15669
+assert 780 23852
+assert 911 12397
+remove 124
+insert 124 6785
+assert 969 29009
+assert 544 392
+remove 544
+insert 544 31374
+assert 260 -1
+assert 899 -1
+remove 596
+insert 596 31592
+assert 784 20973
+remove 473
+insert 473 12738
+assert 757 7031
+assert 517 8476
+assert 8 5093
+assert 214 1317
+assert 382 -1
+assert 570 14239
+remove 925
+insert 925 28433
+remove 806
+insert 806 16437
+assert 680 2422
+assert 344 31860
+assert 89 -1
+remove 461
+insert 461 27515
+assert 291 2398
+assert 496 12636
+insert 171 16896
+assert 910 -1
+assert 711 1446
+assert 947 5532
+remove 537
+insert 537 20985
+assert 104 -1
+assert 487 24629
+remove 338
+insert 338 2231
+assert 978 30937
+assert 28 24872
+remove 31
+insert 31 31648
+remove 14
+insert 14 14005
+assert 452 -1
+assert 753 -1
+remove 968
+insert 968 11976
+assert 928 23440
+assert 83 14990
+assert 956 20077
+assert 320 23211
+remove 384
+insert 384 10749
+assert 827 -1
+assert 110 11108
+insert 288 4203
+remove 21
+insert 21 30750
+remove 703
+insert 703 20714
+remove 128
+insert 128 16421
+remove 924
+insert 924 6477
+assert 50 21584
+assert 379 22708
+assert 337 23175
+assert 881 26536
+assert 687 -1
+assert 949 12721
+assert 609 27642
+remove 573
+insert 573 2500
+assert 42 -1
+remove 532
+insert 532 7796
+assert 330 22488
+assert 170 20197
+remove 27
+insert 27 7941
+remove 906
+insert 906 28862
+assert 499 -1
+assert 463 31241
+insert 934 24066
+remove 810
+insert 810 7418
+assert 945 10281
+remove 674
+insert 674 28976
+assert 28 24872
+assert 462 -1
+assert 861 8494
+assert 836 18213
+assert 831 20770
+remove 46
+insert 46 19793
+assert 170 20197
+remove 96
+insert 96 1842
+remove 457
+insert 457 16583
+remove 957
+insert 957 5423
+assert 476 13041
+assert 524 -1
+remove 563
+insert 563 10451
+assert 959 -1
+remove 958
+insert 958 8377
+assert 169 18337
+remove 506
+insert 506 18418
+assert 642 16416
+assert 969 29009
+assert 797 21898
+remove 519
+insert 519 6726
+assert 481 16223
+assert 126 25551
+remove 624
+insert 624 16464
+insert 555 11214
+remove 886
+insert 886 25144
+assert 958 8377
+assert 399 332
+insert 258 14860
+remove 379
+insert 379 5157
+assert 359 -1
+assert 347 15500
+remove 928
+insert 928 22735
+assert 887 16128
+assert 284 27212
+remove 854
+remove 986
+insert 986 18461
+assert 116 9344
+insert 209 30545
+insert 721 22549
+insert 677 26527
+assert 473 12738
+assert 815 -1
+assert 230 27112
+assert 516 4127
+assert 16 28331
+assert 506 18418
+insert 265 32067
+insert 408 6483
+remove 900
+insert 900 7315
+assert 960 7877
+assert 815 -1
+assert 847 32437
+assert 415 -1
+assert 66 -1
+insert 157 11572
+remove 682
+insert 682 695
+assert 269 -1
+remove 935
+insert 935 11557
+assert 774 -1
+assert 285 -1
+assert 797 21898
+remove 204
+insert 204 26831
+remove 929
+insert 929 26826
+remove 1
+insert 1 10556
+remove 935
+insert 935 4683
+remove 953
+insert 953 28200
+insert 572 27906
+assert 207 32748
+remove 128
+insert 128 16848
+remove 442
+insert 442 1843
+remove 375
+insert 375 30895
+assert 378 29060
+insert 156 23204
+assert 590 11626
+assert 701 15306
+remove 183
+insert 183 15023
+assert 282 22626
+remove 51
+insert 51 21179
+remove 460
+insert 460 1168
+remove 167
+insert 167 14974
+assert 647 5515
+assert 750 11982
+assert 740 -1
+assert 237 -1
+assert 940 29781
+assert 224 23421
+remove 123
+insert 123 9325
+remove 731
+insert 731 14095
+assert 288 4203
+remove 213
+insert 213 19105
+insert 65 13244
+assert 441 26923
+assert 67 14091
+insert 579 22394
+assert 63 9110
+assert 814 9041
+assert 829 13078
+assert 167 14974
+assert 96 1842
+insert 754 32734
+assert 666 10173
+assert 647 5515
+assert 964 15683
+remove 119
+insert 119 5238
+remove 485
+insert 485 9816
+remove 554
+insert 554 27965
+assert 511 -1
+assert 957 5423
+assert 572 27906
+remove 568
+insert 568 28848
+remove 389
+insert 389 27510
+remove 966
+insert 966 15492
+assert 975 -1
+remove 944
+insert 944 13275
+assert 176 4822
+remove 619
+insert 619 14831
+remove 76
+insert 76 24494
+assert 270 11620
+assert 502 27834
+assert 645 11149
+assert 460 1168
+remove 381
+insert 381 28229
+remove 173
+remove 797
+insert 797 24808
+assert 648 -1
+remove 73
+insert 73 4586
+remove 310
+insert 310 5204
+assert 858 20965
+assert 700 18940
+remove 479
+insert 479 11051
+assert 461 27515
+assert 289 9364
+remove 635
+insert 635 21816
+remove 840
+insert 840 14997
+assert 900 7315
+assert 250 22321
+remove 107
+remove 3
+insert 3 10800
+remove 216
+insert 216 19414
+assert 932 31837
+assert 851 -1
+assert 739 -1
+remove 936
+insert 936 15040
+remove 170
+insert 170 20852
+insert 739 19586
+remove 517
+insert 517 17288
+insert 747 802
+assert 364 -1
+remove 956
+insert 956 30492
+assert 610 903
+assert 516 4127
+assert 178 12339
+assert 986 18461
+assert 220 11735
+assert 153 14492
+remove 580
+insert 580 24823
+remove 700
+insert 700 4905
+assert 920 8987
+remove 880
+insert 880 3599
+remove 152
+insert 152 23515
+assert 25 7667
+assert 425 7014
+remove 523
+insert 523 18929
+assert 259 -1
+remove 183
+insert 183 29928
+assert 67 14091
+remove 996
+insert 996 18363
+assert 707 28502
+assert 586 14842
+remove 789
+insert 789 13324
+remove 90
+insert 90 25287
+assert 670 32416
+remove 404
+insert 404 25768
+remove 870
+insert 870 10433
+remove 970
+insert 970 5418
+assert 735 1927
+insert 910 17675
+assert 110 11108
+assert 244 220
+assert 434 11874
+assert 951 23601
+remove 91
+insert 91 31978
+remove 94
+insert 94 15687
+assert 925 28433
+remove 879
+insert 879 398
+assert 611 10959
+assert 768 6180
+insert 774 2302
+remove 790
+insert 790 14480
+remove 784
+insert 784 9643
+insert 130 10775
+assert 957 5423
+assert 199 3972
+assert 490 4312
+assert 794 7088
+assert 490 4312
+assert 777 -1
+assert 88 8837
+assert 738 -1
+assert 875 -1
+assert 598 18833
+remove 729
+insert 729 16027
+remove 569
+insert 569 30409
+remove 142
+insert 142 31735
+insert 697 30971
+assert 676 22487
+insert 933 3766
+remove 889
+insert 889 20976
+assert 2 2247
+assert 669 -1
+assert 199 3972
+assert 137 24752
+assert 567 18103
+assert 47 11823
+remove 946
+assert 445 895
+assert 936 15040
+assert 591 16391
+remove 684
+insert 684 785
+assert 341 4373
+assert 975 -1
+assert 232 22807
+assert 717 31072
+remove 582
+insert 582 20714
+remove 840
+insert 840 24760
+assert 954 11812
+assert 620 -1
+remove 424
+insert 424 13806
+assert 577 20637
+assert 666 10173
+remove 157
+insert 157 26126
+assert 545 9597
+assert 806 16437
+assert 820 5826
+assert 654 2096
+assert 439 14055
+remove 270
+insert 270 19628
+assert 907 30850
+assert 729 16027
+remove 157
+insert 157 4592
+assert 113 2792
+assert 189 25954
+remove 443
+insert 443 15380
+assert 214 1317
+remove 725
+insert 725 8146
+remove 304
+insert 304 30878
+remove 208
+insert 208 22706
+remove 968
+insert 968 17239
+assert 432 702
+assert 805 4230
+remove 837
+insert 837 30796
+assert 400 -1
+assert 568 28848
+assert 66 -1
+assert 232 22807
+assert 959 -1
+assert 813 15052
+assert 260 -1
+assert 185 29113
+assert 568 28848
+remove 709
+insert 709 20430
+insert 26 4827
+assert 467 25785
+assert 145 3029
+remove 779
+insert 779 25470
+remove 417
+insert 417 18360
+assert 743 23370
+assert 599 13777
+remove 144
+insert 144 23813
+assert 652 -1
+remove 601
+insert 601 18966
+remove 596
+insert 596 27362
+insert 260 18150
+assert 571 2822
+assert 984 10737
+assert 167 14974
+assert 76 24494
+remove 645
+insert 645 28006
+assert 125 20245
+assert 593 10539
+remove 785
+insert 785 17001
+remove 339
+insert 339 18169
+remove 703
+insert 703 8195
+remove 231
+insert 231 13479
+remove 424
+insert 424 99
+assert 587 1146
+remove 629
+insert 629 32325
+assert 26 4827
+assert 476 13041
+assert 294 8274
+assert 712 19281
+insert 759 2988
+insert 5 4382
+remove 811
+remove 375
+insert 375 2719
+assert 714 18593
+remove 489
+insert 489 29279
+remove 157
+insert 157 10054
+assert 446 -1
+assert 586 14842
+assert 825 23917
+remove 522
+insert 522 11383
+assert 680 2422
+remove 386
+insert 386 21549
+assert 334 32302
+assert 10 16036
+assert 365 27840
+assert 912 12177
+assert 662 21883
+remove 105
+insert 105 25025
+remove 853
+insert 853 1405
+remove 188
+insert 188 16401
+assert 491 23766
+assert 963 23324
+remove 68
+assert 189 25954
+assert 333 692
+remove 900
+insert 900 20010
+assert 490 4312
+assert 946 -1
+remove 420
+insert 420 29601
+assert 868 7855
+remove 926
+insert 926 19265
+insert 542 19473
+assert 35 15287
+remove 526
+insert 526 26129
+remove 943
+insert 943 15419
+remove 976
+insert 976 49
+assert 313 -1
+assert 624 16464
+remove 500
+insert 500 22839
+assert 756 20404
+assert 511 -1
+assert 187 8614
+assert 7 31294
+insert 42 5980
+assert 231 13479
+remove 786
+insert 786 6259
+remove 759
+insert 759 17710
+assert 569 30409
+remove 6
+insert 6 23164
+assert 111 2761
+remove 325
+insert 325 23291
+assert 533 30085
+assert 553 2593
+assert 918 27590
+assert 553 2593
+remove 579
+insert 579 10386
+assert 693 -1
+assert 353 -1
+assert 656 3687
+assert 952 29556
+assert 444 17230
+remove 112
+insert 112 9446
+remove 51
+assert 780 23852
+assert 656 3687
+assert 81 10649
+remove 780
+insert 780 5458
+remove 951
+insert 951 11859
+assert 345 3144
+remove 948
+insert 948 21240
+assert 748 -1
+assert 904 1013
+assert 554 27965
+remove 531
+insert 531 18578
+remove 512
+insert 512 7131
+remove 573
+insert 573 21498
+assert 802 20558
+assert 208 22706
+assert 841 -1
+remove 636
+insert 636 20194
+remove 358
+insert 358 26649
+remove 821
+insert 821 9510
+assert 561 26173
+assert 306 -1
+assert 212 20293
+assert 360 29203
+remove 546
+insert 546 22544
+assert 516 4127
+remove 658
+insert 658 11509
+assert 797 24808
+assert 879 398
+assert 142 31735
+assert 503 11424
+remove 866
+insert 866 10854
+remove 583
+insert 583 20438
+remove 717
+insert 717 29717
+assert 80 -1
+assert 648 -1
+assert 713 11595
+assert 514 1218
+remove 743
+insert 743 27520
+assert 251 5370
+remove 924
+insert 924 30793
+assert 242 13196
+assert 153 14492
+remove 861
+insert 861 7940
+assert 153 14492
+assert 668 -1
+assert 302 17064
+assert 842 32146
+insert 397 7862
+assert 818 4851
+assert 851 -1
+assert 742 28609
+assert 543 4090
+remove 694
+insert 694 18826
+assert 310 5204
+assert 884 20659
+remove 551
+insert 551 24603
+assert 168 26214
+remove 254
+insert 254 26532
+remove 217
+insert 217 18924
+assert 133 -1
+assert 743 27520
+assert 268 322
+assert 14 14005
+remove 513
+insert 513 8180
+assert 310 5204
+assert 471 9967
+assert 303 27722
+assert 838 -1
+assert 123 9325
+assert 193 -1
+assert 221 31882
+remove 320
+insert 320 1037
+assert 648 -1
+remove 396
+insert 396 13422
+insert 173 14196
+remove 880
+insert 880 4611
+remove 444
+insert 444 29894
+assert 242 13196
+assert 11 19755
+remove 450
+insert 450 7520
+assert 570 14239
+assert 244 220
+assert 438 -1
+remove 801
+insert 801 7221
+assert 80 -1
+remove 467
+insert 467 4722
+assert 597 18520
+remove 324
+insert 324 26356
+remove 143
+insert 143 5519
+remove 37
+insert 37 8006
+remove 317
+remove 251
+insert 251 27892
+assert 984 10737
+assert 681 15592
+assert 206 -1
+remove 937
+insert 937 18038
+remove 231
+insert 231 25808
+assert 518 25158
+assert 362 28356
+assert 689 -1
+assert 168 26214
+remove 597
+insert 597 24927
+assert 639 -1
+remove 658
+insert 658 28426
+assert 297 25697
+remove 365
+remove 510
+insert 510 28849
+remove 135
+insert 135 4816
+remove 260
+insert 260 28611
+assert 930 -1
+assert 66 -1
+remove 859
+insert 859 9949
+insert 356 26279
+assert 417 18360
+remove 13
+insert 13 18060
+assert 573 21498
+assert 970 5418
+assert 101 1381
+assert 427 9357
+assert 855 -1
+remove 414
+insert 414 13467
+remove 960
+insert 960 22715
+assert 876 26634
+assert 988 -1
+assert 408 6483
+assert 538 18422
+remove 35
+insert 35 6372
+remove 834
+insert 834 7900
+remove 119
+assert 311 29364
+remove 371
+insert 371 17159
+remove 367
+insert 367 17333
+assert 60 20920
+assert 831 20770
+assert 442 1843
+insert 930 3826
+insert 994 14286
+assert 944 13275
+assert 654 2096
+insert 293 19761
+remove 836
+insert 836 20174
+remove 613
+insert 613 11201
+remove 155
+insert 155 6718
+remove 645
+insert 645 29930
+assert 310 5204
+remove 388
+insert 388 7952
+assert 764 -1
+remove 902
+insert 902 10166
+assert 153 14492
+remove 997
+insert 997 5297
+assert 2 2247
+remove 868
+insert 868 9847
+assert 213 19105
+assert 458 21934
+remove 712
+insert 712 16184
+assert 427 9357
+assert 410 -1
+remove 577
+insert 577 27424
+assert 928 22735
+remove 131
+insert 131 17458
+assert 557 -1
+remove 357
+insert 357 10240
+remove 512
+insert 512 1523
+remove 123
+insert 123 3334
+remove 974
+insert 974 24979
+assert 255 22586
+insert 777 26554
+assert 513 8180
+insert 415 1253
+assert 96 1842
+remove 397
+insert 397 19208
+remove 44
+insert 44 32546
+assert 35 6372
+assert 810 7418
+remove 447
+insert 447 370
+insert 269 22213
+assert 382 -1
+remove 640
+insert 640 24619
+assert 574 8211
+assert 651 7400
+assert 193 -1

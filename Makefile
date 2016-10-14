@@ -1,4 +1,4 @@
-CC_ARGS=-O3 -pg -Wall -Werror
+CC_ARGS=-O3 -Wall -Werror
 
 all: c cpp c_generator cpp_default
 
@@ -32,4 +32,3 @@ test: all cpp_map.png c_map.png c_map_generator.png cpp_map_default.png test.map
 clean:
 	-rm a.out c_map* cpp_map* *.o
 	-rm *.gmon.out *.gpout *.dot *.png
-
