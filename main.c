@@ -1,10 +1,15 @@
+#ifndef GENERATOR
+typedef int hash_t;
 #include "map.h"
+#else
+#include "map_generator.h"
+#endif
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#define CAPACITY 10000
+#define CAPACITY 16384
 #define RANGE CAPACITY
 #define CONFLICTS 3
 
@@ -14,7 +19,7 @@
 // For the map table
 int *busybit;
 void** keyps;
-int *khs;
+hash_t *khs;
 int *vals;
 
 size_t capacity = CAPACITY;
@@ -49,7 +54,7 @@ int main(int argc, char* argv[])
 
   busybit = malloc(capacity * sizeof(int));
   keyps = malloc(capacity * sizeof(int*));
-  khs = malloc(capacity * sizeof(int));
+  khs = malloc(capacity * sizeof(hash_t));
   vals = malloc(capacity * sizeof(int));
 
 #ifdef VERBOSE
@@ -73,9 +78,16 @@ int main(int argc, char* argv[])
   return 0;
 }
 
-int hashKey(const struct myInt key)
+hash_t hashKey(const struct myInt key)
 {
+#ifndef GENERATOR
   return (key.value %conflict)%capacity;
+#else
+  hash_t gen = {
+    .entry_point_hash = key.value,
+    .offset_hash = ((key.value*3%(capacity+1))*7)%capacity, // Somehow mix them, obviously not perfect, but better than nothing.
+  };
+#endif
 }
 
 clock_t put(struct myInt keys[], int key, int value, size_t capacity)
