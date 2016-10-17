@@ -1,4 +1,5 @@
 #include <iostream>
+#include <limits>
 #include <cmath>
 #include <assert.h>
 #include <fstream>
@@ -6,7 +7,6 @@
 #include <unordered_map>
 
 #define CONFLICT 5
-#undef VERBOSE
 
 struct IntHasher
 {
@@ -68,6 +68,8 @@ clock_t parseFile(std::string filename, std::unordered_map<int, int, IntHasher> 
           std::cout << "command is not understood: " << operation << std::endl;
 #endif
         }
+
+    infile.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
   }
   return total;
 }
