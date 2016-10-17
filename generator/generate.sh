@@ -2,7 +2,7 @@
 # Author: Martin Vassor
 # Description: Generate a payload to test hashmap implementations
 # Creation date: 07-10-2016
-# Last modified: Mon Oct 17 13:28:21 2016
+# Last modified: Mon Oct 17 14:14:33 2016
 # Known bugs: 
 
 print_help() {
@@ -16,6 +16,13 @@ terminate() {
 }
 
 generate_all() {
+	# Preload up to target load
+	while [ "$(./Bash-collections/map.sh "$MAP" size)" -lt "$(echo "$(./Bash-collections/map.sh "$ARGS" get "load") $(./Bash-collections/map.sh "$ARGS" get "capacity") * 1/p" | dc)" ]; do
+		generate_single
+	done;
+
+	./Bash-collections/list.sh "$OPS" append "reset"
+
 	for i in $(seq $(./Bash-collections/map.sh "$ARGS" get length)); do
 		generate_single
 	done;
