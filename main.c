@@ -14,7 +14,6 @@ typedef int hash_t;
 #define CONFLICTS 3
 
 #undef DEBUG
-#undef VERBOSE
 
 // For the map table
 int *busybit;
@@ -134,11 +133,13 @@ clock_t parseFile(const char* filename, struct myInt keys[], size_t capacity)
   file = fopen(filename, "r");
   char* operation;
   int key;
+  char dump_line = 0;
   while(EOF != fscanf(file, "%ms %i", &operation, &key))
   {
+    dump_line = 0;
     if(strncmp(operation, "insert", 6) == 0) {
       int value;
-      if(fscanf(file, "%i \n", &value) == EOF){
+      if(fscanf(file, "%i", &value) == EOF){
         perror(NULL);
       }
 #ifdef VERBOSE
@@ -147,7 +148,7 @@ clock_t parseFile(const char* filename, struct myInt keys[], size_t capacity)
       total += put(keys, key, value, capacity);
     } else if(strncmp(operation, "assert", 6) == 0) {
       int expected;
-      if(fscanf(file, "%i \n", &expected) == EOF) {
+      if(fscanf(file, "%i", &expected) == EOF) {
         perror(NULL);
       }
 #ifdef VERBOSE
@@ -160,9 +161,6 @@ clock_t parseFile(const char* filename, struct myInt keys[], size_t capacity)
 #endif
       total += getAndCheck(keys, key, expected, capacity);
     } else if(strncmp(operation, "remove", 6) == 0) {
-      if(fscanf(file, "\n") == EOF) {
-        perror(NULL);
-      }
 #ifdef VERBOSE
       printf("remove key %i\n", key);
 #endif
@@ -172,6 +170,10 @@ clock_t parseFile(const char* filename, struct myInt keys[], size_t capacity)
       printf("command is not understood: %s\n", operation);
 #endif
     }
+    while(dump_line != EOF && dump_line != '\n'){
+      fscanf(file, "%c", &dump_line);
+    }
+    
     free(operation);
   }
 

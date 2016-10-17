@@ -2,7 +2,7 @@
 # Author: Martin Vassor
 # Description: Generate a payload to test hashmap implementations
 # Creation date: 07-10-2016
-# Last modified: Mon Oct 10 17:06:44 2016
+# Last modified: Mon Oct 17 13:28:21 2016
 # Known bugs: 
 
 print_help() {
@@ -56,7 +56,7 @@ generate_single() {
 
 		if [ $TRY -lt $PROBA_REMOVE ] ; then
 			TO_REMOVE="$(./Bash-collections/map.sh "$MAP" getRandomKey)"
-			./Bash-collections/list.sh "$OPS" append "remove $TO_REMOVE"
+			./Bash-collections/list.sh "$OPS" append "remove $TO_REMOVE		#current load: $CURRENT_LOAD	target load: $TARGET_LOAD"
 			./Bash-collections/map.sh "$MAP" delete "$TO_REMOVE"
 		else 
 			if ./Bash-collections/map.sh "$MAP" get "$KEY" > /dev/null; then 
@@ -66,7 +66,7 @@ generate_single() {
 			fi;
 
 			NEW_VALUE="$(echo $RANDOM)"
-			./Bash-collections/list.sh "$OPS" append "insert $KEY $NEW_VALUE"
+			./Bash-collections/list.sh "$OPS" append "insert $KEY $NEW_VALUE		#current load: $CURRENT_LOAD	target load: $TARGET_LOAD"
 			./Bash-collections/map.sh "$MAP" put "$KEY" "$NEW_VALUE";
 		fi;
 	fi;
