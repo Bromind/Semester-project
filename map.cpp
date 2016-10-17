@@ -63,6 +63,12 @@ clock_t parseFile(std::string filename, std::unordered_map<int, int, IntHasher> 
           tmp = clock();
           map_table.erase(key);
           total += clock() - tmp;
+        } else 
+        if (operation == "reset") {
+#ifdef VERBOSE
+          std::cout << "Reset timer" << std::endl;
+#endif
+          total = 0;
         } else {
 #ifdef VERBOSE
           std::cout << "command is not understood: " << operation << std::endl;

@@ -165,14 +165,17 @@ clock_t parseFile(const char* filename, struct myInt keys[], size_t capacity)
       printf("remove key %i\n", key);
 #endif
       total += removeKey(keys, key, capacity);
+    } else if(strncmp(operation, "reset", 5) == 0) {
+#ifdef VERBOSE
+      printf("Reset timer\n");
+#endif
+      total = 0;
     } else {
 #ifdef VERBOSE
       printf("command is not understood: %s\n", operation);
 #endif
     }
-    while(dump_line != EOF && dump_line != '\n'){
-      fscanf(file, "%c", &dump_line);
-    }
+    while(fscanf(file, "%c", &dump_line) != EOF && dump_line != '\n');
     
     free(operation);
   }
