@@ -28,54 +28,58 @@ clock_t parseFile(std::string filename, std::unordered_map<int, int, IntHasher> 
   while(! infile.eof()) {
     int key, value;
     std::string operation;
-    infile >> operation >> key;
-    if (operation == "insert") {
-      infile >> value;
-#ifdef VERBOSE
-      std::cout << "put key " << key << " with value " << value << std::endl;
-#endif
-      tmp = clock();
-      map_table[key] = value;
-      total += clock() - tmp;
-    } else 
-      if (operation == "assert") {
-        int expected;
-        infile >> expected;
-        tmp = clock();
-        value = map_table[key];
-        total += clock() - tmp;
-        if(expected >= 0) {
-#ifdef VERBOSE
-          std::cout << "assert key " << key << " has value " << expected << std::endl;
-#endif
-          assert(expected == value);
-        } else {
-#ifdef VERBOSE
-          std::cout << "assert key " << key << " is undefined" << std::endl;
-#endif
-        }
-      } else 
-        if (operation == "remove")
-       {
-#ifdef VERBOSE
-          std::cout << "remove key " << key << std::endl;
-#endif
-          tmp = clock();
-          map_table.erase(key);
-          total += clock() - tmp;
-        } else 
-        if (operation == "reset") {
+    infile >> operation;
+    if (operation == "reset") {
 #ifdef VERBOSE
           std::cout << "Reset timer" << std::endl;
 #endif
           total = 0;
-        } else {
+    } else {
+      infile >> key;
+      if (operation == "insert") {
+        infile >> value;
 #ifdef VERBOSE
-          std::cout << "command is not understood: " << operation << std::endl;
+        std::cout << "put key " << key << " with value " << value << std::endl;
 #endif
-        }
+        tmp = clock();
+        map_table[key] = value;
+        total += clock() - tmp;
+      } else 
+        if (operation == "assert") {
+          int expected;
+          infile >> expected;
+          tmp = clock();
+          value = map_table[key];
+          total += clock() - tmp;
+          if(expected >= 0) {
+#ifdef VERBOSE
+            std::cout << "assert key " << key << " has value " << expected << std::endl;
+#endif
+            assert(expected == value);
+          } else {
+#ifdef VERBOSE
+            std::cout << "assert key " << key << " is undefined" << std::endl;
+#endif
+          }
+        } else 
+          if (operation == "remove")
+          {
+#ifdef VERBOSE
+            std::cout << "remove key " << key << std::endl;
+#endif
+            tmp = clock();
+            map_table.erase(key);
+            total += clock() - tmp;
+          } else {
+#ifdef VERBOSE
+              std::cout << "command is not understood: " << operation << std::endl;
+#endif
+            }
+    }
 
     infile.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    bool v= infile.eof();
+     v= v;
   }
   return total;
 }

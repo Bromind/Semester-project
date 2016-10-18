@@ -10,7 +10,7 @@ typedef int hash_t;
 #include <string.h>
 #include <time.h>
 #define CAPACITY 16384
-#define RANGE CAPACITY
+#define RANGE (CAPACITY*4)
 #define CONFLICTS 3
 
 #undef DEBUG
@@ -134,47 +134,50 @@ clock_t parseFile(const char* filename, struct myInt keys[], size_t capacity)
   char* operation;
   int key;
   char dump_line = 0;
-  while(EOF != fscanf(file, "%ms %i", &operation, &key))
+  while(EOF != fscanf(file, "%ms", &operation))
   {
     dump_line = 0;
-    if(strncmp(operation, "insert", 6) == 0) {
-      int value;
-      if(fscanf(file, "%i", &value) == EOF){
-        perror(NULL);
-      }
-#ifdef VERBOSE
-      printf("put key %i with value %i\n", key, value);
-#endif
-      total += put(keys, key, value, capacity);
-    } else if(strncmp(operation, "assert", 6) == 0) {
-      int expected;
-      if(fscanf(file, "%i", &expected) == EOF) {
-        perror(NULL);
-      }
-#ifdef VERBOSE
-      if(expected < 0) 
-      {
-        printf("assert key %i is undefined\n", key);
-      } else {
-        printf("assert key %i has value %i\n", key, expected);
-      }
-#endif
-      total += getAndCheck(keys, key, expected, capacity);
-    } else if(strncmp(operation, "remove", 6) == 0) {
-#ifdef VERBOSE
-      printf("remove key %i\n", key);
-#endif
-      total += removeKey(keys, key, capacity);
-    } else if(strncmp(operation, "reset", 5) == 0) {
+    if(strncmp(operation, "reset", 5) == 0) {
 #ifdef VERBOSE
       printf("Reset timer\n");
 #endif
       total = 0;
-    } else {
+    } else 
+      if(EOF != fscanf(file, "%i", &key)) {
+        if(strncmp(operation, "insert", 6) == 0) {
+          int value;
+          if(fscanf(file, "%i", &value) == EOF){
+            perror(NULL);
+          }
 #ifdef VERBOSE
-      printf("command is not understood: %s\n", operation);
+          printf("put key %i with value %i\n", key, value);
 #endif
-    }
+          total += put(keys, key, value, capacity);
+        } else if(strncmp(operation, "assert", 6) == 0) {
+          int expected;
+          if(fscanf(file, "%i", &expected) == EOF) {
+            perror(NULL);
+          }
+#ifdef VERBOSE
+          if(expected < 0) 
+          {
+            printf("assert key %i is undefined\n", key);
+          } else {
+            printf("assert key %i has value %i\n", key, expected);
+          }
+#endif
+          total += getAndCheck(keys, key, expected, capacity);
+        } else if(strncmp(operation, "remove", 6) == 0) {
+#ifdef VERBOSE
+          printf("remove key %i\n", key);
+#endif
+          total += removeKey(keys, key, capacity);
+        } else {
+#ifdef VERBOSE
+          printf("command is not understood: %s\n", operation);
+#endif
+        }
+      }
     while(fscanf(file, "%c", &dump_line) != EOF && dump_line != '\n');
     
     free(operation);

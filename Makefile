@@ -1,4 +1,4 @@
-CC_ARGS=-O3 -Wall -Werror
+CC_ARGS=-O3 -Wall -Werror 
 
 all: c cpp c_generator cpp_default
 

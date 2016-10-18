@@ -2,7 +2,7 @@
 # Author: Martin Vassor
 # Description: Generate a payload to test hashmap implementations
 # Creation date: 07-10-2016
-# Last modified: Mon Oct 17 14:14:33 2016
+# Last modified: Tue Oct 18 13:26:37 2016
 # Known bugs: 
 
 print_help() {
@@ -18,7 +18,17 @@ terminate() {
 generate_all() {
 	# Preload up to target load
 	while [ "$(./Bash-collections/map.sh "$MAP" size)" -lt "$(echo "$(./Bash-collections/map.sh "$ARGS" get "load") $(./Bash-collections/map.sh "$ARGS" get "capacity") * 1/p" | dc)" ]; do
-		generate_single
+
+          KEY="$(echo "$RANDOM $(./Bash-collections/map.sh "$ARGS" get "range") %p" | dc)"
+          if ./Bash-collections/map.sh "$MAP" get "$KEY" > /dev/null; then 
+            # if key already exists, remove to avoid different semantics between c++ and verified C
+            ./Bash-collections/list.sh "$OPS" append "remove $KEY"
+            ./Bash-collections/map.sh "$MAP" delete "$KEY";
+          fi;
+
+          NEW_VALUE="$(echo $RANDOM)"
+          ./Bash-collections/list.sh "$OPS" append "insert $KEY $NEW_VALUE"
+          ./Bash-collections/map.sh "$MAP" put "$KEY" "$NEW_VALUE";
 	done;
 
 	./Bash-collections/list.sh "$OPS" append "reset"
@@ -34,10 +44,13 @@ generate_single() {
 	RW="$(echo "$RANDOM 100 %p" | dc)"
 	RW_THRES="$(echo "$(./Bash-collections/map.sh "$ARGS" get "read") 100 * 1/p" | dc)"
 
-	KEY="$(echo "$RANDOM $(./Bash-collections/map.sh "$ARGS" get "range") %p" | dc)"
-
 
 	if [ $RW -lt $RW_THRES ]; then
+		if [ "$(./Bash-collections/map.sh "$ARGS" get "read-existing-only")" = true ]; then 
+			KEY="$(./Bash-collections/map.sh "$MAP" randomKey)"
+		else 
+			KEY="$(echo "$RANDOM $(./Bash-collections/map.sh "$ARGS" get "range") %p" | dc)"
+		fi;
 		# Read operation case
 		# Try to read the value at $KEY
 		if ./Bash-collections/map.sh "$MAP" get "$KEY" >> /dev/null ; then 
@@ -54,6 +67,8 @@ generate_single() {
 		TARGET_LOAD="$(echo "$(./Bash-collections/map.sh "$ARGS" get "load") $(./Bash-collections/map.sh "$ARGS" get "capacity") * 1/p" | dc)"
 		TRY="$(echo "$RANDOM 100 %p" | dc)"
 
+		KEY="$(echo "$RANDOM $(./Bash-collections/map.sh "$ARGS" get "range") %p" | dc)"
+
 		if [ $CURRENT_LOAD  -gt $TARGET_LOAD ] ; then
 			PROBA_REMOVE="$(echo "$CURRENT_LOAD $TARGET_LOAD - 100 * $CAPACITY $TARGET_LOAD - / 2 / 50 +p" | dc )"
 		else 
@@ -62,7 +77,7 @@ generate_single() {
 		#echo "Current load: $CURRENT_LOAD, target: $TARGET_LOAD, capacity: $CAPACITY, proba remove: $PROBA_REMOVE, random = $TRY"
 
 		if [ $TRY -lt $PROBA_REMOVE ] ; then
-			TO_REMOVE="$(./Bash-collections/map.sh "$MAP" getRandomKey)"
+			TO_REMOVE="$(./Bash-collections/map.sh "$MAP" randomKey)"
 			./Bash-collections/list.sh "$OPS" append "remove $TO_REMOVE		#current load: $CURRENT_LOAD	target load: $TARGET_LOAD"
 			./Bash-collections/map.sh "$MAP" delete "$TO_REMOVE"
 		else 
@@ -97,6 +112,7 @@ shift
 ./Bash-collections/map.sh "$ARGS" put "load" "0.5"
 ./Bash-collections/map.sh "$ARGS" put "range" "1000"
 ./Bash-collections/map.sh "$ARGS" put "outfile" "./hashmap_test_file"
+./Bash-collections/map.sh "$ARGS" put "read-existing-only" "false"
 
 for i in `seq $#`; do
 	ARGNAME=$(echo "$1" | cut -c 3- | cut -d "=" -f1)
@@ -132,6 +148,8 @@ C<./generate LENGTH [OPTION]>
 =item C<--load=load> The target load. Does not guarantee to maintain this load all the time, it tries to achieve it.
 
 =item C<--read=read> Proportion of read request versus write requests.
+
+=item C<--read-existing-only=boolean> Specify whether read operations attempt to read existing key-values only or if it also includes I<contains> operations.
 
 =item C<--outfile=file> Output file
 

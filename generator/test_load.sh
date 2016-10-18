@@ -2,7 +2,7 @@
 # Author: Martin Vassor
 # Description: Compare the hashmap implementations with different load values
 # Creation date: 14-10-2016
-# Last modified: Fri Oct 14 23:43:27 2016
+# Last modified: Mon Oct 17 15:19:55 2016
 # Known bugs: 
 
 print_help() {
@@ -28,7 +28,9 @@ echo "#       3 -> C++ with dummy hash function" >> load_results_r-"$READ"
 for i in `seq $#`; do
 	echo "Generate test file of length $LENGTH, read ratio $READ, and load $1";
 	FILE="test_files/l-"$LENGTH"_c-16384_l-"$1"_r-"$READ".mapctrl"
-	./generate.sh "$LENGTH" --capacity=16384 --load="$1" --read="$READ" > "$FILE"
+	./generate.sh "$LENGTH" --range=65536 --capacity=16384 --load="$1" --read="$READ" > "$FILE"
+
+        echo "Measure time: ";
 
 	echo "0 $1 $(../c_map "$FILE" | cut -d ':' -f 2 | cut -d 'm' -f 1)" >> load_results_r-"$READ"
 	echo "1 $1 $(../c_map_generator "$FILE" | cut -d ':' -f 2 | cut -d 'm' -f 1)" >> load_results_r-"$READ"
