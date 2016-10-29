@@ -30,6 +30,7 @@ struct myInt {
 };
 
 clock_t parseFile(const char* filename, struct myInt keys[], size_t capacity);
+hash_t hashKey(const struct myInt key);
 
 int compare(void* key1, void* key2)
 {
@@ -38,12 +39,14 @@ int compare(void* key1, void* key2)
 
 int main(int argc, char* argv[])
 {
+#ifndef STATIC_TEST
   if(argc < 2)
   {
     fprintf(stderr, "Usage: %s testfile [capacity] [range] [conflicts]\n", argv[0]);
     return -1;
   }
   char* filename = argv[1];
+#endif
   if(argc >= 3)
     capacity = atoi(argv[2]);
   if(argc >= 4)
@@ -71,8 +74,34 @@ int main(int argc, char* argv[])
     keys[i].value = i;
   }
 
+#ifdef STATIC_TEST
+int value, res; 
+struct myInt* deleted;
+clock_t time = clock();
+#define remove(x) \
+  map_erase(busybit, keyps, khs, &keys[(x)], compare, hashKey(keys[(x)]), capacity, (void**) &deleted)
+#define insert(x, y) \
+  map_put(busybit, keyps, khs, vals, &keys[(x)], hashKey(keys[(x)]), (y), capacity)
+
+#define ensure(x, y) \
+  res = map_get(busybit, keyps, khs, vals, &keys[(x)], compare, hashKey(keys[(x)]), &value, capacity); \
+  if((y) < 0) /* Case not expected to be in the map */ \
+  { \
+    assert(res == 0); \
+  } else { \
+    assert((value == (y) )); \
+  }
+#define reset \
+  time = clock();
+
+#include "static_test"
+
+time = clock() - time;
+
+#else 
   //return run(keys, 0, 0) == 0;
   clock_t time = parseFile(filename, keys, capacity);
+#endif
   printf("Time used for map operations: %Lfms\n", (long double) time*1000/CLOCKS_PER_SEC);
   return 0;
 }

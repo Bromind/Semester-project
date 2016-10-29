@@ -86,10 +86,12 @@ clock_t parseFile(std::string filename, std::unordered_map<int, int, IntHasher> 
 
 int main(int argc, char* argv[])
 {
+#ifndef STATIC_TEST
   if(argc != 2) {
     std::cout << "Usage: " << argv[0] << " testfile" << std::endl;
     return -1;
   }
+#endif
 #ifdef DEFAULT_HASH
   std::unordered_map<int, int> map_table;
 #else
@@ -98,7 +100,23 @@ int main(int argc, char* argv[])
 
   map_table.max_load_factor(INFINITY);
 
+#ifdef STATIC_TEST
+  clock_t time = clock();
+#define remove(x) \
+  map_table.erase((x))
+#define insert(x, y) \
+  map_table[(x)] = (y)
+#define ensure(x, y) \
+  if ((y) >= 0) \
+    assert(map_table[(x)] == (y)); 
+#define reset \
+  time = clock();
+
+#include "static_test"
+  clock_t elapsed = clock() - time;
+#else
   clock_t elapsed = parseFile(argv[1], map_table);
+#endif
 std::cout << "Time used for map operations: " << (long double) elapsed*1000/CLOCKS_PER_SEC << "ms" << std::endl;
 
   return 0;

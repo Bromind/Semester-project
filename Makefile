@@ -1,6 +1,6 @@
-CC_ARGS=-O3 -Wall -Werror 
+CC_ARGS=-O3 -Wall -Werror -DSTATIC_TEST
 
-all: c cpp c_generator cpp_default
+all: static_test c cpp c_generator cpp_default
 
 cpp:
 	g++ $(CC_ARGS) -std=c++11 map.cpp -o cpp_map

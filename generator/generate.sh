@@ -2,7 +2,7 @@
 # Author: Martin Vassor
 # Description: Generate a payload to test hashmap implementations
 # Creation date: 07-10-2016
-# Last modified: Tue Oct 18 13:26:37 2016
+# Last modified: Tue Oct 25 12:37:30 2016
 # Known bugs: 
 
 print_help() {
@@ -59,7 +59,7 @@ generate_single() {
 			VALUE="-1"
 		fi;
 
-		./Bash-collections/list.sh "$OPS" append "assert $KEY $VALUE"
+		./Bash-collections/list.sh "$OPS" append "ensure $KEY $VALUE"
 	else 
 		# Write operation case
 		CURRENT_LOAD="$(./Bash-collections/map.sh "$MAP" size)"
