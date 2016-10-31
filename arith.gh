@@ -1,0 +1,97 @@
+#ifndef ARITH_GH
+#define ARITH_GH
+
+//Taken from https://groups.google.com/forum/#!topic/verifast/eCf5QzLtGlo
+lemma void note(bool b)
+    requires b;
+    ensures b;
+{
+}
+
+fixpoint int mul(int x, int y) { return x * y; }
+
+lemma void mul_eq(int x, int y)
+    requires true;
+    ensures mul(x, y) == x * y;
+{}
+
+lemma void mul_nonnegative(int x, int y)
+    requires 0 <= x &*& 0 <= y;
+    ensures 0 <= x * y;
+{
+    int i = 0;
+    for (; i < x; i++)
+        invariant 0 <= i &*& i <= x &*& 0 <= i * y;
+        decreases x - i;
+    {
+    }
+    note(i == x);
+    note(mul(i, y) == mul(x, y));
+    note(i * y == mul(i, y));
+    mul_eq(x, y);
+}
+
+lemma void mul_mono(int i, int n, int a)
+    requires i <= n &*& 0 <= a;
+    ensures i * a <= n * a;
+{
+    int j = i;
+    for (; j < n; j++)
+        invariant i <= j &*& j <= n &*& i * a <= j * a;
+        decreases n - j;
+    {
+    }
+    note(j == n);
+    note(mul(j, a) == mul(n, a));
+    mul_eq(j, a);
+    mul_eq(n, a);
+}
+
+lemma void mul_mono_strict(int i, int n, int a)
+    requires 0 <= i &*& i < n &*& 0 < a;
+    ensures 0 <= i * a &*& i * a < n * a;
+{
+    mul_nonnegative(i, a);
+    mul_mono(i, n, a);
+    int j = 1;
+    for (; j < a; j++)
+        invariant i < n &*& j <= a &*& i * j < n * j;
+        decreases a - j;
+    {
+    }
+    note(j == a);
+    note(mul(i, j) == mul(i, a));
+    note(mul(n, j) == mul(n, a));
+    mul_eq(i, a);
+    mul_eq(i, j);
+    mul_eq(n, j);
+    mul_eq(n, a);
+}
+
+lemma void mul_bounds(int x, int xb, int y, int yb)
+    requires 0 <= x &*& x <= xb &*& 0 <= y &*& y <= yb;
+    ensures 0 <= x * y &*& x * y <= xb * yb;
+{
+    mul_nonnegative(x, y);
+    mul_mono(x, xb, y);
+    assert x * y <= xb * y;
+    mul_mono(y, yb, xb);
+    assert y * xb <= yb * xb;
+}
+
+lemma void mul_subst(int x, int y, int a)
+requires x == y &*& 0 <= a;
+ensures a*x == a*y;
+{
+  int i = 0;
+  for (; i < a; i++)
+      invariant 0 <= i &*& i <= a &*& i*x == i*y;
+      decreases a-i;
+  {}
+  note(a == i);
+  note(mul(i, x) == mul(a, x));
+  note(mul(i, y) == mul(a, y));
+  mul_eq(a, x);
+  mul_eq(a, y);
+}
+#endif ARITH_GH
