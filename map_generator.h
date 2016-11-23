@@ -2,6 +2,10 @@
 #define _MAP_GENERATOR_H_INCLUDED_
 #include <stdlib.h>
 #include <stddef.h>
+typedef unsigned long long hash_t ;
+typedef unsigned int entry_t;
+typedef unsigned int offset_t;
+
 typedef int map_keys_equality /*@<K>(predicate (void*; K) keyp) @*/(void* k1, void* k2);
 //@ requires [?fr1]keyp(k1, ?kk1) &*& [?fr2]keyp(k2, ?kk2);
 //@ ensures [fr1]keyp(k1, kk1) &*& [fr2]keyp(k2, kk2) &*& (0 == result ? (kk1 != kk2) : (kk1 == kk2));
@@ -22,7 +26,7 @@ typedef int map_keys_equality /*@<K>(predicate (void*; K) keyp) @*/(void* k1, vo
                         int capacity,
                         int* busybits,
                         void** keyps,
-                        size_t[2]* k_hashes,
+                        hash_t *k_hashes,
                         int* values);
 
   fixpoint list<pair<kt,vt> > empty_map_fp<kt,vt>() { return nil; }
@@ -84,8 +88,8 @@ typedef int map_keys_equality /*@<K>(predicate (void*; K) keyp) @*/(void* k1, vo
  * I could not use integer keys, because need to operate with keys like
  * int_key/ext_key that are much bigger than a 32bit integer.
  */
-void map_initialize/*@ <kt> @*/ (int* busybits, map_keys_equality* cmp,
-    void** keyps, size_t (*khs)[2], int* vals,
+void map_initialize /*@ <kt> @*/(int* busybits, map_keys_equality* cmp,
+    void** keyps, hash_t *khs, int* vals,
     int capacity);
 /*@ requires map_key_type<kt>(_) &*& map_key_hash<kt>(?hash) &*&
              [?fr]is_map_keys_equality<kt>(cmp, ?keyp) &*&
@@ -93,15 +97,15 @@ void map_initialize/*@ <kt> @*/ (int* busybits, map_keys_equality* cmp,
              ints(busybits, capacity, ?bbs) &*&
              pointers(keyps, capacity, ?kplist) &*&
              ints(vals, capacity, ?vallist) &*&
-             ints(khs, capacity, ?khlist) &*&
+             ullongs(khs, capacity, ?khlist) &*&
              0 < capacity &*& 2*capacity < INT_MAX; @*/
 /*@ ensures mapping<kt>(empty_map_fp(), empty_map_fp(), keyp, recp, hash,
                         capacity, busybits, keyps,
                         khs, vals) &*&
             [fr]is_map_keys_equality<kt>(cmp, keyp); @*/
 
-int map_get/*@ <kt> @*/ (int* busybits, void** keyps, size_t (*k_hashes)[2], int* values,
-    void* keyp, map_keys_equality* eq, size_t hash[2], int* value,
+int map_get /*@ <kt> @*/(int* busybits, void** keyps, hash_t *k_hashes, int* values,
+    void* keyp, map_keys_equality* eq, hash_t hash, int* value,
     int capacity);
 /*@ requires mapping<kt>(?m, ?addrs, ?kp, ?recp, ?hsh, capacity, busybits,
                          keyps, k_hashes, values) &*&
@@ -121,8 +125,8 @@ int map_get/*@ <kt> @*/ (int* busybits, void** keyps, size_t (*k_hashes)[2], int
              (result == 0 &*&
               *value |-> v)); @*/
 
-int map_put/*@ <kt> @*/ (int* busybits, void** keyps, size_t (*k_hashes)[2], int* values,
-    void* keyp, size_t hash[2], int value,
+int map_put /*@ <kt> @*/(int* busybits, void** keyps, hash_t *k_hashes, int* values,
+    void* keyp, hash_t hash, int value,
     int capacity);
 /*@ requires mapping<kt>(?m, ?addrs, ?kp, ?recp, ?hsh, capacity, busybits,
                          keyps, k_hashes, values) &*&
@@ -145,8 +149,8 @@ int map_put/*@ <kt> @*/ (int* busybits, void** keyps, size_t (*k_hashes)[2], int
 
 //TODO: Keep track of the key pointers, in order to preserve the pointer value
 // when releasing it with map_erase.
-int map_erase/*@ <kt> @*/ (int* busybits, void** keyps, size_t (*k_hashes)[2], void* keyp,
-    map_keys_equality* eq, size_t hash[2], int capacity,
+int map_erase /*@ <kt> @*/(int* busybits, void** keyps, hash_t *key_hashes, void* keyp,
+    map_keys_equality* eq, hash_t hash, int capacity,
     void** keyp_out);
 /*@ requires mapping<kt>(?m, ?addrs, ?kp, ?recp, ?hsh, capacity, busybits,
                          keyps, key_hashes, ?values) &*&
