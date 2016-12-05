@@ -120,6 +120,11 @@
     return nthProp(arr, prop, loop_fp(index + shift, cap));
   }
 
+  fixpoint bool stride_nth_prop<t>(list<t> arr, fixpoint (t, bool) prop, 
+                                int cap, int entry, int offset, int index) {
+    return nthProp(arr, prop, loop_fp(entry + offset * index, cap));
+  }
+
   lemma void by_loop_for_all<t>(list<t> arr, fixpoint (t, bool) prop,
                                 int shift, int capacity, nat outlen)
   requires length(arr) == capacity &*& int_of_nat(outlen) <= capacity &*&
@@ -136,6 +141,26 @@
                       (byLoopNthProp)(arr, prop, capacity, shift),
                       orig);
         assert(true == byLoopNthProp(arr, prop, capacity, shift, orig));
+        assert(true == nthProp(arr, prop, int_of_nat(len)));
+    }
+  }
+  
+  lemma void by_loop_for_all_by_index<t>(list<t> arr, fixpoint (t, bool) prop,
+                                int entry, int offset, int capacity, nat outlen)
+  requires length(arr) == capacity &*& int_of_nat(outlen) <= capacity &*&
+           true == up_to(nat_of_int(capacity),
+                         (stride_nth_prop)(arr, prop, capacity, entry, offset));
+  ensures true == up_to(outlen, (nthProp)(arr, prop));
+  {
+    switch(outlen) {
+      case zero: return;
+      case succ(len):
+        by_loop_for_all_by_index(arr, prop, entry, offset, capacity, len);
+        int orig = loop_shift_inv(int_of_nat(len), shift, capacity);
+        up_to_covers_x(nat_of_int(capacity),
+                      (stride_nth_prop)(arr, prop, capacity, entry, offset),
+                      orig);
+        assert(true == byLoopNthProp(arr, prop, capacity, entry, offset, orig));
         assert(true == nthProp(arr, prop, int_of_nat(len)));
     }
   }

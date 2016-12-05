@@ -47,7 +47,6 @@ offset_t offset_from_hash(hash_t hash)
   return (offset_t) masked;
 }
 
-
 // TODO: Remove
 static 
 entry_t entry_from_hash(hash_t hash)
@@ -73,9 +72,11 @@ hash_t entry_to_hash(hash_t hash, entry_t entry)
   //@ ensures entry == entry_of(result);
 {
   hash_t nh = entry;
-  nh = nh << ((int) sizeof(offset_t) * 8);
-  nh = ((hash << ((int) sizeof(entry_t) * 8)) >> ((int)sizeof(entry_t) * 8)) | nh;
-  //@ assume(entry == entry_of(nh)); // TODO
+  // nh = nh * (1 << ((int) sizeof(offset_t) * 8)); // TODO when shift to left added in upstream
+  nh = entry * (unsigned long long)(256 * 256 * 256 * 256);
+  offset_t off = offset_from_hash(hash);
+  nh = off | nh;
+  //@ assume(entry == entry_of(nh)); // TODO when shift to left added in upstream
   return nh;
 }
 
@@ -85,9 +86,12 @@ hash_t offset_to_hash(hash_t hash, offset_t offset)
   //@ requires true;
   //@ ensures offset == offset_of(result);
 {
-  hash_t nh = offset;
-  nh = (hash >> ((int)sizeof(offset_t) * 8)) << ((int)sizeof(offset_t) * 8) | nh;
-  //@ assume(offset == offset_of(nh));
+  hash_t nh = (unsigned long long) 0;
+  entry_t entry = entry_from_hash(hash);
+  //nh = (hash >> ((int)sizeof(offset_t) * 8)) << ((int)sizeof(offset_t) * 8) | nh; // TODO when shift to left added in upstream
+
+  nh = entry * (unsigned long long) (256*256*256*256) | offset;
+  //@ assume(offset == offset_of(nh)); // TODO when shift to left added in upstream
   return nh;
 }
 
@@ -104,15 +108,15 @@ int hash_equal(hash_t h1, hash_t h2)
 }
 
 static
-int loop(int entry_point, int capacity)
+unsigned int loop(unsigned int entry_point, unsigned int capacity)
 //@ requires 0 < capacity &*& 2*capacity < INT_MAX;
 /*@ ensures 0 <= result &*& result < capacity &*&
             result == loop_fp(entry_point, capacity); @*/
 {
-  int g = entry_point%capacity;
+  unsigned int g = entry_point%capacity;
   //@ div_mod(g, entry_point, capacity);
   //@ assert(2*capacity< INT_MAX);
-  int res = (g + capacity)%capacity;
+  unsigned int res = (g + capacity)%capacity;
   //@ div_mod_gt_0(res, g + capacity, capacity);
   return res;
 }
@@ -469,15 +473,15 @@ int loop(int entry_point, int capacity)
   }
 @*/
 static
-int find_key /*@ <kt> @*/ (int* busybits, void** keyps, hash_t *k_hashes, int start,
+unsigned int find_key /*@ <kt> @*/ (int* busybits, void** keyps, hash_t *k_hashes, unsigned int start,
 		void* keyp, map_keys_equality* eq, hash_t key_hash,
-		int capacity)
+		unsigned int capacity)
 /*@ requires hmapping<kt>(?kpr, ?hsh, capacity, busybits, ?kps, k_hashes, ?hm) &*&
              pointers(keyps, capacity, kps) &*&
              [?kfr]kpr(keyp, ?k) &*&
              hsh(k) == key_hash &*&
              0 <= start &*& 2*start < INT_MAX &*&
-             [?f]is_map_keys_equality<kt>(eq, kpr); @*/
+             [?f]is_map_keys_equality<kt>(eq, kpr) ; @*/
 /*@ ensures hmapping<kt>(kpr, hsh, capacity, busybits, kps, k_hashes, hm) &*&
             pointers(keyps, capacity, kps) &*&
             [kfr]kpr(keyp, k) &*&
@@ -491,10 +495,12 @@ int find_key /*@ <kt> @*/ (int* busybits, void** keyps, hash_t *k_hashes, int st
   //@ assert hm == hmap(ks, ?khs);
 
   int i = 0;
-  for (; i < capacity; ++i)
+  int capacity_s = (int) capacity;
+  offset_t offset = offset_from_hash(key_hash);
+  for (; i < capacity_s; ++i)
     /*@ invariant pred_mapping(kps, bbs, kpr, ks) &*&
                   ints(busybits, capacity, bbs) &*&
-                  ints(k_hashes, capacity, khs) &*&
+                  ullongs(k_hashes, capacity, khs) &*&
                   pointers(keyps, capacity, kps) &*&
                   0 <= i &*& i <= capacity &*&
                   [f]is_map_keys_equality<kt>(eq, kpr) &*&
@@ -502,23 +508,23 @@ int find_key /*@ <kt> @*/ (int* busybits, void** keyps, hash_t *k_hashes, int st
                   hsh(k) == key_hash &*&
                   true == hash_list(ks, khs, hsh) &*&
                   true == up_to(nat_of_int(i),
-                                (byLoopNthProp)(ks, (not_my_key)(k),
-                                                capacity, start));
+                                (stride_nth_prop)(ks, (not_my_key)(k),
+                                                capacity, start, offset));
     @*/
-    //@ decreases capacity - i;
+    //@ decreases capacity_s - i;
   {
     //@ pred_mapping_same_len(bbs, ks);
     //@ assert(sizeof(int) == 4);
     //@ assert(sizeof(long long) == 8);
     //@ assert(sizeof(hash_t) == 8);
-    offset_t offset = offset_from_hash(key_hash);
-    int index = loop(start + i*offset, capacity);
-    int bb = busybits[index];
-    hash_t kh;
-    kh = entry_to_hash(kh, entry_from_hash(k_hashes[index]));
-    kh = offset_to_hash(kh, offset_from_hash(k_hashes[index]));
-    void* kp = keyps[index];
-    if (bb != 0 && hash_equal(kh, key_hash)) {
+    unsigned int index = loop(start + ((unsigned int) i)*offset, capacity);
+    int bb = busybits[(int) index];
+    hash_t kh = (hash_t) 0;
+    kh = k_hashes[(int) index];
+    void* kp = keyps[(int)index];
+    int hash_eq = hash_equal(kh, key_hash);
+    if (bb != 0 && hash_eq) {
+      //@ assert (nth(index, khs) == hsh(k));
       //@ close pred_mapping(nil, nil, kpr, nil);
       //@ extract_pred_for_key(nil, nil, nil, index, bbs, ks);
       //@ append_nil(reverse(take(index, kps)));
@@ -533,12 +539,15 @@ int find_key /*@ <kt> @*/ (int* busybits, void** keyps, hash_t *k_hashes, int st
       //@ recover_pred_mapping(kps, bbs, ks, index);
     } else {
       //@ assert(length(ks) == capacity);
-      //@ if (bb != 0) no_hash_no_key(ks, khs, k, index, hsh);
       //@ if (bb == 0) no_bb_no_key(ks, bbs, index);
+      /*@ if (bb != 0) {
+			assert(nth(index, khs) != hsh(k));
+			no_hash_no_key(ks, khs, k, index, hsh);
+		} @*/
     }
     //@ assert(nth(index, ks) != some(k));
     //@ assert(true == not_my_key(k, nth(index, ks)));
-    //@ assert(true == not_my_key(k, nth(loop_fp(i+start,capacity), ks)));
+    //@ assert(true == not_my_key(k, nth(loop_fp(i*offset+start,capacity), ks)));
     //@ assert(nat_of_int(i+1) == succ(nat_of_int(i)));
   }
   //@ pred_mapping_same_len(bbs, ks);
