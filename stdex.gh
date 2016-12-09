@@ -709,11 +709,4 @@ ensures append(a, b) != nil;
     subset_append(remove(el, xs), cons(el, nil), ys);
   }
 
-// Workaround for unmindful Redux solver.
-// See https://github.com/verifast/verifast/issues/19
-lemma void note(bool b)
-requires b;
-ensures b;
-{}
-
 #endif//STDEX_GH
