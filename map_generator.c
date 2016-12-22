@@ -10,6 +10,18 @@
 //@ #include "modulo.gh"
 // //@ #include "logical_ops.gh"
 
+/*@
+
+ // FIXME a = 2^n and b%2 = 1
+ predicate coprime(int a, int b) = a%2==0 &*& b%2==1;
+
+ lemma void apply_CRT<t>(int i, list<t> ts, fixpoint (t, bool) prop, int capacity, int start, int offset);
+ requires true == up_to(nat_of_int(i),(stride_nth_prop)(ts, prop, capacity, start, offset)) &*&
+ 	coprime(capacity, offset) &*&
+ 	i >= capacity;
+ ensures true == up_to(nat_of_int(length(ts)), (nthProp)(ts, prop)) &*& coprime(capacity, offset); 
+@*/
+
 
 /*@ fixpoint entry_t entry_of(hash_t hash) { 
 	return (entry_t) ((hash >> (sizeof(offset_t) * 8)) & 0xFFFFFFFF);
@@ -108,7 +120,7 @@ int hash_equal(hash_t h1, hash_t h2)
 }
 
 static
-unsigned int loop(unsigned int entry_point, unsigned int capacity)
+int loop(unsigned int entry_point, unsigned int capacity)
 //@ requires 0 < capacity &*& 2*capacity < INT_MAX;
 /*@ ensures 0 <= result &*& result < capacity &*&
             result == loop_fp(entry_point, capacity); @*/
@@ -118,7 +130,10 @@ unsigned int loop(unsigned int entry_point, unsigned int capacity)
   //@ assert(2*capacity< INT_MAX);
   unsigned int res = (g + capacity)%capacity;
   //@ div_mod_gt_0(res, g + capacity, capacity);
-  return res;
+  //@assert (res < capacity);
+  int s_res = (int) res;
+  //@ assert (res == s_res);
+  return s_res;
 }
 
 /*@
@@ -473,7 +488,7 @@ unsigned int loop(unsigned int entry_point, unsigned int capacity)
   }
 @*/
 static
-unsigned int find_key /*@ <kt> @*/ (int* busybits, void** keyps, hash_t *k_hashes, unsigned int start,
+int find_key /*@ <kt> @*/ (int* busybits, void** keyps, hash_t *k_hashes, unsigned int start,
 		void* keyp, map_keys_equality* eq, hash_t key_hash,
 		unsigned int capacity)
 /*@ requires hmapping<kt>(?kpr, ?hsh, capacity, busybits, ?kps, k_hashes, ?hm) &*&
@@ -481,11 +496,13 @@ unsigned int find_key /*@ <kt> @*/ (int* busybits, void** keyps, hash_t *k_hashe
              [?kfr]kpr(keyp, ?k) &*&
              hsh(k) == key_hash &*&
              0 <= start &*& 2*start < INT_MAX &*&
-             [?f]is_map_keys_equality<kt>(eq, kpr) ; @*/
+             [?f]is_map_keys_equality<kt>(eq, kpr) &*&
+             coprime(capacity, offset_of(key_hash)); @*/
 /*@ ensures hmapping<kt>(kpr, hsh, capacity, busybits, kps, k_hashes, hm) &*&
             pointers(keyps, capacity, kps) &*&
             [kfr]kpr(keyp, k) &*&
             [f]is_map_keys_equality<kt>(eq, kpr) &*&
+            coprime(capacity, offset_of(key_hash)) &*&
             (hmap_exists_key_fp(hm, k) ?
             (result == hmap_find_key_fp(hm, k)) :
              (result == -1)); @*/
@@ -497,6 +514,7 @@ unsigned int find_key /*@ <kt> @*/ (int* busybits, void** keyps, hash_t *k_hashe
   int i = 0;
   int capacity_s = (int) capacity;
   offset_t offset = offset_from_hash(key_hash);
+  //@ assert coprime(capacity, offset);
   for (; i < capacity_s; ++i)
     /*@ invariant pred_mapping(kps, bbs, kpr, ks) &*&
                   ints(busybits, capacity, bbs) &*&
@@ -507,9 +525,7 @@ unsigned int find_key /*@ <kt> @*/ (int* busybits, void** keyps, hash_t *k_hashe
                   [kfr]kpr(keyp, k) &*&
                   hsh(k) == key_hash &*&
                   true == hash_list(ks, khs, hsh) &*&
-                  true == up_to(nat_of_int(i),
-                                (stride_nth_prop)(ks, (not_my_key)(k),
-                                                capacity, start, offset));
+                  true == up_to(nat_of_int(i),(stride_nth_prop)(ks, (not_my_key)(k), capacity, start, offset));
     @*/
     //@ decreases capacity_s - i;
   {
@@ -517,7 +533,7 @@ unsigned int find_key /*@ <kt> @*/ (int* busybits, void** keyps, hash_t *k_hashe
     //@ assert(sizeof(int) == 4);
     //@ assert(sizeof(long long) == 8);
     //@ assert(sizeof(hash_t) == 8);
-    unsigned int index = loop(start + ((unsigned int) i)*offset, capacity);
+    int index = loop(start + ((unsigned int) i)*offset, capacity);
     int bb = busybits[(int) index];
     hash_t kh = (hash_t) 0;
     kh = k_hashes[(int) index];
@@ -548,10 +564,13 @@ unsigned int find_key /*@ <kt> @*/ (int* busybits, void** keyps, hash_t *k_hashe
     //@ assert(nth(index, ks) != some(k));
     //@ assert(true == not_my_key(k, nth(index, ks)));
     //@ assert(true == not_my_key(k, nth(loop_fp(i*offset+start,capacity), ks)));
+    
     //@ assert(nat_of_int(i+1) == succ(nat_of_int(i)));
   }
   //@ pred_mapping_same_len(bbs, ks);
-  //@ by_loop_for_all(ks, (not_my_key)(k), start, capacity, nat_of_int(capacity));
+  // by_loop_for_all(ks, (not_my_key)(k), start, capacity, nat_of_int(capacity)); // TODO: remove
+  //@ apply_CRT(capacity, ks, (not_my_key)(k), capacity, start, offset);
+  //@ assert true == up_to(nat_of_int(length(ks)), (nthProp)(ks, (not_my_key)(k))); // TODO: to prove
   //@ no_key_found(ks, k);
   //@ close hmapping<kt>(kpr, hsh, capacity, busybits, kps, k_hashes, hm);
   return -1;

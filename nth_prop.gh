@@ -14,6 +14,13 @@
     }
   }
 
+  fixpoint bool up_to_by_incr_and_start(nat n, nat incr, nat start, fixpoint(int, bool) prop) {
+    switch(n) {
+      case zero: return true;
+      case succ(m): return prop(int_of_nat(incr) * int_of_nat(n) + int_of_nat(start)) && up_to_by_incr_and_start(m, incr, start, prop);
+    }
+  }
+
   lemma void up_to_covers_x(nat n, fixpoint (int, bool) prop, int x)
   requires true == up_to(n, prop) &*& 0 <= x &*& x < int_of_nat(n);
   ensures true == prop(x);
