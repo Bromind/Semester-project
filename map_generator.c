@@ -14,6 +14,64 @@
 
  // FIXME a = 2^n and b%2 = 1
  predicate coprime(int a, int b) = a%2==0 &*& b%2==1;
+ 
+ fixpoint bool is_zero(nat n) {
+   return n == zero ? true : false;
+ }
+ 
+ lemma list<nat> gen_0(nat capa)
+ requires true;
+ ensures length(result) == int_of_nat(capa) &*& count_non_zero(result) == zero;
+ {
+   switch(capa) {
+     case(zero): return nil;
+     case succ(p_capa): {
+       list<nat> tail = gen_0(p_capa);
+       return cons(zero, tail);
+     }
+   }
+ }
+ 
+ fixpoint nat count_non_zero(list<nat> lst) {
+   switch(lst) {
+     case nil: return zero;
+     case cons(v, tail): return v == zero ? count_non_zero(tail) : succ(count_non_zero(tail));
+   }
+ }
+ 
+ lemma list<nat> stripe_l(nat start, nat step, nat n, nat capa)
+ requires int_of_nat(start) < int_of_nat(capa) &*& int_of_nat(start) >= 0;
+ ensures count_non_zero(result) == n &*& length(result) == int_of_nat(capa); // &*& stripe(start, step, list[i], capa) = i
+ {
+   switch(n){
+     case(zero):{ 
+       list<nat> lst = gen_0(capa);
+       return lst;
+     }
+    
+     case(succ(m)):{ 
+     
+       div_mod_gt_0((int_of_nat(start)+int_of_nat(step))%int_of_nat(capa), int_of_nat(start) + int_of_nat(step), int_of_nat(capa));
+     
+       list<nat> lst = stripe_l(nat_of_int((int_of_nat(start)+int_of_nat(step))%int_of_nat(capa)), step, m, capa);
+       if(nth(int_of_nat(start), lst) != zero) {
+         assume(false); // TODO
+       }
+       list<nat> new_lst = update(int_of_nat(start), n, lst);
+       assert length(lst) == int_of_nat(capa);
+       nth_update(int_of_nat(start), int_of_nat(start), n, lst);
+       assert (nth(int_of_nat(start), new_lst) == n);
+       return new_lst;
+     }
+   }
+ }
+ 
+ fixpoint nat stripe(nat start, nat step, nat n, nat capa) {
+   switch(n) {
+     case zero: return start;
+     case succ(m): return stripe( nat_of_int((int_of_nat(start) + int_of_nat(step))% int_of_nat(capa)), step, m, capa);
+   }
+ }
 
  lemma void apply_CRT<t>(int i, list<t> ts, fixpoint (t, bool) prop, int capacity, int start, int offset);
  requires true == up_to(nat_of_int(i),(stride_nth_prop)(ts, prop, capacity, start, offset)) &*&
