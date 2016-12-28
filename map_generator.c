@@ -44,12 +44,17 @@
    }
  }
  
-
+ fixpoint nat count_elem_zero(list<nat> lst) {
+   switch(lst) {
+     case nil: return zero;
+     case cons(hd, tl): return hd == zero ? succ(count_elem_zero(tl)) : count_elem_zero(tl);
+   }
+ }
  
  fixpoint nat count_elem_non_zero(list<nat> lst) {
    switch(lst) {
      case nil: return zero;
-     case cons(v, tail): return v == zero ? count_elem_non_zero(tail) : succ(count_elem_non_zero(tail));
+     case cons(hd, tl): return hd == zero ? count_elem_non_zero(tl) : succ(count_elem_non_zero(tl));
    }
  }
  
@@ -112,9 +117,30 @@
    }
  }
  
+ lemma void forall_fp_to_fp<t>(list<t> lst, fixpoint(t, bool) fp, nat index)
+ requires true == forall(lst, fp) &*& int_of_nat(index) < length(lst);
+ ensures true == fp(nth(int_of_nat(index), lst));
+ {
+   switch(index) {
+     case zero: {
+       assert(length(lst) > 0);
+       assert(lst == cons(?hd, _));
+       assert true == fp(hd);
+     }
+     case succ(p_index): {
+       assert length(lst) > 1;
+       assert lst == cons(_, ?tl);
+       assert true == forall(tl, fp);
+       forall_fp_to_fp(tail(lst), fp, p_index);
+     }
+   }
+ }
+ 
  lemma list<nat> stripe_l(nat start, nat step, nat n, nat capa)
  requires int_of_nat(start) < int_of_nat(capa) &*& int_of_nat(start) >= 0;
- ensures count_elem_non_zero(result) == n &*& length(result) == int_of_nat(capa) &*& true == forall(result, (list_contains_stripes)(start, step, capa, result));
+ ensures count_elem_non_zero(result) == n 
+ 	&*& length(result) == int_of_nat(capa) 
+ 	&*& true == forall(result, (list_contains_stripes)(start, step, capa, result));
  {
    switch(n){
      case(zero):{ 
@@ -133,20 +159,25 @@
        assert count_elem_non_zero(lst) == m;
        
        if(nth(int_of_nat(start), lst) != zero) {
-         nat previous = nth(int_of_nat(start), lst);
-         assert previous != zero;
+         nat content_at_start = nth(int_of_nat(start), lst);
          
+         forall_fp_to_fp(lst, (list_contains_stripes)(nat_of_int((int_of_nat(start) + int_of_nat(step)) % int_of_nat(capa)), step, capa, lst), start);
+         if(stripe(nat_of_int((int_of_nat(start) + int_of_nat(step)) % int_of_nat(capa)), step, content_at_start, capa) == content_at_start)
+         {} else {}
          
+         assert stripe(nat_of_int((int_of_nat(start) + int_of_nat(step)) % int_of_nat(capa)), step, content_at_start, capa) == content_at_start;
          
+         //assume(false); // TODO
          assert false;
        }
+       assert nth(int_of_nat(start), lst) == zero;
        list<nat> new_lst = update(int_of_nat(start), n, lst); // Get a new list with "start" updated
        assert length(lst) == int_of_nat(capa);
        
        nth_update(int_of_nat(start), int_of_nat(start), n, lst);
        assert (nth(int_of_nat(start), new_lst) == n);
        
-       nat acc;
+       nat acc = zero;
        for(int i = 0; i < int_of_nat(capa); i++)
        invariant count_elem_non_zero_up_to(nat_of_int(i), lst) == acc;
        decreases int_of_nat(capa) - i;
