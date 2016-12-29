@@ -194,8 +194,7 @@
          // assert 0 < diff < n
          forall_fp_to_fp(lst, (less_than_n)(m), start);
          if(int_of_nat(diff) <= 0) {}
-         assert int_of_nat(diff) > 0;
-         assert int_of_nat(diff) < int_of_nat(n);
+         assert 0 < int_of_nat(diff) &*& int_of_nat(diff) < int_of_nat(n);
          
          //assert start + diff * step == start mod capa TO PROVE
          assert int_of_nat(start) % int_of_nat(capa) == ((int_of_nat(start) + int_of_nat(diff) * int_of_nat(step)) % int_of_nat(capa));
