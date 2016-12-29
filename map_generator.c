@@ -15,12 +15,16 @@
  // FIXME a = 2^n and b%2 = 1
  predicate coprime(int a, int b) = a%2==0 &*& b%2==1;
  
+ fixpoint bool is_n(nat n, nat i) {
+   return n == i;
+ }
+ 
  fixpoint bool is_zero(nat n) {
-   return n == zero;
+   return is_n(zero, n);
  }
  
  fixpoint bool is_not_zero(nat n) {
-  return n != zero;
+  return is_n(zero, n) == true ? false : true;
  }
  
  fixpoint bool nth_is_zero(list<nat> lst, nat n) {
@@ -31,7 +35,8 @@
  requires true;
  ensures length(result) == int_of_nat(capa) 
  	&*& true == forall(result, is_zero) 
- 	&*& count_elem_non_zero(result) == zero;
+ 	&*& count_elem_non_zero(result) == zero
+ 	&*& true == forall(result, (is_n)(zero));
  {
    switch(capa) {
      case(zero): return nil;
@@ -136,11 +141,28 @@
    }
  }
  
+ fixpoint bool less_than_n(nat n, nat i) {
+   return int_of_nat(n) >= int_of_nat(i);
+ }
+ 
+ lemma void forall_less_than_n_intro(list<nat> lst, nat n)
+ requires true == forall(lst, (is_n)(n));
+ ensures true == forall(lst, (less_than_n)(n));
+ {
+   switch(lst) {
+     case nil: assert true == forall(lst, (less_than_n)(n));
+     case cons(hd, tl): {
+       forall_less_than_n_intro(tl, n);
+     }
+   }
+ }
+ 
  lemma list<nat> stripe_l(nat start, nat step, nat n, nat capa)
  requires int_of_nat(start) < int_of_nat(capa) &*& int_of_nat(start) >= 0;
  ensures count_elem_non_zero(result) == n 
  	&*& length(result) == int_of_nat(capa) 
- 	&*& true == forall(result, (list_contains_stripes)(start, step, capa, result));
+ 	&*& true == forall(result, (list_contains_stripes)(start, step, capa, result))
+ 	&*& true == forall(result, (less_than_n)(n));
  {
    switch(n){
      case(zero):{ 
@@ -150,6 +172,7 @@
        assert true == forall(lst, is_zero); 
        list_zero_contains_stripes(lst, start, step, capa, lst);
        assert true == forall(lst, (list_contains_stripes)(start, step, capa, lst));
+       forall_less_than_n_intro(lst, zero);
        return lst;
      }
     
@@ -166,6 +189,17 @@
          {} else {}
          
          assert stripe(nat_of_int((int_of_nat(start) + int_of_nat(step)) % int_of_nat(capa)), step, content_at_start, capa) == content_at_start;
+         nat diff = nat_of_int(int_of_nat(n) - int_of_nat(content_at_start));
+         
+         // assert 0 < diff < n
+         forall_fp_to_fp(lst, (less_than_n)(m), start);
+         if(int_of_nat(diff) <= 0) {}
+         assert int_of_nat(diff) > 0;
+         assert int_of_nat(diff) < int_of_nat(n);
+         
+         //assert start + diff * step == start mod capa TO PROVE
+         assert int_of_nat(start) % int_of_nat(capa) == ((int_of_nat(start) + int_of_nat(diff) * int_of_nat(step)) % int_of_nat(capa));
+         
          
          //assume(false); // TODO
          assert false;
