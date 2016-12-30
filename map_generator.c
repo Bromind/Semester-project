@@ -19,6 +19,11 @@
    return n == i;
  }
  
+ fixpoint bool is_none(option<nat> opt)
+ {
+   return opt == none;
+ }
+ 
  fixpoint bool is_zero(nat n) {
    return is_n(zero, n);
  }
@@ -29,6 +34,45 @@
  
  fixpoint bool nth_is_zero(list<nat> lst, nat n) {
    return is_zero(nth(int_of_nat(n), lst));
+ }
+ 
+ fixpoint list<option<nat> > gen_none(nat capa)
+ {
+   switch(capa) {
+     case(zero): return nil;
+     case succ(p_capa): return cons(none, gen_none(p_capa));
+   }
+ }
+ 
+  
+ fixpoint bool opt_less_than_n(nat n, option<nat> opt_i)
+ {
+   switch(opt_i) {
+     case none: return true;
+     case some(i): return int_of_nat(n) >= int_of_nat(i);
+   }
+ }
+  
+ lemma void gen_none_less_than(nat capa, nat n)
+ requires true;
+ ensures true == forall(gen_none(capa), (opt_less_than_n)(n));
+ {
+   switch(capa) {
+     case(zero): ;
+     case succ(p_capa): gen_none_less_than(p_capa, n);
+   }
+ }
+ 
+ lemma void gen_none_l(nat capa)
+ requires true;
+ ensures length(gen_none(capa)) == int_of_nat(capa)
+ 	&*& true == forall(gen_none(capa), is_none) 
+ 	&*& count_some(gen_none(capa)) == zero;
+ {
+   switch(capa) {
+     case(zero): ;
+     case succ(p_capa): gen_none_l(p_capa);
+   }
  }
  
  lemma list<nat> gen_0(nat capa)
@@ -63,6 +107,13 @@
    }
  }
  
+ fixpoint nat count_some(list<option<nat> > lst) {
+   switch(lst) {
+     case nil: return zero;
+     case cons(hd, tl): return hd == none ? count_some(tl) : succ(count_some(tl));
+   }
+ }
+ 
  
   fixpoint nat count_elem_non_zero_up_to(nat n, list<nat> lst) {
    switch(n) {
@@ -87,37 +138,56 @@
  } */
  
   
- fixpoint nat stripe(nat start, nat step, nat n, nat capa) {
+ fixpoint int stripe(int start, int step, nat n, int capa) {
    switch(n) {
      case zero: return start;
-     case succ(m): return stripe(nat_of_int((int_of_nat(start) + int_of_nat(step))% int_of_nat(capa)), step, m, capa);
+     case succ(m): return (stripe(start, step, m, capa) + step) % capa;
+   }
+ }
+ 
+ fixpoint bool list_contains_stripes_helper(list<option<nat> > lst, int start, int step, int index, option<nat> content) {
+    switch(content){
+     case none: return true;
+     case some(n): return stripe(start, step, n, length(lst)) == index;
    }
  }
  
  // Given a number i (say 3), check whether lst[stripe(start, step, i, capa)] == i ? e.g. after 3 jumps, does lst[stripe(3)] == 3 ?
- fixpoint bool list_contains_stripes(nat start, nat step, nat capa, list<nat> lst, nat i_th_of_lst) {
-   return is_zero(i_th_of_lst) == true ? true : nth(int_of_nat(stripe(start, step, i_th_of_lst, capa)), lst) == i_th_of_lst;
+ fixpoint bool list_contains_stripes(list<option<nat> > lst, int start, int step, int index) {
+   return list_contains_stripes_helper(lst, start, step, index, nth(index, lst));
  }
  
- lemma void list_zero_contains_stripes(list<nat> lst, nat start, nat step, nat capa, list<nat> full_lst) 
- requires true == forall(lst, is_zero);
- ensures true == forall(lst, (list_contains_stripes)(start, step, capa, full_lst)); 
+ lemma void stripe_less_than_capa(int start, int step, nat n, int capa)
+ requires start < capa &*& start >= 0 &*& step >= 0;
+ ensures stripe(start, step, n, capa) >= 0 &*& stripe(start, step, n, capa) < capa;
  {
-   switch(lst) {
-     case nil: {}
-     case cons(hd, tl): {
-       assert true == forall(tl, is_zero);
-       list_zero_contains_stripes(tl, start, step, capa, full_lst);
-       if(is_zero(hd)) 
-       {
-       } else {
-         forall(cons(hd, tl), is_zero);
-         assert true == is_zero(hd);
-         
+   switch(n) {
+     case zero: 
+     case succ(m): {
+       stripe_less_than_capa(start, step, m, capa);
+       div_mod_gt_0(stripe(start, step, n, capa), stripe(start, step, m, capa) + step, capa);
+     }
+   }
+ }
+ 
+ lemma void list_none_contains_stripes(list<option<nat> > lst, int start, int step, nat u_bound)
+ requires true == forall(lst, is_none) &*& int_of_nat(u_bound) <= length(lst);
+ ensures true == up_to(u_bound, (list_contains_stripes)(lst, start, step));
+ {
+   switch(u_bound) {
+     case zero: {}
+     case succ(u_bound_p): {
+       list_none_contains_stripes(lst, start, step, u_bound_p);
+       switch(nth(int_of_nat(u_bound_p), lst)) {
+         case none: {
+           assert true == list_contains_stripes(lst, start, step, int_of_nat(u_bound_p));
+           assert true == up_to(u_bound_p, (list_contains_stripes)(lst, start, step));
+           assert true == up_to(u_bound, (list_contains_stripes)(lst, start, step));
+         }
+         case some(a): {
+           forall_nth(lst, is_none, int_of_nat(u_bound_p));
+         }
        }
-       assert true == is_zero(hd);
-       assert true == list_contains_stripes(start, step, capa, full_lst, hd);
-       assert true == forall(tl, (list_contains_stripes)(start, step, capa, full_lst));
      }
    }
  }
@@ -140,6 +210,7 @@
      }
    }
  }
+
  
  fixpoint bool less_than_n(nat n, nat i) {
    return int_of_nat(n) >= int_of_nat(i);
@@ -157,7 +228,94 @@
    }
  }
  
- lemma list<nat> stripe_l(nat start, nat step, nat n, nat capa)
+ lemma void name(int capa_lst, int start, nat diff, int step)
+ requires stripe(start, step, diff, capa_lst) == start;
+ ensures start == (start + int_of_nat(diff)*step)% capa_lst;
+ {
+   assume(false);
+ }
+ 
+ lemma void count_some_incr(list<option<nat> > lst, int index_update, nat new_val, nat sum)
+ requires count_some(lst) == sum &*& nth(index_update, lst) == none &*& index_update < length(lst) &*& index_update >= 0;
+ ensures count_some(update(index_update, some(new_val), lst)) == succ(sum);
+ {
+   switch(lst) {
+     case nil: 
+     case cons(hd, tl): {
+     nat prev_sum;
+       switch(hd) {
+         case none: prev_sum = sum;
+         case some(m): {
+           switch(sum) {
+             case zero: assert false;
+             case succ(p_sum): prev_sum = p_sum;
+           }
+         }
+       }
+       
+       if(index_update == 0){
+       } else {
+         count_some_incr(tl, index_update - 1, new_val, prev_sum);
+       }
+     }
+   }
+ }
+ 
+ lemma void updated_list_contains_stripes(list<option<nat> > lst, int start, int step, nat n, nat bound)
+ requires true == up_to(bound, (list_contains_stripes)(lst, start, step)) &*& int_of_nat(bound) <= length(lst) &*& start >= 0 &*& start < length(lst) &*& step >= 0;
+ ensures true == up_to(bound, (list_contains_stripes)(update(stripe(start, step, n, length(lst)), some(n), lst), start, step));
+ {
+   switch(bound) {
+     case zero: 
+     case succ(p_bound): {
+       updated_list_contains_stripes(lst, start, step, n, p_bound);
+       if(stripe(start, step, n, length(lst)) == int_of_nat(p_bound)) {
+         nth_update(int_of_nat(p_bound), stripe(start, step, n, length(lst)), some(n), lst);
+       } else {
+         stripe_less_than_capa(start, step, n, length(lst));
+         nth_update(int_of_nat(p_bound), stripe(start, step, n, length(lst)), some(n), lst);         
+         switch(nth(int_of_nat(p_bound), lst)){
+           case none: 
+           case some(content):            
+         }
+       }
+     }
+   }
+ }
+ 
+ lemma list<option<nat> > stripe_l(int start, int step, nat n, int capa)
+ requires 0 <= start &*& start < capa &*& step >= 0;
+ ensures count_some(result) == n
+ 	&*& length(result) == capa
+ 	&*& true == up_to(nat_of_int(capa), (list_contains_stripes)(result, start, step))
+ 	&*& true == forall(result, (opt_less_than_n)(n));
+ {
+   switch(n) {
+     case zero: {
+       list<option<nat> > lst = gen_none(nat_of_int(capa));
+       gen_none_l(nat_of_int(capa));
+       list_none_contains_stripes(lst, start, step, nat_of_int(length(lst)));
+       gen_none_less_than(nat_of_int(capa), n);
+       return lst;
+     }
+     case succ(m): {
+       list<option<nat> > lst = stripe_l(start, step, m, capa);
+       assert count_some(lst) == m;
+       if(nth(stripe(start, step, n, capa), lst) != none) {
+         // Contradiction
+         assume(false); // TODO
+       }
+       list<option<nat> > new_lst = update(stripe(start, step, n, capa), some(n), lst); // Get a new list 
+       stripe_less_than_capa(start, step, n, capa);
+       count_some_incr(lst, stripe(start, step, n, capa), n, m);
+       updated_list_contains_stripes(lst, start, step, n, nat_of_int(capa));
+       return new_lst;
+     }
+   }
+ }
+ @*/
+ /*
+ lemma list<nat> stripe_l_1(nat start, nat step, nat n, nat capa)
  requires int_of_nat(start) < int_of_nat(capa) &*& int_of_nat(start) >= 0;
  ensures count_elem_non_zero(result) == n 
  	&*& length(result) == int_of_nat(capa) 
@@ -196,9 +354,10 @@
          if(int_of_nat(diff) <= 0) {}
          assert 0 < int_of_nat(diff) &*& int_of_nat(diff) < int_of_nat(n);
          
+         assert stripe(start, step, diff, capa) == start;
          //assert start + diff * step == start mod capa TO PROVE
+         name(capa, start, diff, step);
          assert int_of_nat(start) % int_of_nat(capa) == ((int_of_nat(start) + int_of_nat(diff) * int_of_nat(step)) % int_of_nat(capa));
-         
          
          //assume(false); // TODO
          assert false;
@@ -221,8 +380,9 @@
        return new_lst;
      }
    }
- }
+ } */
 
+ /*@
 
  lemma void apply_CRT<t>(int i, list<t> ts, fixpoint (t, bool) prop, int capacity, int start, int offset);
  requires true == up_to(nat_of_int(i),(stride_nth_prop)(ts, prop, capacity, start, offset)) &*&
