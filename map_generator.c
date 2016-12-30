@@ -8,13 +8,10 @@
 //@ #include "stdex.gh"
 //@ #include "nth_prop.gh"
 //@ #include "modulo.gh"
+//@ #include "chinese_remainder_th.gh"
 // //@ #include "logical_ops.gh"
 
 /*@
-
- // FIXME a = 2^n and b%2 = 1
- predicate coprime(int a, int b) = a%2==0 &*& b%2==1;
- 
  fixpoint bool is_n(nat n, nat i) {
    return n == i;
  }
@@ -52,6 +49,14 @@
      case some(i): return int_of_nat(n) >= int_of_nat(i);
    }
  }
+ 
+ fixpoint bool opt_not_zero(option<nat> opt_i)
+ {
+   switch(opt_i) {
+     case none: return true;
+     case some(i): return i != zero;
+   }
+ }
   
  lemma void gen_none_less_than(nat capa, nat n)
  requires true;
@@ -67,7 +72,8 @@
  requires true;
  ensures length(gen_none(capa)) == int_of_nat(capa)
  	&*& true == forall(gen_none(capa), is_none) 
- 	&*& count_some(gen_none(capa)) == zero;
+ 	&*& count_some(gen_none(capa)) == zero
+ 	&*& true == forall(gen_none(capa), opt_not_zero);
  {
    switch(capa) {
      case(zero): ;
@@ -283,12 +289,70 @@
    }
  }
  
+ lemma void updated_list_less_than_n(list<option<nat> > lst, int start, int step, int index, nat n)
+ requires true == forall(lst, (opt_less_than_n)(n)) &*& 0 <= index &*& index < length(lst);
+ ensures true == forall(update(index, some(succ(n)), lst), (opt_less_than_n)(succ(n)));
+ {
+   assume(false);
+ }
+ 
+ lemma void CRT_pred(int length_lst, int step, int diff, int start) 
+ requires stripe(start, step, zero, length_lst) == stripe(start, step, nat_of_int(diff), length_lst);
+ ensures 0 == (diff*step)%length_lst;
+ {
+   assume(false);
+ }
+ 
+ lemma void decrease_one_step_stripe(int start, int step, nat val1, nat val2, int capa)
+ requires stripe(start, step, succ(val1), capa) == stripe(start, step, succ(val2), capa) &*& int_of_nat(val1) < int_of_nat(val2);
+ ensures stripe(start, step, val1, capa) == stripe(start, step, val2, capa);
+ {
+   assume(false);
+ }
+ 
+ lemma void decrease_stripe(int start, int step, nat val1, nat val2, int capa, int diff)
+ requires stripe(start, step, val1, capa) == stripe(start, step, val2, capa) &*& int_of_nat(val2) == int_of_nat(val1) + diff;
+ ensures stripe(start, step, zero, capa) == stripe(start, step, nat_of_int(diff), capa);
+ {
+   assume(false);
+ }
+ 
+ lemma void mul_distrib(int a, int b)
+ requires true;
+ ensures a*b + b == (a+1)*b;
+ {
+   
+ }
+
+ lemma void decrease_mod_0(nat a, int b)
+ requires b > 0;
+ ensures 0 == (int_of_nat(a)*b)%b;
+ {
+   switch(a){
+     case zero: div_rem(int_of_nat(a), b); 
+     case succ(p_a): {
+       decrease_mod_0(p_a, b);
+       mul_nonnegative(int_of_nat(p_a), b);
+       mod_rotate(int_of_nat(p_a)*b, b);
+       
+       mul_distrib(int_of_nat(p_a), b);
+       succ_int(int_of_nat(p_a));
+       assert int_of_nat(p_a)*b + b == (int_of_nat(p_a) + 1) * b;
+       mul_subst(int_of_nat(a), int_of_nat(p_a) + 1, b);
+       assert int_of_nat(a) == int_of_nat(p_a) + 1;
+       assert int_of_nat(p_a) * b + b == int_of_nat(a) * b;
+     }
+   }
+ }
+ 
  lemma list<option<nat> > stripe_l(int start, int step, nat n, int capa)
- requires 0 <= start &*& start < capa &*& step >= 0;
+ requires 0 <= start &*& start < capa &*& step > 0 &*& int_of_nat(n) <= capa &*& coprime(step, capa);
  ensures count_some(result) == n
  	&*& length(result) == capa
  	&*& true == up_to(nat_of_int(capa), (list_contains_stripes)(result, start, step))
- 	&*& true == forall(result, (opt_less_than_n)(n));
+ 	&*& true == forall(result, (opt_less_than_n)(n))
+ 	&*& true == forall(result, opt_not_zero)
+ 	&*& coprime(step, capa);
  {
    switch(n) {
      case zero: {
@@ -300,15 +364,48 @@
      }
      case succ(m): {
        list<option<nat> > lst = stripe_l(start, step, m, capa);
+       assert true == forall(lst, opt_not_zero);
        assert count_some(lst) == m;
-       if(nth(stripe(start, step, n, capa), lst) != none) {
-         // Contradiction
-         assume(false); // TODO
+       switch(nth(stripe(start, step, n, capa), lst))
+       {
+         case some(prev_val): {
+           stripe_less_than_capa(start, step, n, capa);
+           forall_nth(lst, opt_not_zero, stripe(start, step, n, capa));
+           assert prev_val != zero;
+           int diff = int_of_nat(n) - int_of_nat(prev_val);
+           forall_nth(lst, (opt_less_than_n)(m), stripe(start, step, n, capa));
+           assert diff >= 0;
+           int index = stripe(start, step, n, capa);
+           up_to_covers_x(nat_of_int(length(lst)), (list_contains_stripes)(lst, start, step), index);
+           
+           assert true == list_contains_stripes(lst, start, step, index);
+           assert stripe(start, step, prev_val, capa) == stripe(start, step, n, capa);
+           decrease_stripe(start, step, prev_val, n, capa, diff);
+           
+           CRT_pred(length(lst), step, diff, start);
+           assert 0 == (diff*step)%length(lst) &*& diff < length(lst);
+           
+           // from CRT
+           decrease_mod_0(nat_of_int(diff), step);
+           assert diff == int_of_nat(nat_of_int(diff));
+           mul_subst(diff, int_of_nat(nat_of_int(diff)), step);
+           assert 0 == (diff*step)%step;
+           decrease_mod_0(nat_of_int(diff), step);
+           mul_mono_strict(diff, capa, step);
+           bin_chinese_remainder_theorem(step, capa, diff*step);
+           assert diff > 0;
+           assert step > 0;
+           mul_positive(diff, step);
+           assert false;
+         }
+         
+         case none:
        }
        list<option<nat> > new_lst = update(stripe(start, step, n, capa), some(n), lst); // Get a new list 
        stripe_less_than_capa(start, step, n, capa);
        count_some_incr(lst, stripe(start, step, n, capa), n, m);
        updated_list_contains_stripes(lst, start, step, n, nat_of_int(capa));
+       updated_list_less_than_n(lst, start, step, stripe(start, step, n, capa), m);
        return new_lst;
      }
    }

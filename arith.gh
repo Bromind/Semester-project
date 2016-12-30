@@ -31,6 +31,23 @@ lemma void mul_nonnegative(int x, int y)
     mul_eq(x, y);
 }
 
+lemma void mul_positive(int x, int y)
+    requires 0 < x &*& 0 < y;
+    ensures 0 < x * y;
+{
+    int i = 1;
+    for (; i < x; i++)
+        invariant 0 < i &*& i <= x &*& 0 < i * y;
+        decreases x - i;
+    {
+    }
+    note(i == x);
+    note(mul(i, y) == mul(x, y));
+    note(i * y == mul(i, y));
+    mul_eq(x, y);
+}
+
+
 lemma void mul_mono(int i, int n, int a)
     requires i <= n &*& 0 <= a;
     ensures i * a <= n * a;

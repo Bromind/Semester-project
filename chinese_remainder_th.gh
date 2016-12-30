@@ -1,0 +1,51 @@
+#include "arith.gh"
+#include <nat.gh>
+
+
+
+predicate coprime(int n1, int n2) = true;
+ /*
+fixpoint bool equals_modulo(nat mod, nat a, nat b) 
+{
+  return int_of_nat(a) % int_of_nat(mod) == int_of_nat(b) % int_of_nat(mod);
+}
+
+fixpoint bool CRT_val(nat mod1, nat a1, nat mod2, nat a2, nat x)
+{
+  return equals_modulo(mod1, a1, x) && equals_modulo(mod2, a2, x);
+}
+
+fixpoint bool n_at_nth(list<nat> lst, nat n)
+{
+  return nth(int_of_nat(n), lst) == n;
+}
+
+
+lemma list<nat> generate_ints(nat length)
+requires true;
+ensures forall(result, (n_at_nth)(result)) == true &*& length(result) == int_of_nat(length);
+{
+  switch(length) {
+    case zero: return nil;
+    case succ(p_length): {
+      list<nat> pred = generate_ints(p_length);
+      list<nat> lst = append(pred, cons(length, nil));
+      
+      
+      return lst;
+    }
+  }
+}
+
+*/
+
+
+// x = diff * step
+lemma void bin_chinese_remainder_theorem(int n1, int n2, int x)
+requires coprime(n1, n2) &*& 0 == x%n1 &*& 0 == x % n2 &*& x < n1*n2 ;
+ensures x == 0;
+{
+  assume(false);
+}
+
+ 
