@@ -359,10 +359,17 @@
  }
  
  lemma void decrease_stripe(int start, int step, nat val1, nat val2, int capa, int diff)
- requires stripe(start, step, val1, capa) == stripe(start, step, val2, capa) &*& int_of_nat(val2) == int_of_nat(val1) + diff;
+ requires stripe(start, step, val1, capa) == stripe(start, step, val2, capa) &*& int_of_nat(val2) == int_of_nat(val1) + diff &*& diff > 0 &*& capa > 0 &*& step < capa &*& step > 0 &*& start < capa &*& start >= 0;
  ensures stripe(start, step, zero, capa) == stripe(start, step, nat_of_int(diff), capa);
  {
-   assume(false);
+   switch(val1) {
+     case zero: assert val2 == nat_of_int(diff);
+     case succ(p_val1): {
+       assert val2 == succ(?p_val2);
+       decrease_one_step_stripe(start, step, p_val1, p_val2, capa);
+       decrease_stripe(start, step, p_val1, p_val2, capa, diff);
+     }
+   }
  }
  
  lemma void mul_distrib(int a, int b)
@@ -393,7 +400,7 @@
  }
  
  lemma list<option<nat> > stripe_l(int start, int step, nat n, int capa)
- requires 0 <= start &*& start < capa &*& step > 0 &*& int_of_nat(n) <= capa &*& coprime(step, capa);
+ requires 0 <= start &*& start < capa &*& step > 0 &*& int_of_nat(n) <= capa &*& coprime(step, capa) &*& step < capa;
  ensures count_some(result) == n
  	&*& length(result) == capa
  	&*& true == up_to(nat_of_int(capa), (list_contains_stripes)(result, start, step))
