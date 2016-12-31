@@ -317,11 +317,45 @@
    assume(false);
  }
  
- lemma void decrease_one_step_stripe(int start, int step, nat val1, nat val2, int capa)
- requires stripe(start, step, succ(val1), capa) == stripe(start, step, succ(val2), capa) &*& int_of_nat(val1) < int_of_nat(val2);
- ensures stripe(start, step, val1, capa) == stripe(start, step, val2, capa);
+ lemma void mod_pred_eq(int a, int b, int mod)
+ requires true == ((a+1)%mod == (b+1)%mod) &*& a >= 0 &*& b >= 0;
+ ensures a%mod == b%mod;
  {
    assume(false);
+ }
+ 
+ lemma void mod_eq_sub(int a, int b, int mod, int incr)
+ requires true == ((a+incr)%mod == (b+incr)%mod) &*& a >= 0 &*& b >= 0 &*& incr >= 0 &*& incr < mod &*& a < mod &*& b < mod;
+ ensures true == (a%mod == b%mod);
+ {
+   int i = incr;
+   for(; i > 0; i--)
+   invariant true == ((a+i)%mod == (b+i)%mod) &*& i >= 0;
+   decreases i;
+   {
+     mod_pred_eq(a+i-1, b+i-1, mod);
+   }
+   assert i == 0;
+ }
+ 
+ lemma void decrease_one_step_stripe(int start, int step, nat val1, nat val2, int capa)
+ requires stripe(start, step, succ(val1), capa) == stripe(start, step, succ(val2), capa) &*& int_of_nat(val1) < int_of_nat(val2) &*& capa > 0 &*& step < capa &*& step > 0 &*& start < capa &*& start >= 0;
+ ensures stripe(start, step, val1, capa) == stripe(start, step, val2, capa);
+ {
+   assert stripe(start, step, succ(val1), capa) == (stripe(start, step, val1, capa) + step) % capa;
+   assert stripe(start, step, succ(val2), capa) == (stripe(start, step, val2, capa) + step) % capa;
+   
+   stripe_less_than_capa(start, step, val1, capa);
+   stripe_less_than_capa(start, step, val2, capa);
+   
+   mod_eq_sub(stripe(start, step, val1, capa), stripe(start, step, val2, capa), capa, step);
+   
+   division_round_to_zero(stripe(start, step, val1, capa), capa);
+   div_rem(stripe(start, step, val1, capa), capa);
+   
+   division_round_to_zero(stripe(start, step, val2, capa), capa);
+   div_rem(stripe(start, step, val2, capa), capa);
+   
  }
  
  lemma void decrease_stripe(int start, int step, nat val1, nat val2, int capa, int diff)
