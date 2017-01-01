@@ -27,11 +27,32 @@
    assume(false);
  }
  
- lemma void mod_of_succ_eq_succ_of_mod(int a, int mod)
- requires a%mod != mod - 1;
- ensures true == (a%mod + 1 == (a+1)%mod);
+ lemma void div_eq(int a, int b)
+ requires true == (a%b >= 0) &*& true == (a%b < b - 1);
+ ensures true == ((a+1)/b == a/b);
  {
    assume(false);
+ }
+ 
+ lemma void mod_of_succ_eq_succ_of_mod(int a, int mod)
+ requires a%mod != mod - 1 &*& mod > 0 &*& a >= 0;
+ ensures true == (a%mod + 1 == (a+1)%mod);
+ {
+   div_rem(a+1, mod);
+   div_rem(a, mod);
+   div_mod(a%mod, a, mod);
+   
+   assert true == (a%mod < mod - 1);
+   div_mod_gt_0(a%mod, a, mod);
+   assert true == (a%mod >= 0);
+   div_eq(a, mod);
+   mul_subst(a/mod, (a+1)/mod, mod);
+   
+   assert true == ((a/mod * mod) == ((a+1)/mod * mod));
+   
+   assert a+1 == (a/mod * mod) + (a+1)%mod;
+   assert a+1 == (a/mod * mod) + a%mod + 1;
+   assert a%mod + 1 == (a+1) % mod;
  }
   
  lemma void mod_pred_eq(int a, int b, int mod)
