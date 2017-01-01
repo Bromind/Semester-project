@@ -28,11 +28,7 @@
  fixpoint bool is_not_zero(nat n) {
   return is_n(zero, n) == true ? false : true;
  }
- 
- fixpoint bool nth_is_zero(list<nat> lst, nat n) {
-   return is_zero(nth(int_of_nat(n), lst));
- }
- 
+
  fixpoint list<option<nat> > gen_none(nat capa)
  {
    switch(capa) {
@@ -85,39 +81,7 @@
      case succ(p_capa): gen_none_l(p_capa);
    }
  }
- 
- lemma list<nat> gen_0(nat capa)
- requires true;
- ensures length(result) == int_of_nat(capa) 
- 	&*& true == forall(result, is_zero) 
- 	&*& count_elem_non_zero(result) == zero
- 	&*& true == forall(result, (is_n)(zero));
- {
-   switch(capa) {
-     case(zero): return nil;
-     case succ(p_capa): {
-       list<nat> tail = gen_0(p_capa);
-       nat hd = zero;
-       list<nat> new_lst = cons(zero, tail);
-       return new_lst;
-     }
-   }
- }
- 
- fixpoint nat count_elem_zero(list<nat> lst) {
-   switch(lst) {
-     case nil: return zero;
-     case cons(hd, tl): return hd == zero ? succ(count_elem_zero(tl)) : count_elem_zero(tl);
-   }
- }
- 
- fixpoint nat count_elem_non_zero(list<nat> lst) {
-   switch(lst) {
-     case nil: return zero;
-     case cons(hd, tl): return hd == zero ? count_elem_non_zero(tl) : succ(count_elem_non_zero(tl));
-   }
- }
- 
+
  fixpoint nat count_some(list<option<nat> > lst) {
    switch(lst) {
      case nil: return zero;
@@ -139,7 +103,6 @@
    }
  }
  
- // Given a number i (say 3), check whether lst[stripe(start, step, i, capa)] == i ? e.g. after 3 jumps, does lst[stripe(3)] == 3 ?
  fixpoint bool list_contains_stripes(list<option<nat> > lst, int start, int step, int index) {
    return list_contains_stripes_helper(lst, start, step, index, nth(index, lst));
  }
@@ -215,30 +178,6 @@
      }
    }
  }
-
- 
- fixpoint bool less_than_n(nat n, nat i) {
-   return int_of_nat(n) >= int_of_nat(i);
- }
- 
- lemma void forall_less_than_n_intro(list<nat> lst, nat n)
- requires true == forall(lst, (is_n)(n));
- ensures true == forall(lst, (less_than_n)(n));
- {
-   switch(lst) {
-     case nil: assert true == forall(lst, (less_than_n)(n));
-     case cons(hd, tl): {
-       forall_less_than_n_intro(tl, n);
-     }
-   }
- }
- 
- lemma void name(int capa_lst, int start, nat diff, int step)
- requires stripe(start, step, diff, capa_lst) == start;
- ensures start == (start + int_of_nat(diff)*step)% capa_lst;
- {
-   assume(false);
- }
  
  lemma void count_some_incr(list<option<nat> > lst, int index_update, nat new_val, nat sum)
  requires count_some(lst) == sum &*& nth(index_update, lst) == none &*& index_update < length(lst) &*& index_update >= 0;
@@ -311,7 +250,7 @@
  }
  
  lemma void mod_add(int a, int b, int mod)
- requires true;
+ requires mod > 0 &*& a >= 0 &*& b >= 0;
  ensures true == (((a%mod) + b)%mod == (a+b)%mod);
  {
    assume(false);
@@ -332,6 +271,8 @@
        stripe_to_arith(start, step, p_n, capa);
        assert stripe(start, step, p_n, capa) == (start+int_of_nat(p_n)*step)%capa;
        assert stripe(start, step, n, capa) == ((start + int_of_nat(p_n)*step)%capa + step)%capa;
+       assert start >= 0;
+       mul_nonnegative(int_of_nat(p_n), step);
        mod_add(start + int_of_nat(p_n)*step, step, capa);
        assert stripe(start, step, n, capa) == (start + int_of_nat(p_n)*step + step) % capa;
        assert stripe(start, step, n, capa) == (start + (int_of_nat(p_n) + 1) * step) % capa;
@@ -346,7 +287,16 @@
  requires stripe(start, step, zero, length_lst) == stripe(start, step, nat_of_int(diff), length_lst) &*& diff >= 0 &*& step >= 0 &*& start < length_lst &*& start >= 0;
  ensures 0 == (diff*step)%length_lst;
  {
-   assume(false);
+   stripe_to_arith(start, step, zero, length_lst);
+   stripe_to_arith(start, step, nat_of_int(diff), length_lst);
+   mul_subst(int_of_nat(nat_of_int(diff)), diff, step);
+   mul_subst(int_of_nat(zero), 0, step);
+   
+//   assert stripe(start, step, zero, length_lst) == (start + int_of_nat(zero)*step)%length_lst;
+   assert true == ((start + (0*step))%length_lst == (start + diff*step)%length_lst);
+   assert 0*step == 0;
+   division_round_to_zero(0, length_lst);
+   div_rem(0, length_lst);
  }
  
  lemma void mod_pred_eq(int a, int b, int mod)
