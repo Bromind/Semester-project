@@ -12,6 +12,75 @@
 // //@ #include "logical_ops.gh"
 
 /*@
+ 
+ lemma void mod_add(int a, int b, int mod)
+ requires mod > 0 &*& a >= 0 &*& b >= 0;
+ ensures true == (((a%mod) + b)%mod == (a+b)%mod);
+ {
+   assume(false);
+ }
+  
+ lemma void mod_succ_zero(int a, int mod)
+ requires a%mod == mod - 1;
+ ensures 0 == (a+1)%mod;
+ {
+   assume(false);
+ }
+ 
+ lemma void mod_of_succ_eq_succ_of_mod(int a, int mod)
+ requires a%mod != mod - 1;
+ ensures true == (a%mod + 1 == (a+1)%mod);
+ {
+   assume(false);
+ }
+  
+ lemma void mod_pred_eq(int a, int b, int mod)
+ requires true == ((a+1)%mod == (b+1)%mod) &*& a >= 0 &*& b >= 0 &*& mod > 0;
+ ensures a%mod == b%mod;
+ {
+   div_mod_gt_0((a+1)%mod, a+1, mod);
+   assert true == ((a+1)%mod >= 0);
+   assert true == ((b+1)%mod >= 0);
+   
+   if(a%mod != b%mod)
+   {
+     if(a%mod == mod - 1) {
+       mod_succ_zero(a, mod);
+       assert 0 == (a+1)%mod;
+       assert b%mod != mod - 1;
+       mod_of_succ_eq_succ_of_mod(b, mod);
+       assert true == ((b+1)%mod == b%mod + 1);
+       div_mod_gt_0(b%mod, b, mod);
+       assert 0 <= b%mod;
+       assert true == ((b+1)%mod > 0);
+       assert true == ((a+1)%mod != (b+1)%mod);
+       assert false;
+     } else {
+       if(b%mod == mod - 1) {
+         mod_succ_zero(b, mod);
+         mod_of_succ_eq_succ_of_mod(a, mod);
+         div_mod_gt_0(a%mod, a, mod);
+       } else {
+         assert a%mod != mod - 1;
+         div_mod_gt_0(a%mod, a, mod);
+         assert a%mod >= 0;
+         assert a%mod < mod - 1;
+         mod_of_succ_eq_succ_of_mod(a, mod);
+         assert true == ((a+1)%mod == a%mod + 1);
+         
+         assert true == (b%mod != mod - 1);
+         div_mod_gt_0(b%mod, b, mod);
+         assert true == (b%mod < mod - 1);
+         mod_of_succ_eq_succ_of_mod(b, mod);
+         assert true == ((b+1)%mod == b%mod + 1);
+         
+         assert true == (a%mod + 1 != b%mod + 1);
+         assert false;
+       }
+     }
+   }
+ }
+
  fixpoint bool is_n(nat n, nat i) {
    return n == i;
  }
@@ -248,13 +317,7 @@
      }
    }
  }
- 
- lemma void mod_add(int a, int b, int mod)
- requires mod > 0 &*& a >= 0 &*& b >= 0;
- ensures true == (((a%mod) + b)%mod == (a+b)%mod);
- {
-   assume(false);
- }
+
  
  lemma void stripe_to_arith(int start, int step, nat n, int capa)
  requires start < capa &*& start >= 0 &*& step >= 0;
@@ -298,13 +361,7 @@
    division_round_to_zero(0, length_lst);
    div_rem(0, length_lst);
  }
- 
- lemma void mod_pred_eq(int a, int b, int mod)
- requires true == ((a+1)%mod == (b+1)%mod) &*& a >= 0 &*& b >= 0;
- ensures a%mod == b%mod;
- {
-   assume(false);
- }
+
  
  lemma void mod_eq_sub(int a, int b, int mod, int incr)
  requires true == ((a+incr)%mod == (b+incr)%mod) &*& a >= 0 &*& b >= 0 &*& incr >= 0 &*& incr < mod &*& a < mod &*& b < mod;
