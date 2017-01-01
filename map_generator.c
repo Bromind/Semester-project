@@ -310,8 +310,40 @@
    }
  }
  
+ lemma void mod_add(int a, int b, int mod)
+ requires true;
+ ensures true == (((a%mod) + b)%mod == (a+b)%mod);
+ {
+   assume(false);
+ }
+ 
+ lemma void stripe_to_arith(int start, int step, nat n, int capa)
+ requires start < capa &*& start >= 0 &*& step >= 0;
+ ensures stripe(start, step, n, capa) == (start + int_of_nat(n)*step)%capa;
+ {
+   switch(n) {
+     case zero: {
+       assert stripe(start, step, zero, capa) == start;
+       division_round_to_zero(start, capa);
+       div_rem(start, capa);
+       assert start == (start + 0*step)%capa;
+     }
+     case succ(p_n): {
+       stripe_to_arith(start, step, p_n, capa);
+       assert stripe(start, step, p_n, capa) == (start+int_of_nat(p_n)*step)%capa;
+       assert stripe(start, step, n, capa) == ((start + int_of_nat(p_n)*step)%capa + step)%capa;
+       mod_add(start + int_of_nat(p_n)*step, step, capa);
+       assert stripe(start, step, n, capa) == (start + int_of_nat(p_n)*step + step) % capa;
+       assert stripe(start, step, n, capa) == (start + (int_of_nat(p_n) + 1) * step) % capa;
+       assert int_of_nat(p_n)+1 == int_of_nat(succ(p_n));
+       mul_subst(int_of_nat(p_n) + 1, int_of_nat(n), step);
+       assert stripe(start, step, n, capa) == (start + int_of_nat(n)*step) % capa;
+     }
+   }
+ }
+ 
  lemma void CRT_pred(int length_lst, int step, int diff, int start) 
- requires stripe(start, step, zero, length_lst) == stripe(start, step, nat_of_int(diff), length_lst);
+ requires stripe(start, step, zero, length_lst) == stripe(start, step, nat_of_int(diff), length_lst) &*& diff >= 0 &*& step >= 0 &*& start < length_lst &*& start >= 0;
  ensures 0 == (diff*step)%length_lst;
  {
    assume(false);
