@@ -1,43 +1,81 @@
 #include "arith.gh"
+#include "nth_prop.gh"
 #include <nat.gh>
 
-
-
 predicate coprime(int n1, int n2) = true;
- /*
-fixpoint bool equals_modulo(nat mod, nat a, nat b) 
+
+fixpoint bool divide(int whole, int divisor)
 {
-  return int_of_nat(a) % int_of_nat(mod) == int_of_nat(b) % int_of_nat(mod);
+  return whole/divisor * divisor == whole;
 }
 
-fixpoint bool CRT_val(nat mod1, nat a1, nat mod2, nat a2, nat x)
+fixpoint bool divisors_fp(int whole, pair<int, bool> n_divide)
 {
-  return equals_modulo(mod1, a1, x) && equals_modulo(mod2, a2, x);
+  return divide(whole, fst(n_divide)) == snd(n_divide);
 }
 
-fixpoint bool n_at_nth(list<nat> lst, nat n)
+fixpoint list<pair<int, bool> > gen_divisors(nat bound, int whole)
 {
-  return nth(int_of_nat(n), lst) == n;
-}
-
-
-lemma list<nat> generate_ints(nat length)
-requires true;
-ensures forall(result, (n_at_nth)(result)) == true &*& length(result) == int_of_nat(length);
-{
-  switch(length) {
+  switch(bound) {
     case zero: return nil;
-    case succ(p_length): {
-      list<nat> pred = generate_ints(p_length);
-      list<nat> lst = append(pred, cons(length, nil));
-      
-      
-      return lst;
+    case succ(p_bound): return cons(pair(int_of_nat(bound), divide(whole, int_of_nat(bound))), gen_divisors(p_bound, whole));
+  }
+}
+
+lemma void length_gen_divisors(nat bound, int whole)
+requires true;
+ensures length(gen_divisors(bound, whole)) == int_of_nat(bound);
+{
+  switch(bound) {
+    case zero: 
+    case succ(p_bound): length_gen_divisors(p_bound, whole);
+  }
+}
+
+lemma void gen_divisors_head(list<pair<int, bool> > lst, nat bound, int whole)
+requires lst == gen_divisors(bound, whole);
+ensures bound == zero ? true : true == divisors_fp(whole, head(lst));
+{
+  length_gen_divisors(bound, whole);
+  assert length(lst) == int_of_nat(bound);
+  switch(bound) {
+    case zero:
+    case succ(p_bound):
+  } 
+}
+
+lemma void gen_divisors_tail(list<pair<int, bool> > lst, nat s_bound, int whole)
+requires lst == gen_divisors(s_bound, whole) &*& s_bound == succ(?bound);
+ensures tail(lst) == gen_divisors(bound, whole);
+{
+}
+
+lemma void forall_gen_divisor_contains_divisors(list<pair<int, bool> > lst, int whole)
+requires lst == gen_divisors(nat_of_int(length(lst)), whole);
+ensures true == forall(lst, (divisors_fp)(whole));
+{
+  switch(lst) {
+    case nil:
+    case cons(pair, tl): {
+      gen_divisors_tail(lst, succ(nat_of_int(length(tl))), whole);
+      forall_gen_divisor_contains_divisors(tl, whole);
+      assert true == forall(tl, (divisors_fp)(whole));
     }
   }
 }
 
-*/
+fixpoint list<pair<int, bool> > merge_list_and(list<pair<int, bool> > lst1, list<pair<int, bool> > lst2)
+{
+  switch(lst1) {
+    case nil: return nil;
+    case cons(pair1, tail1): return {
+      switch(lst2) {
+        case nil: return nil;
+        case cons(pair2, tail2): return (pair1 == pair2 && snd(pair1) == true) ? cons(pair1, merge_list_and(tail1, tail2)) : merge_list_and(tail1, tail2);
+      }
+    };
+  }
+}
 
 
 // x = diff * step
