@@ -1,5 +1,6 @@
 #include "arith.gh"
 #include "nth_prop.gh"
+#include "modulo.gh"
 #include <nat.gh>
 
 predicate coprime(int n1, int n2) = true;
@@ -7,6 +8,15 @@ predicate coprime(int n1, int n2) = true;
 fixpoint bool divide(int whole, int divisor)
 {
   return whole/divisor * divisor == whole;
+}
+
+lemma void divisor_below_n(int whole, int divisor)
+requires divisor > whole &*& whole > 0 &*& divisor > 0;
+ensures divide(whole, divisor) == false;
+{
+  division_round_to_zero(whole, divisor);
+  assert whole/divisor == 0;
+  mul_subst(0, whole/divisor, divisor);
 }
 
 fixpoint bool divisors_fp(int whole, pair<int, bool> n_divide)
