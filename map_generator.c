@@ -21,16 +21,19 @@
  }
   
  lemma void mod_succ_zero(int a, int mod)
- requires a%mod == mod - 1;
+ requires a%mod == mod - 1 &*& mod != 0;
  ensures 0 == (a+1)%mod;
  {
    assume(false);
  }
  
  lemma void div_eq(int a, int b)
- requires true == (a%b >= 0) &*& true == (a%b < b - 1);
+ requires true == (a%b >= 0) &*& true == (a%b < b - 1) &*& b > 1 &*& a >= 0;
  ensures true == ((a+1)/b == a/b);
  {
+   div_rem(a, b);
+   assume(a == a/b * b + a%b); // note(a == a/b * b + a%b);
+   assert a == a/b * b + a%b;
    assume(false);
  }
  
@@ -147,6 +150,11 @@
  fixpoint bool lst_opt_less_than_n(list<option<nat> > lst, nat n, int index)
  {
    return opt_less_than_n(n, nth(index, lst));
+ }
+ 
+ fixpoint bool lst_opt_not_zero(list<option<nat> > lst, int index)
+ {
+   return opt_not_zero(nth(index, lst));
  }
   
  lemma void gen_none_less_than(nat capa, nat n)
@@ -269,6 +277,68 @@
    }
  }
  
+ fixpoint bool forall_fp_to_up_to_fp<t>(fixpoint(t, bool) fp, list<t> lst, int index)
+ {
+   return fp(nth(index, lst));
+ }
+ 
+ lemma void forall_to_up_to_length<t>(list<t> lst_forall, list<t> lst_orig, fixpoint(t, bool) fp)
+ requires forall(lst_orig, fp) == true &*& length(lst_forall) <= length(lst_orig);
+ ensures true == up_to(nat_of_int(length(lst_forall)), (forall_fp_to_up_to_fp)(fp, lst_orig));
+ {
+   switch(lst_forall) {
+     case nil:
+     case cons(t, tail_forall): {
+       assert length(tail_forall) + 1 == length(lst_forall);
+       assert succ(nat_of_int(length(tail_forall))) == nat_of_int(length(lst_forall));
+     
+       forall_to_up_to_length(tail_forall, lst_orig, fp);
+       forall_fp_to_fp(lst_orig, fp, nat_of_int(length(tail_forall)));
+       
+       assert true == fp(nth(length(tail_forall), lst_orig));
+       assert forall_fp_to_up_to_fp(fp, lst_orig, length(tail_forall)) == fp(nth(length(tail_forall), lst_orig));
+       
+       fixpoint(int, bool) prop = (forall_fp_to_up_to_fp)(fp, lst_orig);
+       note(prop(length(tail_forall)) == true);
+     }
+   }
+ }
+ 
+ lemma void up_to_length_to_forall<t>(list<t> lst_forall, int n_drop, list<t> lst_orig, fixpoint(t, bool) fp)
+ requires true == up_to(nat_of_int(length(lst_orig)), (forall_fp_to_up_to_fp)(fp, lst_orig))
+ 	&*& drop(n_drop, lst_orig) == lst_forall
+ 	&*& n_drop >= 0
+ 	&*& n_drop <= length(lst_orig);
+ ensures true == forall(lst_forall, fp);
+ {
+   switch(lst_forall) {
+     case nil:
+     case cons(hd, tl): {
+       assert n_drop < length(lst_orig);
+       assert cons(hd, tl) == drop(n_drop, lst_orig);
+       drop_n_plus_one(n_drop, lst_orig);
+       assert tl == drop(n_drop + 1, lst_orig);
+       
+       assert length(lst_forall) >= 1;
+       assert length(drop(n_drop, lst_orig)) >= 1;
+       assert length(drop(n_drop, lst_orig)) == length(lst_orig) - n_drop;
+       assert length(lst_orig) - n_drop >= 1;
+       
+       up_to_length_to_forall(tl, n_drop + 1, lst_orig, fp);
+       if(fp(hd) == false){
+         assert hd == nth(n_drop, lst_orig);
+         assert fp(nth(n_drop, lst_orig)) == false;
+         fixpoint(int, bool) prop = (forall_fp_to_up_to_fp)(fp, lst_orig);
+         assert prop(n_drop) == false;
+         
+         up_to_covers_x(nat_of_int(length(lst_orig)), prop, n_drop);
+         
+         assert false;
+       }
+     }
+   }
+ }
+ 
  lemma void count_some_incr(list<option<nat> > lst, int index_update, nat new_val, nat sum)
  requires count_some(lst) == sum &*& nth(index_update, lst) == none &*& index_update < length(lst) &*& index_update >= 0;
  ensures count_some(update(index_update, some(new_val), lst)) == succ(sum);
@@ -371,6 +441,7 @@
  requires stripe(start, step, zero, length_lst) == stripe(start, step, nat_of_int(diff), length_lst) &*& diff >= 0 &*& step >= 0 &*& start < length_lst &*& start >= 0;
  ensures 0 == (diff*step)%length_lst;
  {
+   assume(false);
    stripe_to_arith(start, step, zero, length_lst);
    stripe_to_arith(start, step, nat_of_int(diff), length_lst);
    mul_subst(int_of_nat(nat_of_int(diff)), diff, step);
