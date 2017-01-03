@@ -24,6 +24,11 @@ fixpoint bool divisors_fp(int whole, pair<int, bool> n_divide)
   return divide(whole, fst(n_divide)) == snd(n_divide);
 }
 
+fixpoint bool common_divisors_fp(int whole1, int whole2, pair<int, bool> n_divide)
+{
+  return divide(whole1, fst(n_divide)) == divide(whole2, fst(n_divide)) && divide(whole1, fst(n_divide)) == true;
+}
+
 fixpoint list<pair<int, bool> > gen_divisors(nat bound, int whole)
 {
   switch(bound) {
@@ -78,13 +83,20 @@ fixpoint list<pair<int, bool> > merge_list_and(list<pair<int, bool> > lst1, list
 {
   switch(lst1) {
     case nil: return nil;
-    case cons(pair1, tail1): return {
+    case cons(pair1, tail1): return nil; /*{ // verifast issue #79
       switch(lst2) {
         case nil: return nil;
         case cons(pair2, tail2): return (pair1 == pair2 && snd(pair1) == true) ? cons(pair1, merge_list_and(tail1, tail2)) : merge_list_and(tail1, tail2);
       }
-    };
+    }; */
   }
+}
+
+lemma void common_divisors(int n1, int n2)
+requires n1 >= n2;
+ensures true == forall(merge_list_and(gen_divisors(nat_of_int(n2), n1), gen_divisors(nat_of_int(n2), n2)), (common_divisors_fp)(n1, n2));
+{
+  assume(false);
 }
 
 
