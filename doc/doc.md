@@ -88,3 +88,6 @@ In particular, when only existing data is accessed (do not test for existence), 
 ### Overview
 
 ### Todo list
+
+### Dependence graph of lemmas
+![alt tag](https://github.com/Bromind/Semester-project/blob/master/doc/lemma_dependence.png)
