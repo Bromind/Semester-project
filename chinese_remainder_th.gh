@@ -2,6 +2,7 @@
 #include "nth_prop.gh"
 #include "modulo.gh"
 #include <nat.gh>
+#include <list.gh>
 
 predicate coprime(int n1, int n2) = true;
 
@@ -34,6 +35,40 @@ fixpoint list<pair<int, bool> > gen_divisors(nat bound, int whole)
   switch(bound) {
     case zero: return nil;
     case succ(p_bound): return cons(pair(int_of_nat(bound), divide(whole, int_of_nat(bound))), gen_divisors(p_bound, whole));
+  }
+}
+
+lemma void gen_divisor_contains_all_divisors_below_bound(nat bound, int whole, int divisor)
+requires whole >= 0 &*& int_of_nat(bound) >= divisor &*& divisor > 0;
+ensures divide(whole, divisor) ? true == exists(gen_divisors(bound, whole), (equals)(pair(divisor, true))) : true == exists(gen_divisors(bound, whole), (equals)(pair(divisor, false)));
+{
+  switch(bound) {
+    case zero: 
+    case succ(p_bound): {
+      if(int_of_nat(bound) == divisor) {
+        list<pair<int, bool> > divs = gen_divisors(bound, whole);
+        pair<int, bool> hd = head(divs);
+        assert divs == cons(pair(int_of_nat(bound), divide(whole, int_of_nat(bound))), gen_divisors(p_bound, whole));
+      } else {
+        gen_divisor_contains_all_divisors_below_bound(p_bound, whole, divisor);
+      }
+    }
+  }
+}
+
+fixpoint bool equals<t>(t a, t b)
+{
+  return a == b;
+}
+
+lemma void all_divisors_in_gen_divisors(int whole, int n)
+requires n > 0 &*& whole > 0;
+ensures divide(whole, n) ? true == exists(gen_divisors(nat_of_int(whole), whole), (equals)(pair(n, true))) : true;
+{
+  if(n > whole) {
+    divisor_below_n(whole, n);
+  } else {
+    gen_divisor_contains_all_divisors_below_bound(nat_of_int(whole), whole, n);
   }
 }
 
