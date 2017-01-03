@@ -1,0 +1,132 @@
+digraph stripe_l {
+	mod_add[color=red];
+	mod_succ_zero[color=red];
+	div_eq[color=red];
+
+	mod_of_succ_eq_succ_of_mod;
+	mod_pred_eq;
+
+	is_n[shape=box];
+	is_none[shape=box];
+	is_zero[shape=box];
+	is_not_zero[shape=box];
+	gen_none[shape=box];
+	opt_less_than_n[shape=box];
+	opt_not_zero[shape=box];
+	lst_opt_less_than_n[shape=box];
+	lst_opt_not_zero[shape=box];
+
+	gen_none_less_than;
+	gen_none_l;
+
+	count_some[shape=box];
+	stripe[shape=box];
+	list_contains_stripes_helper[shape=box];
+	list_contains_stripes[shape=box];
+
+	stripe_less_than_capa;
+	list_none_less_than_n;
+	list_none_contains_stripes;
+	forall_fp_to_fp;
+	forall_fp_to_up_to_fp;
+	forall_to_up_to_length;
+	up_to_length_to_forall;
+	count_some_incr;
+	updated_list_contains_stripes;
+	updated_list_less_than_n;
+	updated_list_not_zero_up_to;
+	updated_list_not_zero_forall;
+	stripe_to_arith;
+	CRT_pred[color=red];
+	mod_eq_sub;
+	decrease_one_step_stripe;
+	decrease_stripe;
+	mul_distrib;
+	decrease_mod_0;
+
+	bin_chinese_remainder_theorem[color=blue];
+
+	stripe_l;
+
+	stripe_l -> gen_none;
+	stripe_l -> gen_none_l;
+	stripe_l -> gen_none_contains_stripes;
+	stripe_l -> gen_none_less_than;
+	stripe_l -> list_none_less_than_n;
+
+	stripe_l -> stripe_l;
+	stripe_l -> count_some;
+	stripe_l -> stripe;
+	stripe_l -> stripe_less_than_capa;
+	stripe_l -> opt_not_zero;
+	stripe_l -> lst_opt_less_than_n;
+	stripe_l -> list_contains_stripes;
+	stripe_l -> decrease_stripe;
+	stripe_l -> CRT_pred;
+	stripe_l -> decrease_mod_0;
+	stripe_l -> count_some_incr;
+	stripe_l -> updated_list_contains_stripes;
+	stripe_l -> updated_list_less_than_n;
+	stripe_l -> updated_list_not_zero_forall;
+	stripe_l -> bin_chinese_remainder_theorem;
+
+	decrease_mod_0 -> {decrease_mod_0 mul_distrib }
+
+	decrease_stripe -> {decrease_one_step_stripe decrease_stripe stripe}
+
+	decrease_one_step_stripe -> {stripe stripe_less_than_capa mod_eq_sub}
+
+	mod_eq_sub -> {mod_pred_eq}
+
+	stripe_to_arith -> {stripe stripe_to_arith mod_add}
+
+	updated_list_not_zero_forall -> {opt_not_zero stripe forall_to_up_to_length updated_list_not_zero_up_to up_to_length_to_forall }
+
+	updated_list_not_zero_up_to -> {forall_fp_to_up_to_fp opt_not_zero updated_list_not_zero_up_to stripe stripe_less_than_capa}
+
+	updated_list_less_than_n -> {lst_opt_less_than_n stripe updated_list_less_than_n stripe_less_than_capa}
+
+	updated_list_contains_stripes -> {list_contains_stripes updated_list_contains_stripes stripe stripe_less_than_capa}
+
+	count_some_incr -> {count_some count_some_incr}
+
+	up_to_length_to_forall -> {forall_fp_to_up_to_fp up_to_length_to_forall}
+
+	forall_to_up_to_length -> {forall_to_up_to_length forall_fp_to_fp}
+
+	forall_fp_to_fp -> forall_fp_to_fp;
+
+	list_none_contains_stripes -> {list_contains_stripes list_none_contains_stripes is_none}
+
+	list_none_less_than_n -> {opt_less_than_n lst_opt_less_than_n list_none_less_than_n}
+
+	stripe_less_than_capa -> {stripe stripe_less_than_capa}
+
+	list_contains_stripes -> list_contains_stripes_helper;
+
+	list_contains_stripes_helper -> stripe;
+
+	stripe -> stripe;
+
+	count_some -> count_some;
+
+	gen_none_l -> {gen_none is_none count_some opt_not_zero gen_none_l}
+
+	gen_none_less_than -> {gen_none opt_less_than_n gen_none_less_than}
+
+	lst_opt_not_zero -> opt_not_zero;
+
+	lst_opt_less_than_n -> opt_less_than_n;
+
+	is_not_zero -> is_n;
+
+	is_zero -> is_n;
+
+	mod_pred_eq -> {mod_succ_zero mod_of_succ_eq_succ_of_mod }
+
+	mod_of_succ_eq_succ_of_mod -> div_eq;
+
+
+
+}
+
