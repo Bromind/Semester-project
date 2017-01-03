@@ -408,7 +408,44 @@
      }
    }
  }
+ 
+ lemma void updated_list_not_zero_up_to(list<option<nat> > lst, int start, int step, nat m, nat bound)
+ requires true == up_to(bound, (forall_fp_to_up_to_fp)(opt_not_zero, lst)) &*& int_of_nat(bound) <= length(lst) &*& start >= 0 &*& start < length(lst) &*& step >= 0;
+ ensures true == up_to(bound, (forall_fp_to_up_to_fp)(opt_not_zero, update(stripe(start, step, succ(m), length(lst)), some(succ(m)), lst)));
+ {
+   switch(bound) {
+     case zero:
+     case succ(p_bound): {
+       updated_list_not_zero_up_to(lst, start, step, m, p_bound);
+       option<nat> content_at_pbound = nth(int_of_nat(p_bound), update(stripe(start, step, succ(m), length(lst)), some(succ(m)), lst));
+       
+       if(stripe(start, step, succ(m), length(lst)) == int_of_nat(p_bound)) {
+         nth_update(int_of_nat(p_bound), stripe(start, step, succ(m), length(lst)), some(succ(m)), lst);
+         assert content_at_pbound == some(succ(m));
+         assert true == opt_not_zero(nth(int_of_nat(p_bound), update(stripe(start, step, succ(m), length(lst)), some(succ(m)), lst)));
+       } else {
+         stripe_less_than_capa(start, step, succ(m), length(lst));
+         nth_update(int_of_nat(p_bound), stripe(start, step, succ(m), length(lst)), some(succ(m)), lst);
+         assert content_at_pbound == nth(int_of_nat(p_bound), lst);
+       }
+       
+       assert true == up_to(bound, (forall_fp_to_up_to_fp)(opt_not_zero, update(stripe(start, step, succ(m), length(lst)), some(succ(m)), lst)));
+     }
+   }
+ }
 
+ lemma void updated_list_not_zero_forall(list<option<nat> > lst, int start, int step, nat m)
+ requires true == forall(lst, opt_not_zero) &*& start >= 0 &*& start < length(lst) &*& step >= 0;
+ ensures true == forall(update(stripe(start, step, succ(m), length(lst)), some(succ(m)), lst), opt_not_zero);
+ {
+   list<option<nat> > new_lst = update(stripe(start, step, succ(m), length(lst)), some(succ(m)), lst);
+   
+   forall_to_up_to_length(lst, lst, opt_not_zero);
+   
+   updated_list_not_zero_up_to(lst, start, step, m, nat_of_int(length(lst)));
+   
+   up_to_length_to_forall(new_lst, 0, new_lst, opt_not_zero);
+ }
  
  lemma void stripe_to_arith(int start, int step, nat n, int capa)
  requires start < capa &*& start >= 0 &*& step >= 0;
@@ -592,6 +629,7 @@
        count_some_incr(lst, stripe(start, step, n, capa), n, m);
        updated_list_contains_stripes(lst, start, step, n, nat_of_int(capa));
        updated_list_less_than_n(lst, start, step, m, nat_of_int(capa));
+       updated_list_not_zero_forall(lst, start, step, m);
        return new_lst;
      }
    }
