@@ -639,11 +639,14 @@
  
 /*@
 
- lemma void apply_CRT<t>(int i, list<t> ts, fixpoint (t, bool) prop, int capacity, int start, int offset);
- requires true == up_to(nat_of_int(i),(stride_nth_prop)(ts, prop, capacity, start, offset)) &*&
- 	coprime(capacity, offset) &*&
- 	i >= capacity;
+ lemma void apply_CRT<t>(int i, list<t> ts, fixpoint (t, bool) prop, int capacity, int start, int offset)
+ requires true == up_to(nat_of_int(i),(stride_nth_prop)(ts, prop, capacity, start, offset))
+ 	&*& coprime(capacity, offset)
+ 	&*& i >= capacity;
  ensures true == up_to(nat_of_int(length(ts)), (nthProp)(ts, prop)) &*& coprime(capacity, offset); 
+ {
+   assume(false);
+ }
 @*/
 
 
