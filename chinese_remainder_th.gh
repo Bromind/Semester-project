@@ -151,6 +151,23 @@ fixpoint list<pair<int, bool> > merge_list_and(list<pair<int, bool> > lst1, list
   }
 }
 
+lemma void merge_list_and_lemma(list<pair<int, bool> > lst1, list<pair<int, bool> > lst2, pair<int, bool> pair)
+requires true == exists(lst1, (equals)(pair)) &*& true == exists(lst2, (equals)(pair)) &*& snd(pair) == true;
+ensures true == exists(merge_list_and(lst1, lst2), (equals)(pair));
+{
+  assume(false);
+}
+
+lemma void common_divisors_contains_1(int n1, int n2)
+requires n1 >= n2 &*& n2 > 0;
+ensures true == exists(merge_list_and(gen_divisors(nat_of_int(n2), n1), gen_divisors(nat_of_int(n2), n2)), (equals)(pair(1, true)));
+{
+  gen_divisors_contains_1(nat_of_int(n1-1), n1);
+  gen_divisors_contains_1(nat_of_int(n2-1), n2);
+  merge_list_and_lemma(gen_divisors(nat_of_int(n1), n1), gen_divisors(nat_of_int(n2), n2), pair(1, true));
+}
+
+
 lemma void common_divisors(int n1, int n2)
 requires n1 >= n2;
 ensures true == forall(merge_list_and(gen_divisors(nat_of_int(n2), n1), gen_divisors(nat_of_int(n2), n2)), (common_divisors_fp)(n1, n2));
