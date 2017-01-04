@@ -45,6 +45,23 @@ fixpoint list<pair<int, bool> > gen_divisors(nat bound, int whole)
   }
 }
 
+lemma void gen_divisors_contains_1(nat bound, int whole)
+requires gen_divisors(succ(bound), whole) == cons(?pair, ?tail);
+ensures true == exists(gen_divisors(succ(bound), whole), (equals)(pair(1, true)));
+{
+  switch(bound) {
+    case(zero): {
+      assert int_of_nat(succ(bound)) == 1;
+      one_divide_all(whole);
+      assert pair == pair(1, true);
+    }
+    case(succ(p_bound)): {
+      gen_divisors_contains_1(p_bound, whole);
+      assert true == exists(tail, (equals)(pair(1, true)));
+    }
+  }
+}
+
 lemma void length_gen_divisors(nat bound, int whole)
 requires true;
 ensures length(gen_divisors(bound, whole)) == int_of_nat(bound);
