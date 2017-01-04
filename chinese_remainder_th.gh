@@ -151,6 +151,7 @@ fixpoint list<pair<int, bool> > merge_list_and(list<pair<int, bool> > lst1, list
   }
 }
 
+// Rely on fixpoint
 lemma void merge_list_and_lemma(list<pair<int, bool> > lst1, list<pair<int, bool> > lst2, pair<int, bool> pair)
 requires true == exists(lst1, (equals)(pair)) &*& true == exists(lst2, (equals)(pair)) &*& snd(pair) == true;
 ensures true == exists(merge_list_and(lst1, lst2), (equals)(pair));
@@ -167,7 +168,28 @@ ensures true == exists(merge_list_and(gen_divisors(nat_of_int(n2), n1), gen_divi
   merge_list_and_lemma(gen_divisors(nat_of_int(n1), n1), gen_divisors(nat_of_int(n2), n2), pair(1, true));
 }
 
+lemma void common_divisors_contains_all_divisors(int n1, int n2, int n3)
+requires divide(n1, n3) == true && divide(n2, n3) == true &*& n1 > 0 &*& n2 > 0 &*& n3 > 0;
+ensures true == exists(merge_list_and(gen_divisors(nat_of_int(n1), n1), gen_divisors(nat_of_int(n2), n2)), (equals)(pair(n3, true)));
+{
+  if(n3 > n1)
+  {
+    divisor_below_n(n1, n3);
+  }
+  gen_divisor_contains_all_divisors_below_bound(nat_of_int(n1), n1, n3);
+  assert true == exists(gen_divisors(nat_of_int(n1), n1), (equals)(pair(n3, true)));
+  
+  if(n3 > n2)
+  {
+    divisor_below_n(n2, n3);
+  }
+  gen_divisor_contains_all_divisors_below_bound(nat_of_int(n2), n2, n3);
+  assert true == exists(gen_divisors(nat_of_int(n2), n2), (equals)(pair(n3, true)));
+  
+  merge_list_and_lemma(gen_divisors(nat_of_int(n1), n1), gen_divisors(nat_of_int(n2), n2), pair(n3, true));
+}
 
+// Rely on fixpoint
 lemma void common_divisors(int n1, int n2)
 requires n1 >= n2;
 ensures true == forall(merge_list_and(gen_divisors(nat_of_int(n2), n1), gen_divisors(nat_of_int(n2), n2)), (common_divisors_fp)(n1, n2));
