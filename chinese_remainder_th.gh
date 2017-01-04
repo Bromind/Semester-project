@@ -11,6 +11,13 @@ fixpoint bool divide(int whole, int divisor)
   return whole/divisor * divisor == whole;
 }
 
+lemma void one_divide_all(int whole)
+requires true;
+ensures divide(whole, 1) == true;
+{
+  div_rem(whole, 1);
+}
+
 lemma void divisor_below_n(int whole, int divisor)
 requires divisor > whole &*& whole > 0 &*& divisor > 0;
 ensures divide(whole, divisor) == false;
@@ -35,6 +42,16 @@ fixpoint list<pair<int, bool> > gen_divisors(nat bound, int whole)
   switch(bound) {
     case zero: return nil;
     case succ(p_bound): return cons(pair(int_of_nat(bound), divide(whole, int_of_nat(bound))), gen_divisors(p_bound, whole));
+  }
+}
+
+lemma void length_gen_divisors(nat bound, int whole)
+requires true;
+ensures length(gen_divisors(bound, whole)) == int_of_nat(bound);
+{
+  switch(bound) {
+    case zero: 
+    case succ(p_bound): length_gen_divisors(p_bound, whole);
   }
 }
 
@@ -69,16 +86,6 @@ ensures divide(whole, n) ? true == exists(gen_divisors(nat_of_int(whole), whole)
     divisor_below_n(whole, n);
   } else {
     gen_divisor_contains_all_divisors_below_bound(nat_of_int(whole), whole, n);
-  }
-}
-
-lemma void length_gen_divisors(nat bound, int whole)
-requires true;
-ensures length(gen_divisors(bound, whole)) == int_of_nat(bound);
-{
-  switch(bound) {
-    case zero: 
-    case succ(p_bound): length_gen_divisors(p_bound, whole);
   }
 }
 
