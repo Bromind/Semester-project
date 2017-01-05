@@ -193,6 +193,35 @@ ensures true == list_contains(elem, ls);
   }
 }
 
+lemma void not_exists_prop_to_not_exists<t>(list<t> lst, fixpoint(t, bool) prop, t elem)
+requires false == exists(lst, prop) &*& true == prop(elem);
+ensures false == exists(lst, (equals)(elem));
+{
+  switch(lst)
+  {
+    case nil:
+    case cons(hd, tl): {
+      if(hd == elem){}
+      not_exists_prop_to_not_exists(tl, prop, elem);
+    }
+  }
+}
+
+lemma void forall_contains_to_prop<t>(list<t> lst, fixpoint(t, bool) prop, t elem)
+requires true == forall(lst, prop) &*& true == list_contains(elem, lst);
+ensures true == prop(elem);
+{
+  switch(lst) {
+    case nil: 
+    case cons(hd, tl): {
+      if(hd == elem) {
+      } else {
+        forall_contains_to_prop(tl, prop, elem);
+      }
+    }
+  }
+}
+
 fixpoint list<pair<int, bool> > merge_list_and(list<pair<int, bool> > lst1, list<pair<int, bool> > lst2)
 {
   switch(lst1) {
@@ -200,6 +229,19 @@ fixpoint list<pair<int, bool> > merge_list_and(list<pair<int, bool> > lst1, list
     case cons(pair, tail): return list_contains(pair, lst2) && snd(pair) == true ? cons(pair, merge_list_and(tail, lst2)) : merge_list_and(tail, lst2);
   }
 }
+
+lemma void merge_list_and_lemma_true(list<pair<int, bool> > lst1, list<pair<int, bool> > lst2)
+requires true;
+ensures true == forall(merge_list_and(lst1, lst2), snd_true);
+{
+  switch(lst1){
+    case nil:
+    case cons(hd, tl): {
+      merge_list_and_lemma_true(tl, lst2);
+    }
+  }
+}
+
 
 lemma void merge_list_and_lemma(list<pair<int, bool> > lst1, list<pair<int, bool> > lst2, pair<int, bool> pair)
 requires true == exists(lst1, (equals)(pair)) &*& true == exists(lst2, (equals)(pair)) &*& snd(pair) == true;
@@ -217,6 +259,30 @@ ensures true == exists(merge_list_and(lst1, lst2), (equals)(pair));
   }
 }
 
+lemma void merge_list_and_lemma_converse(list<pair<int, bool> > lst1, list<pair<int, bool> > lst2, pair<int, bool> pair)
+requires true == list_contains(pair, merge_list_and(lst1, lst2));
+ensures true == list_contains(pair, lst1) &*& true == list_contains(pair, lst2);
+{
+  switch(lst1)
+  {
+    case nil:
+    case cons(hd, tl): {
+      merge_list_and_lemma_true(lst1, lst2);
+      if(hd == pair) {
+        if(list_contains(hd, lst2)) {
+        } else {
+          forall_contains_to_prop(merge_list_and(lst1, lst2), snd_true, hd);
+          merge_list_and_lemma_converse(tl, lst2, pair);
+          assert snd(hd) == true;
+          assert false == list_contains(pair, merge_list_and(lst1, lst2));
+        }
+      } else {
+        merge_list_and_lemma_converse(tl, lst2, pair);
+      }
+    }
+  }
+}
+
 lemma void common_divisors_contains_1(int n1, int n2)
 requires n1 >= n2 &*& n2 > 0;
 ensures true == exists(merge_list_and(gen_divisors(nat_of_int(n1), n1), gen_divisors(nat_of_int(n2), n2)), (equals)(pair(1, true)));
@@ -224,20 +290,6 @@ ensures true == exists(merge_list_and(gen_divisors(nat_of_int(n1), n1), gen_divi
   gen_divisors_contains_1(nat_of_int(n1-1), n1);
   gen_divisors_contains_1(nat_of_int(n2-1), n2);
   merge_list_and_lemma(gen_divisors(nat_of_int(n1), n1), gen_divisors(nat_of_int(n2), n2), pair(1, true));
-}
-
-lemma void not_exists_prop_to_not_exists<t>(list<t> lst, fixpoint(t, bool) prop, t elem)
-requires false == exists(lst, prop) &*& true == prop(elem);
-ensures false == exists(lst, (equals)(elem));
-{
-  switch(lst)
-  {
-    case nil:
-    case cons(hd, tl): {
-      if(hd == elem){}
-      not_exists_prop_to_not_exists(tl, prop, elem);
-    }
-  }
 }
 
 lemma void common_divisors_contains_all_divisors(int n1, int n2, int n3)
