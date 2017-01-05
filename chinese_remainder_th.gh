@@ -161,11 +161,25 @@ ensures true == exists(merge_list_and(lst1, lst2), (equals)(pair));
 
 lemma void common_divisors_contains_1(int n1, int n2)
 requires n1 >= n2 &*& n2 > 0;
-ensures true == exists(merge_list_and(gen_divisors(nat_of_int(n2), n1), gen_divisors(nat_of_int(n2), n2)), (equals)(pair(1, true)));
+ensures true == exists(merge_list_and(gen_divisors(nat_of_int(n1), n1), gen_divisors(nat_of_int(n2), n2)), (equals)(pair(1, true)));
 {
   gen_divisors_contains_1(nat_of_int(n1-1), n1);
   gen_divisors_contains_1(nat_of_int(n2-1), n2);
   merge_list_and_lemma(gen_divisors(nat_of_int(n1), n1), gen_divisors(nat_of_int(n2), n2), pair(1, true));
+}
+
+lemma void not_exists_prop_to_not_exists<t>(list<t> lst, fixpoint(t, bool) prop, t elem)
+requires false == exists(lst, prop) &*& true == prop(elem);
+ensures false == exists(lst, (equals)(elem));
+{
+  switch(lst)
+  {
+    case nil:
+    case cons(hd, tl): {
+      if(hd == elem){}
+      not_exists_prop_to_not_exists(tl, prop, elem);
+    }
+  }
 }
 
 lemma void common_divisors_contains_all_divisors(int n1, int n2, int n3)
