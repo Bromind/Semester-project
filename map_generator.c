@@ -83,12 +83,57 @@
      }
    }
  }
-  
+ 
+ lemma void mod_succ_zero_helper(int a, int mod)
+ requires a%mod == mod - 1 &*& mod > 0 &*& a >= 0 &*& a < mod;
+ ensures 0 == (a+1)%mod;
+ {
+   division_round_to_zero(a, mod);
+   div_rem(a, mod);
+   assert a%mod == a;
+   assert a == mod - 1;
+   assert a+1 == mod;
+   division_round_to_zero(0, mod);
+   div_incr(0, mod);
+   assert true == ((a+1)/mod == 1);
+   mul_subst((a+1)/mod, 1, mod);
+   
+   div_rem(a+1, mod);
+   assert a+1 == (a+1)/mod * mod + (a+1)%mod;
+   assert a+1 == mod;
+   assert 1*mod == (a+1)/mod * mod;
+   assert true == ((a+1)%mod == 0);
+ }
+ 
  lemma void mod_succ_zero(int a, int mod)
  requires a%mod == mod - 1 &*& mod > 0 &*& a >= 0;
  ensures 0 == (a+1)%mod;
  {
-   assume(false);
+   if(a < mod) {
+     mod_succ_zero_helper(a, mod);
+   } else {
+     int i = a;
+     for(;i >= mod; i = i - mod) 
+     invariant mod-1 == i % mod
+     	&*& i >= 0
+     	&*& true == ((a+1)%mod == (i+1) % mod);
+     decreases i;
+     {
+       assert i >= mod;
+       assert i - mod >= 0;
+       mod_rotate(i-mod, mod);
+       assert i%mod == (i-mod) % mod;
+       
+       mod_rotate(i-mod+1, mod);
+     }
+     assert i%mod == a%mod;
+     assert i%mod == mod - 1;
+     assert i >= 0;
+     assert i < mod;
+     mod_succ_zero_helper(i, mod);
+     mod_rotate(a-mod+1, mod);
+     assert 0 == (a-mod + 1) % mod;
+   }
  }
  
  lemma void div_eq(int a, int b)
