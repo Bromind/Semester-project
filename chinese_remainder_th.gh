@@ -168,16 +168,36 @@ ensures true == forall(lst, (divisors_fp)(whole));
   }
 }
 
+fixpoint bool list_contains<t>(t elem, list<t> ls)
+{
+  switch(ls) {
+    case nil : return false;
+    case cons(hd, tl): return hd == elem ? true : list_contains(elem, tl);
+  }
+}
+
+lemma void list_exists_equal_to_contains<t>(list<t> ls, t elem)
+requires true == exists(ls, (equals)(elem));
+ensures true == list_contains(elem, ls);
+{
+  switch(ls){
+    case nil: 
+    case cons(hd, tl): {
+      if(exists(tl, (equals)(elem)) == false) {
+        if(equals(elem, hd) == false) {
+        }
+      } else {
+        list_exists_equal_to_contains(tl, elem);
+      }
+    }
+  }
+}
+
 fixpoint list<pair<int, bool> > merge_list_and(list<pair<int, bool> > lst1, list<pair<int, bool> > lst2)
 {
   switch(lst1) {
     case nil: return nil;
-    case cons(pair1, tail1): return nil; /*{ // verifast issue #79
-      switch(lst2) {
-        case nil: return nil;
-        case cons(pair2, tail2): return (pair1 == pair2 && snd(pair1) == true) ? cons(pair1, merge_list_and(tail1, tail2)) : merge_list_and(tail1, tail2);
-      }
-    }; */
+    case cons(pair, tail): return list_contains(pair, lst2) && snd(pair) == true ? cons(pair, merge_list_and(tail, lst2)) : merge_list_and(tail, lst2);
   }
 }
 
