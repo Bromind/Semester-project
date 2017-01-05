@@ -4,7 +4,7 @@
 #include <nat.gh>
 #include <list.gh>
 
-predicate coprime(int n1, int n2) = true;
+predicate coprime(int n1, int n2) = gcd(n1, n2) == 1;
 
 fixpoint bool divide(int whole, int divisor)
 {
@@ -88,6 +88,36 @@ ensures divide(whole, divisor) ? true == exists(gen_divisors(bound, whole), (equ
       }
     }
   }
+}
+
+fixpoint bool snd_true(pair<int, bool> p)
+{
+  return snd(p) == true;
+}
+
+fixpoint bool leq_than(pair<int, bool> a, pair<int, bool> b)
+{
+  return fst(a) >= fst(b);
+}
+
+fixpoint bool geq_than(pair<int, bool> a, pair<int, bool> b)
+{
+  return fst(a) <= fst(b);
+}
+
+fixpoint bool greater_than(pair<int, bool> a, pair<int, bool> b)
+{
+  return fst(a) < fst(b);
+}
+
+fixpoint bool less_than(pair<int, bool> a, pair<int, bool> b)
+{
+  return fst(a) > fst(b);
+}
+
+fixpoint bool neq<t>(t a, t b)
+{
+  return a != b;
 }
 
 fixpoint bool equals<t>(t a, t b)
@@ -209,6 +239,91 @@ requires n1 >= n2;
 ensures true == forall(merge_list_and(gen_divisors(nat_of_int(n2), n1), gen_divisors(nat_of_int(n2), n2)), (common_divisors_fp)(n1, n2));
 {
   assume(false);
+}
+
+fixpoint pair<int, bool> greatest_common_divisor(list<pair<int, bool> > common_divisors)
+{
+  switch(common_divisors) {
+    case nil: return pair(0, false);
+    case cons(pair, tail): return snd(pair) == true && (greater_than(greatest_common_divisor(tail), pair) || snd(greatest_common_divisor(tail)) == false) ? pair : greatest_common_divisor(tail);
+  }
+}
+
+lemma void greatest_common_divisor_tail_less_than(list<pair<int, bool> > lst)
+requires true;
+ensures false == leq_than(greatest_common_divisor(lst), greatest_common_divisor(tail(lst))) ? snd(greatest_common_divisor(tail(lst))) == false : true;
+{
+  switch(lst){
+    case nil:
+    case cons(hd, tl): {
+      pair<int, bool> gcd = greatest_common_divisor(lst);
+      pair<int, bool> p_gcd = greatest_common_divisor(tail(lst));
+      
+      if(snd(p_gcd) == true){
+        if(snd(hd) == false) {
+        } else {
+        } 
+      } else { // snd(p_gcd) == false;
+        if(snd(hd) == false) {
+        } else {
+        }
+      }
+    }
+  }
+}
+
+lemma void greatest_common_divisor_return_true_divisor_iff_exists(list<pair<int, bool> > lst)
+requires true;
+ensures true == exists(lst, snd_true) ? snd(greatest_common_divisor(lst)) == true : snd(greatest_common_divisor(lst)) == false;
+{
+  switch(lst)
+  {
+    case nil:
+    case cons(hd, tl): {
+      greatest_common_divisor_return_true_divisor_iff_exists(tl);
+    }
+  }
+}
+
+lemma void greatest_common_divisor_l(list<pair<int, bool> > common_divisors, int n3)
+requires greatest_common_divisor(common_divisors) == pair(?gcd, ?true_divisor) &*& (n3 > gcd || true_divisor == false);
+ensures false == exists(common_divisors, (equals)(pair(n3, true)));
+{    
+  switch(common_divisors){
+    case nil:
+    case cons(hd, tl): {
+      if(true_divisor == true) {
+        greatest_common_divisor_tail_less_than(common_divisors);
+        greatest_common_divisor_l(tl, n3);
+        assert greatest_common_divisor(tl) == pair(?p_gcd, ?p_true_divisor);
+        assert hd != pair(n3, true);
+      } else {
+        greatest_common_divisor_return_true_divisor_iff_exists(common_divisors);
+        if(true == exists(common_divisors, (equals)(pair(n3, true)))) {
+          assert exists(common_divisors, snd_true) == false;
+          assert true == snd_true(pair(n3, true));
+          not_exists_prop_to_not_exists(common_divisors, snd_true, pair(n3, true));
+        }
+      }
+    }
+  }
+}
+
+fixpoint int gcd(int n1, int n2)
+{
+  return fst(greatest_common_divisor(merge_list_and(gen_divisors(nat_of_int(n1), n1), gen_divisors(nat_of_int(n2), n2))));
+}
+
+lemma void gcd_holds(int n1, int n2, int n3)
+requires n1 >= n2 &*& n3 > gcd(n1, n2) &*& n3 > 0 &*& n1 > 0 &*& n2 > 0;
+ensures divide(n1, n3) == true ? divide(n2, n3) == false : true;
+{
+  if(divide(n1, n3) == true) {
+    if(divide(n2, n3) == true) {
+      common_divisors_contains_all_divisors(n1, n2, n3);
+      greatest_common_divisor_l(merge_list_and(gen_divisors(nat_of_int(n1), n1), gen_divisors(nat_of_int(n2), n2)), n3);
+    }
+  } 
 }
 
 
