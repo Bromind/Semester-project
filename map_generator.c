@@ -13,15 +13,79 @@
 
 /*@
  
+ lemma void mul_negative(int a, int b)
+ requires a < 0 &*& b > 0;
+ ensures a*b <= 0-b;
+ {
+    int i = 1;
+    
+    assert -i >= i * a;
+    
+    for (; i < b; i ++)
+    invariant 0 < i &*& i <= b &*& -i >= i * a;
+    decreases b - i;
+    {
+    }
+    note(i == b);
+    note(mul(i, a) == mul(b, a));
+    note(i * a == mul(i, a));
+    mul_eq(b, a);
+ }
+ 
+ lemma void quotient_positive(int a, int mod)
+ requires a >= 0 &*& mod > 0;
+ ensures a/mod >= 0;
+ {
+   if(a/mod < 0) {
+     mul_negative(a/mod, mod);
+     div_rem(a, mod);
+     assert a - a%mod == a/mod * mod;
+     assert -mod < a%mod;
+     assert a - a%mod > a - mod;
+   }
+ }
+ 
  lemma void mod_add(int a, int b, int mod)
  requires mod > 0 &*& a >= 0 &*& b >= 0;
  ensures true == (((a%mod) + b)%mod == (a+b)%mod);
  {
-   assume(false);
+   if(a < mod) 
+   {
+     division_round_to_zero(a, mod);
+     div_rem(a, mod);
+   } else {
+     div_rem(a, mod);
+     int d = a/mod;
+     assert a == d * mod + a%mod;
+     div_rem(b, mod);
+     int e = b/mod;
+     assert b == e * mod + b%mod;
+     
+     assert a+b == d * mod + a%mod + e*mod + b%mod;
+     assert a%mod + b == a%mod + e*mod + b%mod;
+     
+     int i = 0;
+     
+     if(d < 0){
+       quotient_positive(a, mod);
+     } else {
+       for(; i < d; i++)
+       invariant true == ((i*mod + a%mod + e*mod + b%mod) % mod == (a%mod + e*mod + b%mod) % mod)
+     	&*& true == ((i*mod + a%mod + e*mod + b%mod) >= 0)
+       	&*& i <= d;
+       decreases d-i;
+       {
+         mod_rotate((i*mod + a%mod + e*mod + b%mod), mod);
+         assert true == ((i*mod + a%mod + e*mod + b%mod) % mod == (i*mod + a%mod + e*mod + b%mod + mod) %mod);
+         assert true == ((i+1)*mod == i*mod + mod);
+       }
+       assert i == d;
+     }
+   }
  }
   
  lemma void mod_succ_zero(int a, int mod)
- requires a%mod == mod - 1 &*& mod != 0;
+ requires a%mod == mod - 1 &*& mod > 0 &*& a >= 0;
  ensures 0 == (a+1)%mod;
  {
    assume(false);
