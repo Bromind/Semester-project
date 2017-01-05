@@ -708,17 +708,63 @@
    }
  }
  
- @*/
+
  
-/*@
+ 
+ lemma void nat_diff_int_diff(nat n1, nat n2)
+ requires n1 != n2;
+ ensures int_of_nat(n1) != int_of_nat(n2);
+ {
+   switch(n1){
+     case zero:
+     case succ(p1): {
+       switch(n2) {
+         case zero:
+         case succ(p2): nat_diff_int_diff(p1, p2);
+       }
+     }
+   }
+ }
+ 
+ lemma void up_to_weak(nat bound, nat new_bound, fixpoint(int, bool) prop)
+ requires true == up_to(bound, prop) &*& int_of_nat(new_bound) <= int_of_nat(bound);
+ ensures true == up_to(new_bound, prop);
+ {
+   switch(bound){
+     case zero: assert new_bound == zero;
+     case succ(p_bound): {
+       if(new_bound == bound){
+       } else {
+         nat_diff_int_diff(bound, new_bound);
+         assert int_of_nat(bound) != int_of_nat(new_bound);
+         up_to_weak(p_bound, new_bound, prop);
+       }
+     }
+   }
+ }
 
  lemma void apply_CRT<t>(int i, list<t> ts, fixpoint (t, bool) prop, int capacity, int start, int offset)
  requires true == up_to(nat_of_int(i),(stride_nth_prop)(ts, prop, capacity, start, offset))
- 	&*& coprime(capacity, offset)
- 	&*& i >= capacity;
+ 	&*& coprime(offset, capacity)
+ 	&*& i >= capacity
+ 	&*& capacity >= 0 &*& 0 <= start &*& start < capacity &*& offset > 0 &*& offset < capacity;
  ensures true == up_to(nat_of_int(length(ts)), (nthProp)(ts, prop)) &*& coprime(capacity, offset); 
  {
    assume(false);
+   nat bound = nat_of_int(capacity);
+   assert int_of_nat(nat_of_int(i)) == i;
+   assert int_of_nat(bound) == capacity;
+   assert i >= capacity;
+   up_to_weak(nat_of_int(i), bound, (stride_nth_prop)(ts, prop, capacity, start, offset));
+   assert true == up_to(bound, (stride_nth_prop)(ts, prop, capacity, start, offset));
+   list<option<nat> > stripes = stripe_l(start, offset, bound, capacity);
+   //stripe_all_some(start, step, capacity);
+   assert forall(stripes, is_some);
+   fixpoint(int, bool) index_is_some = (stripe_to_stride_nth_prop)(nat_of_int(capacity), ts, prop, capacity, start, offset);
+   // Proof steps: 
+   // Show that if up_to(bound, stride_nth_prop(prop,...)), then stride_nth_prop(prop,...,index) iff is_some(nth(index, stripe_l(...)));
+   // Show that stripe_l(..., n == capa, ...) => forall(is_some, stripe_l)
+   // Hence, if exists( !prop) => !forall(is_some, stripe_l) => false
  }
 @*/
 
@@ -1197,12 +1243,15 @@ int find_key /*@ <kt> @*/ (int* busybits, void** keyps, hash_t *k_hashes, unsign
              hsh(k) == key_hash &*&
              0 <= start &*& 2*start < INT_MAX &*&
              [?f]is_map_keys_equality<kt>(eq, kpr) &*&
-             coprime(capacity, offset_of(key_hash)); @*/
+             coprime(offset_of(key_hash), capacity) &*&
+             offset_of(key_hash) < 0 &*& 
+             offset_of(key_hash) < capacity &*&
+             start < capacity; @*/
 /*@ ensures hmapping<kt>(kpr, hsh, capacity, busybits, kps, k_hashes, hm) &*&
             pointers(keyps, capacity, kps) &*&
             [kfr]kpr(keyp, k) &*&
             [f]is_map_keys_equality<kt>(eq, kpr) &*&
-            coprime(capacity, offset_of(key_hash)) &*&
+            coprime(offset_of(key_hash), capacity) &*&
             (hmap_exists_key_fp(hm, k) ?
             (result == hmap_find_key_fp(hm, k)) :
              (result == -1)); @*/
@@ -1214,7 +1263,7 @@ int find_key /*@ <kt> @*/ (int* busybits, void** keyps, hash_t *k_hashes, unsign
   int i = 0;
   int capacity_s = (int) capacity;
   offset_t offset = offset_from_hash(key_hash);
-  //@ assert coprime(capacity, offset);
+  //@ assert coprime(offset, capacity);
   for (; i < capacity_s; ++i)
     /*@ invariant pred_mapping(kps, bbs, kpr, ks) &*&
                   ints(busybits, capacity, bbs) &*&
