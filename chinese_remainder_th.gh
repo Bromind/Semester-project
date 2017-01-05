@@ -201,12 +201,20 @@ fixpoint list<pair<int, bool> > merge_list_and(list<pair<int, bool> > lst1, list
   }
 }
 
-// Rely on fixpoint
 lemma void merge_list_and_lemma(list<pair<int, bool> > lst1, list<pair<int, bool> > lst2, pair<int, bool> pair)
 requires true == exists(lst1, (equals)(pair)) &*& true == exists(lst2, (equals)(pair)) &*& snd(pair) == true;
 ensures true == exists(merge_list_and(lst1, lst2), (equals)(pair));
 {
-  assume(false);
+  switch(lst1) {
+    case nil: assert false;
+    case cons(hd, tl): {
+      if(hd == pair) {
+        list_exists_equal_to_contains(lst2, pair);
+      } else {
+        merge_list_and_lemma(tl, lst2, pair);
+      }
+    }
+  }
 }
 
 lemma void common_divisors_contains_1(int n1, int n2)
