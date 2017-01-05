@@ -631,6 +631,14 @@
    }
  }
  
+ fixpoint list<option<nat> > stripe_l_fp(int start, int step, nat n, int capa)
+ {
+   switch(n) {
+     case zero: return gen_none(nat_of_int(capa));
+     case succ(m): return update(stripe(start, step, n, capa), some(n), stripe_l_fp(start, step, m, capa));
+   }
+ }
+ 
  lemma list<option<nat> > stripe_l(int start, int step, nat n, int capa)
  requires 0 <= start &*& start < capa &*& step > 0 &*& int_of_nat(n) <= capa &*& coprime(step, capa) &*& step < capa;
  ensures count_some(result) == n
@@ -638,6 +646,7 @@
  	&*& true == up_to(nat_of_int(capa), (list_contains_stripes)(result, start, step))
  	&*& true == up_to(nat_of_int(capa), (lst_opt_less_than_n)(result, n))
  	&*& true == forall(result, opt_not_zero)
+ 	&*& result == stripe_l_fp(start, step, n, capa)
  	&*& coprime(step, capa);
  {
    switch(n) {
