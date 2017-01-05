@@ -1,6 +1,9 @@
 digraph stripe_l {
-	mod_add[color=red];
-	mod_succ_zero[color=red];
+	mul_negative;
+	quotient_positive;
+	mod_add;
+	mod_succ_zero_helper;
+	mod_succ_zero;
 	div_eq[color=red];
 
 	mod_of_succ_eq_succ_of_mod;
@@ -8,6 +11,7 @@ digraph stripe_l {
 
 	is_n[shape=box];
 	is_none[shape=box];
+	is_some[shape=box];
 	is_zero[shape=box];
 	is_not_zero[shape=box];
 	gen_none[shape=box];
@@ -46,7 +50,25 @@ digraph stripe_l {
 
 	bin_chinese_remainder_theorem[color=blue];
 
+	stripe_l_fp[shape=box];
+
 	stripe_l;
+
+	nat_diff_int_diff;
+	up_to_weak;
+	apply_CRT[color=red];
+
+	apply_CRT -> stripe_l;
+
+	up_to_weak -> {up_to_weak nat_diff_int_diff}
+
+	nat_diff_int_diff -> nat_diff_int_diff;
+
+	stripe_l_fp -> gen_none;
+	stripe_l_fp -> stripe;
+	stripe_l_fp -> stripe_l_fp;
+
+	stripe_l -> stripe_l_fp;
 
 	stripe_l -> gen_none;
 	stripe_l -> gen_none_l;
@@ -122,11 +144,17 @@ digraph stripe_l {
 
 	is_zero -> is_n;
 
+	is_some -> is_none;
+
 	mod_pred_eq -> {mod_succ_zero mod_of_succ_eq_succ_of_mod }
 
 	mod_of_succ_eq_succ_of_mod -> div_eq;
 
+	mod_succ_zero -> mod_succ_zero_helper;
 
+	mod_add -> quotient_positive;
+
+	quotient_positive -> mul_negative;
 
 }
 
