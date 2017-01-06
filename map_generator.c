@@ -12,7 +12,7 @@
 // //@ #include "logical_ops.gh"
 
 /*@
- 
+
  lemma void mul_negative(int a, int b)
  requires a < 0 &*& b > 0;
  ensures a*b <= 0-b;
@@ -616,25 +616,7 @@
      }
    }
  }
- 
- lemma void CRT_pred(int length_lst, int step, int diff, int start) 
- requires stripe(start, step, zero, length_lst) == stripe(start, step, nat_of_int(diff), length_lst) &*& diff >= 0 &*& step >= 0 &*& start < length_lst &*& start >= 0;
- ensures 0 == (diff*step)%length_lst;
- {
-   assume(false);
-   stripe_to_arith(start, step, zero, length_lst);
-   stripe_to_arith(start, step, nat_of_int(diff), length_lst);
-   mul_subst(int_of_nat(nat_of_int(diff)), diff, step);
-   mul_subst(int_of_nat(zero), 0, step);
-   
-//   assert stripe(start, step, zero, length_lst) == (start + int_of_nat(zero)*step)%length_lst;
-   assert true == ((start + (0*step))%length_lst == (start + diff*step)%length_lst);
-   assert 0*step == 0;
-   division_round_to_zero(0, length_lst);
-   div_rem(0, length_lst);
- }
 
- 
  lemma void mod_eq_sub(int a, int b, int mod, int incr)
  requires true == ((a+incr)%mod == (b+incr)%mod) &*& a >= 0 &*& b >= 0 &*& incr >= 0 &*& incr < mod &*& a < mod &*& b < mod;
  ensures true == (a%mod == b%mod);
@@ -647,6 +629,41 @@
      mod_pred_eq(a+i-1, b+i-1, mod);
    }
    assert i == 0;
+ }
+ 
+ lemma void CRT_pred(int length_lst, int step, int diff, int start) 
+ requires stripe(start, step, zero, length_lst) == stripe(start, step, nat_of_int(diff), length_lst) 
+ 	&*& diff >= 0 
+ 	&*& step >= 0 
+ 	&*& start < length_lst 
+ 	&*& start >= 0;
+ ensures 0 == (diff*step)%length_lst;
+ {
+   stripe_to_arith(start, step, zero, length_lst);
+   stripe_to_arith(start, step, nat_of_int(diff), length_lst);
+   mul_subst(int_of_nat(nat_of_int(diff)), diff, step);
+   mul_subst(int_of_nat(zero), 0, step);
+   
+   assert stripe(start, step, zero, length_lst) == start;
+   division_round_to_zero(start, length_lst);
+   div_rem(start, length_lst);
+   assert start == start%length_lst;
+   assert start == start + int_of_nat(zero)*step;
+   assert stripe(start, step, zero, length_lst) == (start + int_of_nat(zero)*step)%length_lst;
+   assert true == ((start + (0*step))%length_lst == (start + diff*step)%length_lst);
+   assert 0*step == 0;
+   division_round_to_zero(0, length_lst);
+   div_rem(0, length_lst);
+   
+   mul_nonnegative(diff, step);
+   assert start == (start + diff*step)%length_lst;
+   mod_add(diff*step, start, length_lst);
+   assert true == ((start + diff*step)%length_lst == (start + (diff*step)%length_lst)%length_lst);
+   div_rem(diff*step, length_lst);
+   assert true == ((diff*step)%length_lst < length_lst);
+   mod_eq_sub(0, (diff*step)%length_lst, length_lst, start);
+   assert 0%length_lst == ((diff*step)%length_lst)%length_lst;
+   mod_add(diff*step, 0, length_lst);
  }
  
  lemma void decrease_one_step_stripe(int start, int step, nat val1, nat val2, int capa)
