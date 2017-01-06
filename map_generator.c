@@ -136,14 +136,48 @@
    }
  }
  
+ lemma void div_eq_helper(int a, int b)
+ requires true == (a%b >= 0) &*& true == (a%b < b - 1) &*& b > 1 &*& a >= 0 &*& a < b;
+ ensures true == ((a+1)/b == a/b);
+ {
+     division_round_to_zero(a, b);
+     div_rem(a, b);
+     assert a == a%b;
+     assert a+1 < b;
+     division_round_to_zero(a+1, b);
+     div_rem(a+1, b);
+ }
+ 
  lemma void div_eq(int a, int b)
  requires true == (a%b >= 0) &*& true == (a%b < b - 1) &*& b > 1 &*& a >= 0;
  ensures true == ((a+1)/b == a/b);
  {
-   div_rem(a, b);
-   assume(a == a/b * b + a%b); // note(a == a/b * b + a%b);
-   assert a == a/b * b + a%b;
-   assume(false);
+   if(a < b) {
+     div_eq_helper(a, b);
+   } else {
+     int i = 0;
+     assert true == (a%b >= 0);
+     division_round_to_zero(a%b, b);
+     div_rem(a%b, b);
+     div_eq_helper(a%b, b);
+     assert true == ((a%b)/b == (a%b+1)/b);
+     quotient_positive(a, b);
+     
+     for(; i < a/b; i++)
+     invariant true == ((i*b + a%b)/b == (i*b + a%b + 1)/b)
+     	&*& i <= a/b
+     	&*& i*b + a%b >= 0;
+     decreases a/b - i;
+     {
+       div_incr(i*b+a%b, b);
+       div_incr(i*b+a%b+1, b);
+       assert i*b+b == (i+1)*b;
+     }
+     assert i == a/b;
+     assert true == ((a/b*b + a%b)/b == (a/b*b + a%b + 1)/b);
+     div_rem(a, b);
+     assert a/b == (a+1)/b;
+   }
  }
  
  lemma void mod_of_succ_eq_succ_of_mod(int a, int mod)
