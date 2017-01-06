@@ -758,9 +758,6 @@
    }
  }
  
-
- 
- 
  lemma void nat_diff_int_diff(nat n1, nat n2)
  requires n1 != n2;
  ensures int_of_nat(n1) != int_of_nat(n2);
@@ -809,9 +806,9 @@
  lemma void stride_to_stripe<t>(int start, int step, nat bound_stripe, nat bound_stride, int capa, int n, fixpoint(t, bool) prop, list<t> lst)
  requires true == up_to(bound_stride, (stride_nth_prop)(lst, prop, capa, start, step)) 
  	&*& int_of_nat(bound_stripe) < int_of_nat(bound_stride) 
- 	&*& 0 <= n &*& n < capa &*& 0 <= start &*& start < capa &*& step > 0 &*& int_of_nat(bound_stripe) < capa &*& coprime(step, capa) &*& step < capa;
+ 	&*& 0 <= n &*& n < capa &*& 0 <= start &*& start < capa &*& step > 0 &*& int_of_nat(bound_stripe) <= capa &*& coprime(step, capa) &*& step < capa;
  ensures coprime(step, capa) 
- 	&*& true == is_some(nth(n, stripe_l_fp(start, step, bound_stripe, capa))) ? nthProp(lst, prop, n) == true : true;
+ 	&*& true == (true == is_some(nth(n, stripe_l_fp(start, step, bound_stripe, capa))) ? nthProp(lst, prop, n) : true);
  {
    switch(bound_stripe) {
      case zero: {
@@ -858,24 +855,37 @@
  lemma void apply_CRT<t>(int i, list<t> ts, fixpoint (t, bool) prop, int capacity, int start, int offset)
  requires true == up_to(nat_of_int(i),(stride_nth_prop)(ts, prop, capacity, start, offset))
  	&*& coprime(offset, capacity)
- 	&*& i >= capacity
- 	&*& capacity >= 0 &*& 0 <= start &*& start < capacity &*& offset > 0 &*& offset < capacity;
- ensures true == up_to(nat_of_int(length(ts)), (nthProp)(ts, prop)) &*& coprime(capacity, offset); 
+ 	&*& i > capacity
+ 	&*& capacity >= 0 &*& 0 <= start &*& start < capacity &*& offset > 0 &*& offset < capacity
+ 	&*& length(ts) == capacity;
+ ensures true == up_to(nat_of_int(length(ts)), (nthProp)(ts, prop)) &*& coprime(offset, capacity); 
  {
-   assume(false);
    nat bound = nat_of_int(capacity);
-   assert int_of_nat(nat_of_int(i)) == i;
-   assert int_of_nat(bound) == capacity;
-   assert i >= capacity;
-   up_to_weak(nat_of_int(i), bound, (stride_nth_prop)(ts, prop, capacity, start, offset));
-   assert true == up_to(bound, (stride_nth_prop)(ts, prop, capacity, start, offset));
-   list<option<nat> > stripes = stripe_l(start, offset, bound, capacity);
-   //stripe_all_some(start, step, capacity);
-   assert forall(stripes, is_some);
-   fixpoint(int, bool) index_is_some = (stripe_to_stride_nth_prop)(nat_of_int(capacity), ts, prop, capacity, start, offset);
+   up_to_weak(nat_of_int(i), succ(bound), (stride_nth_prop)(ts, prop, capacity, start, offset));
    // Proof steps: 
-   // Show that if up_to(bound, stride_nth_prop(prop,...)), then stride_nth_prop(prop,...,index) iff is_some(nth(index, stripe_l(...)));
    // Show that stripe_l(..., n == capa, ...) => forall(is_some, stripe_l)
+   list<option<nat> > lst_stripe = stripe_l(start, offset, bound, capacity);
+   assert count_some(lst_stripe) == bound;
+   assume(true == forall(lst_stripe, is_some));
+   assert true == forall(lst_stripe, is_some);
+   
+   // Show that if up_to(bound, stride_nth_prop(prop,...)), then stride_nth_prop(prop,...,index) iff is_some(nth(index, stripe_l(...)));
+   int iter = 0;
+   for(; iter < length(ts); iter++)
+   invariant true == up_to(nat_of_int(iter), (nthProp)(ts, prop))
+   	&*& iter <= length(ts)
+   	&*& iter >= 0
+   	&*& coprime(offset, capacity)
+   	&*& true == forall(lst_stripe, is_some);
+   decreases length(ts) - iter;
+   {
+     forall_fp_to_fp(stripe_l_fp(start, offset, bound, capacity), is_some, nat_of_int(iter));
+     assert is_some(nth(iter, stripe_l_fp(start, offset, bound, capacity))) == true;
+     stride_to_stripe(start, offset, bound, succ(bound), capacity, iter, prop, ts);
+     assert nthProp(ts, prop, iter) == true;
+     assert true == up_to(nat_of_int(iter), (nthProp)(ts, prop));
+     assert true == up_to(succ(nat_of_int(iter)), (nthProp)(ts, prop));
+   }
    // Hence, if exists( !prop) => !forall(is_some, stripe_l) => false
  }
 @*/
