@@ -223,6 +223,11 @@
    return opt == none;
  }
  
+ fixpoint bool is_some(option<nat> opt)
+ {
+   return !is_none(opt);
+ }
+ 
  fixpoint bool is_zero(nat n) {
    return is_n(zero, n);
  }
@@ -783,6 +788,68 @@
          nat_diff_int_diff(bound, new_bound);
          assert int_of_nat(bound) != int_of_nat(new_bound);
          up_to_weak(p_bound, new_bound, prop);
+       }
+     }
+   }
+ }
+ 
+ lemma void loop_fp_pos(int k, int capacity)
+ requires k >= 0 &*& capacity > 0;
+ ensures loop_fp(k, capacity) == k%capacity;
+ {
+   mod_rotate(k, capacity);
+   assert true == ((k+capacity)%capacity == k%capacity);
+   assert loop_fp(k, capacity) == (k%capacity + capacity)%capacity;
+   mod_add(k, capacity, capacity);
+   assert loop_fp(k, capacity) == (k+capacity)%capacity;
+   
+ }
+ 
+ // if a cell is some in stripe_l_fp, and strideNthProp hold up to an higher bound, then prop holds for that cell
+ lemma void stride_to_stripe<t>(int start, int step, nat bound_stripe, nat bound_stride, int capa, int n, fixpoint(t, bool) prop, list<t> lst)
+ requires true == up_to(bound_stride, (stride_nth_prop)(lst, prop, capa, start, step)) 
+ 	&*& int_of_nat(bound_stripe) < int_of_nat(bound_stride) 
+ 	&*& 0 <= n &*& n < capa &*& 0 <= start &*& start < capa &*& step > 0 &*& int_of_nat(bound_stripe) < capa &*& coprime(step, capa) &*& step < capa;
+ ensures coprime(step, capa) 
+ 	&*& true == is_some(nth(n, stripe_l_fp(start, step, bound_stripe, capa))) ? nthProp(lst, prop, n) == true : true;
+ {
+   switch(bound_stripe) {
+     case zero: {
+       // Prove all none;
+       list<option<nat> > lst_none = stripe_l(start, step, bound_stripe, capa);
+       assert lst_none == gen_none(nat_of_int(capa));
+       gen_none_l(nat_of_int(capa));
+       assert length(lst_none) == capa;
+       assert n < capa;
+       assert int_of_nat(nat_of_int(n)) == n;
+       forall_fp_to_fp(lst_none, is_none, nat_of_int(n));
+       assert false == is_some(nth(n, stripe_l_fp(start, step, bound_stripe, capa)));
+     }
+     case succ(p_bound_stripe): {
+       list<option<nat> > lst_stripe = stripe_l(start, step, bound_stripe, capa);  
+       switch(nth(n, stripe_l_fp(start, step, bound_stripe, capa))) {
+         case none: assert false == is_some(nth(n, stripe_l_fp(start, step, bound_stripe, capa)));
+         case some(n_s): {
+           int nb_steps = int_of_nat(n_s);
+           assert true == up_to(nat_of_int(capa), (lst_opt_less_than_n)(lst_stripe, bound_stripe));
+           up_to_weak(nat_of_int(capa), succ(nat_of_int(n)), (lst_opt_less_than_n)(lst_stripe, bound_stripe));
+           assert lst_opt_less_than_n(lst_stripe, bound_stripe, n) == true;
+           assert nb_steps <= int_of_nat(bound_stripe) &*& int_of_nat(bound_stripe) <= int_of_nat(bound_stride);
+           
+           up_to_weak(nat_of_int(capa), succ(nat_of_int(n)), (list_contains_stripes)(lst_stripe, start, step));
+           stripe_to_arith(start, step, n_s, capa);
+           assert n == (start + step*nb_steps) % capa;
+           
+           up_to_weak(bound_stride, succ(n_s), (stride_nth_prop)(lst, prop, capa, start, step));
+           assert stride_nth_prop(lst, prop, capa, start, step, nb_steps) == true;
+           
+           
+           assert true == nthProp(lst, prop, loop_fp(start + step*nb_steps, capa));
+           
+           mul_nonnegative(step, nb_steps);
+           loop_fp_pos(start + step * nb_steps, capa);
+           assert loop_fp(start + step * nb_steps, capa) == (start + step*nb_steps)%capa;
+         }
        }
      }
    }
