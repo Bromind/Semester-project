@@ -300,6 +300,35 @@
      case cons(hd, tl): return hd == none ? count_some(tl) : succ(count_some(tl));
    }
  }
+ 
+ lemma void count_some_less_than_length(list<option<nat> > lst)
+ requires true;
+ ensures int_of_nat(count_some(lst)) <= length(lst);
+ {
+   switch(lst) {
+     case nil:
+     case cons(hd, tl): count_some_less_than_length(tl);
+   }
+ }
+ 
+ lemma void count_some_forall(list<option<nat> > lst)
+ requires count_some(lst) == nat_of_int(length(lst));
+ ensures true == forall(lst, is_some);
+ {
+   switch(lst){
+     case nil: 
+     case cons(hd, tl): {
+       if(is_some(hd) == false){
+         count_some_less_than_length(tl);
+         assert false;
+       }
+       assert count_some(lst) == succ(count_some(tl));
+       assert length(tl) + 1 == length(lst);
+       assert succ(nat_of_int(length(tl))) == succ(count_some(tl));
+       count_some_forall(tl);
+     }
+   }
+ }
   
  fixpoint int stripe(int start, int step, nat n, int capa) {
    switch(n) {
@@ -866,7 +895,7 @@
    // Show that stripe_l(..., n == capa, ...) => forall(is_some, stripe_l)
    list<option<nat> > lst_stripe = stripe_l(start, offset, bound, capacity);
    assert count_some(lst_stripe) == bound;
-   assume(true == forall(lst_stripe, is_some));
+   count_some_forall(lst_stripe);
    assert true == forall(lst_stripe, is_some);
    
    // Show that if up_to(bound, stride_nth_prop(prop,...)), then stride_nth_prop(prop,...,index) iff is_some(nth(index, stripe_l(...)));
