@@ -1439,9 +1439,8 @@ int find_key /*@ <kt> @*/ (int* busybits, void** keyps, hash_t *k_hashes, unsign
     //@ assert(nat_of_int(i+1) == succ(nat_of_int(i)));
   }
   //@ pred_mapping_same_len(bbs, ks);
-  // by_loop_for_all(ks, (not_my_key)(k), start, capacity, nat_of_int(capacity)); // TODO: remove
   //@ apply_CRT(capacity, ks, (not_my_key)(k), capacity, start, offset);
-  //@ assert true == up_to(nat_of_int(length(ks)), (nthProp)(ks, (not_my_key)(k))); // TODO: to prove
+  //@ assert true == up_to(nat_of_int(length(ks)), (nthProp)(ks, (not_my_key)(k))); 
   //@ no_key_found(ks, k);
   //@ close hmapping<kt>(kpr, hsh, capacity, busybits, kps, k_hashes, hm);
   return -1;
@@ -1514,10 +1513,14 @@ int find_key /*@ <kt> @*/ (int* busybits, void** keyps, hash_t *k_hashes, unsign
   }
   @*/
 static
-int find_empty /*@ <kt> @*/(int* busybits, int start, hash_t hash, int capacity)
+int find_empty /*@ <kt> @*/(int* busybits, unsigned int start, hash_t hash, unsigned int capacity)
   /*@ requires hmapping<kt>(?kp, ?hsh, capacity, busybits, ?kps, ?k_hashes, ?hm) &*&
     pointers(?keyps, capacity, kps) &*&
-    0 <= start &*& 2*start < INT_MAX; @*/
+    0 <= start &*& 2*start < INT_MAX &*&
+             coprime(offset_of(hash), capacity) &*&
+             offset_of(hash) < 0 &*& 
+             offset_of(hash) < capacity &*&
+             start < capacity; @*/
   /*@ ensures hmapping<kt>(kp, hsh, capacity, busybits, kps, k_hashes, hm) &*&
     pointers(keyps, capacity, kps) &*&
     (hmap_size_fp(hm) < capacity ?
@@ -1529,20 +1532,20 @@ int find_empty /*@ <kt> @*/(int* busybits, int start, hash_t hash, int capacity)
   //@ assert pred_mapping(kps, ?bbs, kp, ?ks);
   //@ assert hm == hmap(ks, ?khs);
   int i = 0;
-  for (; i < capacity; ++i)
+  int capacity_s = (int) capacity;
+  offset_t offset = offset_from_hash(hash);
+  for (; i < capacity_s; ++i)
     /*@ invariant pred_mapping(kps, bbs, kp, ks) &*&
       ints(busybits, capacity, bbs) &*&
-      ints(k_hashes, capacity, khs) &*&
+      ullongs(k_hashes, capacity, khs) &*&
       pointers(keyps, capacity, kps) &*&
       0 <= i &*& i <= capacity &*&
-      true == up_to(nat_of_int(i),
-      (byLoopNthProp)(ks, cell_busy,
-      capacity, start));
+      true == up_to(nat_of_int(i), (stride_nth_prop)(ks, cell_busy, capacity, start, offset));
       @*/
-    //@ decreases capacity - i;
+    //@ decreases capacity_s - i;
   {
     //@ pred_mapping_same_len(bbs, ks);
-    int index = loop(start + i*(offset_from_hash(hash)), capacity);
+    int index = loop(start + ((unsigned int) i)*offset, capacity);
     int bb = busybits[index];
     if (0 == bb) {
       //@ zero_bbs_is_for_empty(bbs, ks, index);
@@ -1550,11 +1553,11 @@ int find_empty /*@ <kt> @*/(int* busybits, int start, hash_t hash, int capacity)
       return index;
     }
     //@ bb_nonzero_cell_busy(bbs, ks, index);
-    //@ assert(true == cell_busy(nth(loop_fp(i+start,capacity), ks)));
+    //@ assert(true == cell_busy(nth(loop_fp(i*offset+start,capacity), ks)));
     //@ assert(nat_of_int(i+1) == succ(nat_of_int(i)));
   }
   //@ pred_mapping_same_len(bbs, ks);
-  //@ by_loop_for_all(ks, cell_busy, start, capacity, nat_of_int(capacity));
+  //@ apply_CRT(capacity, ks, cell_busy, capacity, start, offset);
   //@ full_size(ks);
   //@ close hmapping<kt>(kp, hsh, capacity, busybits, kps, k_hashes, hm);
   return -1;
