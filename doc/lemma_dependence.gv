@@ -180,10 +180,11 @@ digraph stripe_l {
 	## chinese_remainder_theorem
 
 	all_divisors_in_gen_divisors;
-	common_divisors[color=red];
+	common_divisors;
 	common_divisors_contains_1;
 	common_divisors_contains_all_divisors;
 	common_divisors_fp[shape=box];
+	common_divisors_up_to;
 	coprime;
 	divide[shape=box];
 	divisor_below_n;
@@ -211,6 +212,7 @@ digraph stripe_l {
 	leq_than_transitive;
 	less_than[shape=box];
 	list_contains[shape=box];
+	list_contains_nth;
 	list_exists_equals_to_contains;
 	merge_list_and[shape=box];
 	merge_list_and_lemma;
@@ -235,6 +237,10 @@ digraph stripe_l {
 	greatest_common_divisor_tail_less_than -> {leq_than greatest_common_divisor}
 
 	greatest_common_divisor -> {greater_than greatest_common_divisor}
+	
+	common_divisors -> {gen_divisors merge_list_and common_divisors_fp common_divisors_up_to up_to_length_to_forall}
+
+	common_divisors_up_to -> {gen_divisors merge_list_and forall_fp_to_fp common_divisors_fp list_contains_nth merge_list_and_lemma_true merge_list_and_lemma_converse length_gen_divisors forall_gen_divisor_contains_divisors forall_contains_to_prop}
 
 	common_divisors_contains_all_divisors -> {divide merge_list_and gen_divisors equals divisor_below_n gen_divisor_contains_all_divisors_below_bound merge_list_and_lemma}
 
@@ -255,6 +261,8 @@ digraph stripe_l {
 	#not
 
 	list_exists_equals_to_contains -> {equals list_contains list_exists_equals_to_contains}
+
+	list_contains_nth -> {list_contains list_contains_nth}
 
 	list_contains -> list_contains;
 

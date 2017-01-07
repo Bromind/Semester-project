@@ -1,3 +1,4 @@
+#include "up_to_conversions.gh"
 #include "arith.gh"
 #include "nth_prop.gh"
 #include "modulo.gh"
@@ -125,6 +126,24 @@ fixpoint bool equals<t>(t a, t b)
   return a == b;
 }
 
+lemma void gen_divisors_head_eq_bound(int whole, nat bound)
+requires bound == succ(?p_bound);
+ensures head(gen_divisors(bound, whole)) == pair(int_of_nat(bound), divide(whole, int_of_nat(bound)));
+{
+  assert gen_divisors(bound, whole) == cons(pair(int_of_nat(bound), divide(whole, int_of_nat(bound))), gen_divisors(p_bound, whole));
+}
+
+lemma void gen_divisor_order_head(int whole, nat gen_bound)
+requires gen_bound == succ(?p_gen_bound);
+ensures true == less_than(head(gen_divisors(succ(gen_bound), whole)), head(gen_divisors(gen_bound, whole)));
+{
+}
+
+fixpoint bool nth_greater_than_succ(list<pair<int, bool> > lst, int index)
+{
+  return less_than(nth(index, lst), nth(index+1, lst));
+}
+
 lemma void all_divisors_in_gen_divisors(int whole, int n)
 requires n > 0 &*& whole > 0;
 ensures divide(whole, n) ? true == exists(gen_divisors(nat_of_int(whole), whole), (equals)(pair(n, true))) : true;
@@ -176,6 +195,24 @@ fixpoint bool list_contains<t>(t elem, list<t> ls)
   }
 }
 
+lemma void list_contains_nth<t>(list<t> lst, int n)
+requires n >= 0 &*& n < length(lst);
+ensures true == list_contains(nth(n, lst), lst);
+{
+  switch(lst){
+    case nil: {
+      assert false;
+    }
+    case cons(hd, tl): {
+      if(n == 0) {
+        assert nth(n, lst) == hd;
+      } else {
+        list_contains_nth(tl, n-1);
+      }
+    }
+  }
+}
+
 lemma void list_exists_equal_to_contains<t>(list<t> ls, t elem)
 requires true == exists(ls, (equals)(elem));
 ensures true == list_contains(elem, ls);
@@ -191,6 +228,11 @@ ensures true == list_contains(elem, ls);
       }
     }
   }
+}
+
+fixpoint bool not<t>(fixpoint(t, bool) fp, t elem) 
+{
+  return fp(elem) == false;
 }
 
 lemma void not_exists_prop_to_not_exists<t>(list<t> lst, fixpoint(t, bool) prop, t elem)
@@ -241,7 +283,6 @@ ensures true == forall(merge_list_and(lst1, lst2), snd_true);
     }
   }
 }
-
 
 lemma void merge_list_and_lemma(list<pair<int, bool> > lst1, list<pair<int, bool> > lst2, pair<int, bool> pair)
 requires true == exists(lst1, (equals)(pair)) &*& true == exists(lst2, (equals)(pair)) &*& snd(pair) == true;
@@ -313,13 +354,53 @@ ensures true == exists(merge_list_and(gen_divisors(nat_of_int(n1), n1), gen_divi
   merge_list_and_lemma(gen_divisors(nat_of_int(n1), n1), gen_divisors(nat_of_int(n2), n2), pair(n3, true));
 }
 
-// Rely on fixpoint
-lemma void common_divisors(int n1, int n2)
-requires n1 >= n2;
-ensures true == forall(merge_list_and(gen_divisors(nat_of_int(n2), n1), gen_divisors(nat_of_int(n2), n2)), (common_divisors_fp)(n1, n2));
+lemma void common_divisors_up_to(list<pair<int, bool> > lst1, int n1, list<pair<int, bool> > lst2, int n2, list<pair<int, bool> > merged)
+requires lst1 == gen_divisors(nat_of_int(n1), n1) 
+	&*& lst2 == gen_divisors(nat_of_int(n2), n2)
+	&*& merged == merge_list_and(lst1, lst2);
+ensures true == up_to(nat_of_int(length(merged)), (forall_fp_to_up_to_fp)((common_divisors_fp)(n1, n2), merged));
 {
-  assume(false);
+  int i = 0;
+  fixpoint(int, bool) fp = (forall_fp_to_up_to_fp)((common_divisors_fp)(n1, n2), merged);
+  
+  for(; i < length(merged); i++)
+  invariant true == up_to(nat_of_int(i), (forall_fp_to_up_to_fp)((common_divisors_fp)(n1, n2), merged))
+  	&*& i <= length(merged)
+  	&*& i >= 0;
+  decreases length(merged) - i;
+  {
+    assert true == up_to(nat_of_int(i), fp);
+    list_contains_nth(merged, i);
+    merge_list_and_lemma_true(lst1, lst2);
+    forall_fp_to_fp(merged, snd_true, nat_of_int(i));
+    assert snd(nth(i, merged)) == true;
+    
+    merge_list_and_lemma_converse(lst1, lst2, nth(i, merged));
+    
+    length_gen_divisors(nat_of_int(n1), n1);
+    forall_gen_divisor_contains_divisors(lst1, n1);
+    forall_contains_to_prop(lst1, (divisors_fp)(n1), nth(i, merged));
+    
+    length_gen_divisors(nat_of_int(n2), n2);
+    forall_gen_divisor_contains_divisors(lst2, n2);
+    forall_contains_to_prop(lst2, (divisors_fp)(n2), nth(i, merged));
+    
+    assert divide(n1, fst(nth(i, merged))) == true;
+    assert divide(n2, fst(nth(i, merged))) == true;
+    assert common_divisors_fp(n1, n2, nth(i, merged)) == true;
+    assert true == fp(int_of_nat(nat_of_int(i)));
+    succ_int(i);
+  }
 }
+
+lemma void common_divisors(list<pair<int, bool> > lst1, int n1, list<pair<int, bool> > lst2, int n2)
+requires lst1 == gen_divisors(nat_of_int(n1), n1) &*& lst2 == gen_divisors(nat_of_int(n2), n2);
+ensures true == forall(merge_list_and(lst1, lst2), (common_divisors_fp)(n1, n2));
+{
+  common_divisors_up_to(lst1, n1, lst2, n2, merge_list_and(lst1, lst2));
+  up_to_length_to_forall(merge_list_and(lst1, lst2), 0, merge_list_and(lst1, lst2), (common_divisors_fp)(n1, n2));
+}
+
 
 fixpoint pair<int, bool> greatest_common_divisor(list<pair<int, bool> > common_divisors)
 {
