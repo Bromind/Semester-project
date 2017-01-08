@@ -1,6 +1,7 @@
 \documentclass{beamer}
 \usepackage{tikz}
 \usepackage{drawstack}
+\usepackage{graphicx}
 
 \usetikzlibrary{graphs,quotes,arrows,automata}
 
@@ -52,7 +53,7 @@
 \begin{frame}
 	\frametitle{Naive hash table}
 	\begin{tikzpicture}
-		\draw (0, -3) node[draw, anchor=east] (key1) {$h(\mathtt{key1})$};
+		\draw (0, -3) node[anchor=east] (key1) {$h(\mathtt{key1})$};
 
 		\drawstruct{(3,0)}
 		\structcell[freecell]{} \coordinate(firstCell) at (currentcell.east) ;
@@ -70,7 +71,7 @@
 \begin{frame}
 	\frametitle{Naive hash table}
 	\begin{tikzpicture}
-		\draw (0, -3) node[draw, anchor=east] (key2) {$h(\mathtt{key2})$};
+		\draw (0, -3) node[anchor=east] (key2) {$h(\mathtt{key2})$};
 
 		\drawstruct{(3,0)}
 		\structcell[freecell]{} \coordinate(firstCell) at (currentcell.east) ;
@@ -88,7 +89,7 @@
 \begin{frame}
 	\frametitle{Naive hash table}
 	\begin{tikzpicture}
-		\draw (0, -3) node[draw, anchor=east] (key3) {$h(\mathtt{key3})$};
+		\draw (0, -3) node[anchor=east] (key3) {$h(\mathtt{key3})$};
 
 		\drawstruct{(3,0)}
 		\structcell[freecell]{} \coordinate(firstCell) at (currentcell.east) ;
@@ -106,10 +107,61 @@
 
 \begin{frame}
 	\frametitle{Double hashing}
+	\begin{tikzpicture}
+		\draw (0, -3) node[anchor=east] (key1) {$h_1(\mathtt{key1})$};
+
+		\drawstruct{(3,0)}
+		\structcell[freecell]{} \coordinate(firstCell) at (currentcell.east) ;
+		\structcell[freecell]{} \coordinate(secondCell) at (currentcell.east);
+		\structcell[occupiedcell]{\keyvalue{key1}{value1}} \coordinate(thirdCell) at (currentcell.west);
+		\structcell[freecell]{} \coordinate(fourthCell) at (currentcell.east);
+		\structcell[freecell]{} \coordinate(fifthCell) at (currentcell.east);
+		\structcell[freecell]{} \coordinate(sixthCell) at (currentcell.east);
+
+		\draw[->, thick] (key1) -- (thirdCell);
+	\end{tikzpicture}
+
+\end{frame}
+
+\begin{frame}
+	\frametitle{Double hashing}
+	\begin{tikzpicture}
+		\draw (0, -3) node[anchor=east] (key2) {$h_1(\mathtt{key2})$};
+
+		\drawstruct{(3,0)}
+		\structcell[freecell]{} \coordinate(firstCell) at (currentcell.east) ;
+		\structcell[freecell]{} \coordinate(secondCell) at (currentcell.east);
+		\structcell[occupiedcell]{\keyvalue{key1}{value1}} \coordinate(thirdCell) at (currentcell.west); \coordinate(thirdCellOut) at (currentcell.east);
+		\structcell[freecell]{} \coordinate(fourthCell) at (currentcell.east); \coordinate(fourthCellOut) at (currentcell.east);
+		\structcell[freecell]{} \coordinate(fifthCell) at (currentcell.east);
+		\structcell[occupiedcell]{\keyvalue{key2}{value2}} \coordinate(sixthCell) at (currentcell.east); \coordinate(sixthCellOut) at (currentcell.east);
+
+		\draw[->, red, thick] (key2) -- (thirdCell);
+		\draw[->, thick] (thirdCellOut) -- ++(1, 0) |- (sixthCellOut) node [pos=0.5, anchor=west] {$h_2(\mathtt{key2}) = 2$};
+	\end{tikzpicture}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Double hashing}
+	\begin{tikzpicture}
+		\draw (0, -3) node[anchor=east] (key3) {$h_1(\mathtt{key3})$};
+
+		\drawstruct{(3,0)}
+		\structcell[occupiedcell]{\keyvalue{key3}{value3}} \coordinate(firstCell) at (currentcell.east) ; \coordinate(firstCellOut) at (currentcell.east);
+		\structcell[freecell]{} \coordinate(secondCell) at (currentcell.east);
+		\structcell[occupiedcell]{\keyvalue{key1}{value1}} \coordinate(thirdCell) at (currentcell.west); \coordinate(thirdCellOut) at (currentcell.east);
+		\structcell[freecell]{} \coordinate(fourthCell) at (currentcell.east); \coordinate(fourthCellOut) at (currentcell.east);
+		\structcell[freecell]{} \coordinate(fifthCell) at (currentcell.west); \coordinate(fifthCellOut) at (currentcell.east);
+		\structcell[occupiedcell]{\keyvalue{key2}{value2}} \coordinate(sixthCell) at (currentcell.east); \coordinate(sixthCellOut) at (currentcell.east);
+
+		\draw[->, red, thick] (key3) -- (thirdCell);
+		\draw[->, thick] (thirdCellOut) -- ++(1, 0) |- (firstCellOut) node [pos=0.5, anchor=west] {$h_2(\mathtt{key3})=4$};
+	\end{tikzpicture}
 \end{frame}
 
 \begin{frame}
 	\frametitle{Provided implementation}
+	findEmpty, findKey
 \end{frame}
 
 \begin{frame}
@@ -118,8 +170,65 @@
 
 \section{Implementation}
 \subsection{Modifications}
+\begin{frame}
+	\frametitle{Modifications}
+
+	\begin{itemize}
+		\item 64 bits hashes.
+	\end{itemize}
+	\begin{center}
+		\begin{tikzpicture}
+			\draw (0,0) rectangle (4, 1) node[pos=0.5] {offset};
+			\draw (4,0) rectangle (8, 1) node[pos=0.5] {entry};
+		\end{tikzpicture}
+	\end{center}
+	
+	Except type changes, only \texttt{for} loops modified.
+
+\end{frame}
 \subsection{Performance evaluation}
+\begin{frame}
+	\frametitle{Performance evaluation}
+	\begin{itemize}
+		\item Build a benchmark tool.
+		\item Size, number of accesses, load, read/write ratio, etc\ldots
+		\item Converter to C file.
+		\item First warms-up, then measures when target load is reached.
+	\end{itemize}
+	
+	\vspace{0.5cm}
+	\begin{center}
+		\texttt{test\_load.sh length read\_ratio load1 [load2\ldots]}
+	\end{center}
+
+\end{frame}
+
+\begin{frame}
+	\frametitle{Evaluation cases}
+	\begin{itemize}
+		\item Worst case: searching a non existing element.
+	\end{itemize}
+
+	\begin{enumerate}
+		\item Allow searching non existing element.
+		\item Search only existing element.
+	\end{enumerate}
+\end{frame}
+
 \subsection{Performance results}
+\begin{frame}
+	\frametitle{Result}
+	\begin{center}
+		\includegraphics[width=0.9\textwidth]{result_example_contains.png}	
+	\end{center}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Result -- only existing}
+	\begin{center}
+		\includegraphics[width=0.9\textwidth]{result_example_no_contains.png}	
+	\end{center}
+\end{frame}
 
 
 \section{Verification}
