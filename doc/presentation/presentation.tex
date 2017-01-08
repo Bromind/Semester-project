@@ -29,7 +29,7 @@
 
 
 \newcommand{\keyvalue}[2] {
-		\begin{tabular}{|c|c|}
+	\begin{tabular}{| p{0.8cm} | p{1.3cm} |}
 			\hline
 			\texttt{#1} & \texttt{#2} \\
 			\hline
@@ -137,7 +137,7 @@
 		\structcell[occupiedcell]{\keyvalue{key2}{value2}} \coordinate(sixthCell) at (currentcell.east); \coordinate(sixthCellOut) at (currentcell.east);
 
 		\draw[->, red, thick] (key2) -- (thirdCell);
-		\draw[->, thick] (thirdCellOut) -- ++(1, 0) |- (sixthCellOut) node [pos=0.5, anchor=west] {$h_2(\mathtt{key2}) = 2$};
+		\draw[->, thick] (thirdCellOut) -- ++(1, 0) |- (sixthCellOut) node [pos=0.5, anchor=west] {$h_2(\mathtt{key2}) = 3$};
 	\end{tikzpicture}
 \end{frame}
 
@@ -166,6 +166,71 @@
 
 \begin{frame}
 	\frametitle{Provided verification}
+	Example: successful search of \texttt{key3}
+	\begin{tikzpicture}
+		\draw (0, -3) node[anchor=east] (key3) {$h(\mathtt{key3})$};
+
+		\drawstruct{(8,0)}
+		\structcell[padding]{} ;
+		\structcell[padding]{} ;
+		\structcell[occupiedcell]{\texttt{not\_my\_key}} ;
+		\structcell[occupiedcell]{\texttt{not\_my\_key}} ; \coordinate(fourthCellOut) at (currentcell.east);
+		\structcell[freecell]{\texttt{my\_key}} ;
+		\structcell[padding]{} ;
+
+		\drawstruct{(3,0)}
+		\structcell[freecell]{} \coordinate(firstCell) at (currentcell.east) ;
+		\structcell[freecell]{} \coordinate(secondCell) at (currentcell.east);
+		\structcell[occupiedcell]{\keyvalue{key1}{value1}} \coordinate(thirdCell) at (currentcell.west); \coordinate(thirdCellOut) at (currentcell.east);
+		\structcell[occupiedcell]{\keyvalue{key2}{value2}} \coordinate(fourthCell) at (currentcell.west); \coordinate(fourthCellOut) at (currentcell.east);
+		\structcell[occupiedcell]{\keyvalue{key3}{value3}} \coordinate(fifthCell) at (currentcell.west); \coordinate(fifthCellOut) at (currentcell.east);
+		\structcell[freecell]{} \coordinate(sixthCell) at (currentcell.east);
+
+		\draw[->, red, thick] (key3) -- (thirdCell);
+		\draw[->, red, thick] (thirdCellOut) -- ++(1, 0) |- (fourthCellOut);
+		\draw[->, thick] (fourthCell) -- ++(-1, 0) |- (fifthCell);
+	\end{tikzpicture}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Provided verification}
+	Example: unsuccessful search of \texttt{key4}
+	\begin{tikzpicture}
+		\draw (0, -5) node[anchor=east] (key4) {$h(\mathtt{key4})$};
+
+		\drawstruct{(8,0)}
+		\structcell[occupiedcell]{\texttt{not\_my\_key}} ;
+		\structcell[occupiedcell]{\texttt{not\_my\_key}} ;
+		\structcell[occupiedcell]{\texttt{not\_my\_key}} ;
+		\structcell[occupiedcell]{\texttt{not\_my\_key}} ;
+		\structcell[occupiedcell]{\texttt{not\_my\_key}} ;
+		\structcell[occupiedcell]{\texttt{not\_my\_key}} ;
+
+		\drawstruct{(3,0)}
+		\structcell[freecell]{\keyvalue{}{}} \coordinate(firstCell) at (currentcell.west) ; \coordinate(firstCellOut) at (currentcell.east);
+		\structcell[freecell]{\keyvalue{}{}} \coordinate(secondCell) at (currentcell.west); \coordinate (secondCellOut) at (currentcell.east);
+		\structcell[occupiedcell]{\keyvalue{key1}{value1}} \coordinate(thirdCell) at (currentcell.west); \coordinate(thirdCellOut) at (currentcell.east);
+		\structcell[occupiedcell]{\keyvalue{key2}{value2}} \coordinate(fourthCell) at (currentcell.west); \coordinate(fourthCellOut) at (currentcell.east);
+		\structcell[occupiedcell]{\keyvalue{key3}{value3}} \coordinate(fifthCell) at (currentcell.west); \coordinate(fifthCellOut) at (currentcell.east);
+		\structcell[freecell]{\keyvalue{}{}} \coordinate(sixthCell) at (currentcell.west); \coordinate (sixthCellOut) at (currentcell.east);
+
+		\draw[->, red, thick] (key4) -- (fifthCell);
+		\draw[->, red, thick] (thirdCellOut) -- ++(1, 0) |- (fourthCellOut);
+		\draw[->, red, thick] (fifthCellOut) -- ++ (1, 0) |- (sixthCellOut);
+		\draw[red, thick] (sixthCell) -| ++(-1, -0.5);
+		\draw[->, red, thick] (firstCell)+(-1, 0.5) |- (firstCell);
+		\draw[->, red, thick] (firstCellOut) -- ++(1, 0) |- (secondCellOut);
+		\draw[->, red, thick] (secondCell) -- ++(-1, 0) |- (thirdCell);
+	\end{tikzpicture}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Provided verification}
+	For insertion: 
+	\begin{itemize}
+		\item Same idea
+		\item Property: \texttt{findEmpty}
+	\end{itemize}
 \end{frame}
 
 \section{Implementation}
@@ -233,6 +298,47 @@
 
 \section{Verification}
 \subsection{What to prove ?}
+\begin{frame}
+	\frametitle{Goal}
+	\begin{center}
+		Goal: show that increment by offset covers all the map.
+	\end{center}
+	\begin{itemize}
+		\item Not always true (chinese remainder theorem).
+		\item Requires: \texttt{offset} and \texttt{capacity} coprime ($gcd = 1$).
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Goal}
+	Insert \texttt{key4}: $h_1(\mathtt{key4}) = 5$, $h_2(\mathtt{key4}) = 2$.
+	\begin{tikzpicture}
+		\draw (0, -5) node[anchor=east] (key4) {$h(\mathtt{key4})$};
+
+		\drawstruct{(8,0)}
+		\structcell[occupiedcell]{\texttt{not\_my\_key}} ;
+		\structcell[padding]{} ;
+		\structcell[occupiedcell]{\texttt{not\_my\_key}} ;
+		\structcell[padding]{} ;
+		\structcell[occupiedcell]{\texttt{not\_my\_key}} ;
+		\structcell[padding]{} ;
+
+		\drawstruct{(3,0)}
+		\structcell[occupiedcell]{\keyvalue{key3}{value3}} \coordinate(firstCell) at (currentcell.west); \coordinate(firstCellOut) at (currentcell.east);
+		\structcell[freecell]{\keyvalue{}{}} \coordinate(secondCell) at (currentcell.west); \coordinate (secondCellOut) at (currentcell.east);
+		\structcell[occupiedcell]{\keyvalue{key1}{value1}} \coordinate(thirdCell) at (currentcell.west); \coordinate(thirdCellOut) at (currentcell.east);
+		\structcell[freecell]{\keyvalue{}{}} \coordinate(fourthCell) at (currentcell.west); \coordinate (fourthCellOut) at (currentcell.east);
+		\structcell[occupiedcell]{\keyvalue{key2}{value2}} \coordinate(fifthCell) at (currentcell.west); \coordinate(fourthCellOut) at (currentcell.east);
+		\structcell[freecell]{\keyvalue{}{}} \coordinate(sixthCell) at (currentcell.west); \coordinate (sixthCellOut) at (currentcell.east);
+
+		\draw[->, red, thick] (key4) -- (fifthCell);
+		\draw[red, thick] (fifthCellOut) -| ++(1, -1.5) ;
+		\draw[->, red, thick] (firstCellOut)+(1, 0.5) |-(firstCellOut);
+		\draw[->, red, thick] (firstCell) -- ++(-1, 0) |- (thirdCell);
+
+	\end{tikzpicture}
+\end{frame}
+
 \subsection{Proof steps}
 
 
