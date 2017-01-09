@@ -564,6 +564,7 @@ ensures n1%gcd(n1, n2) == 0 &*& n2%gcd(n1, n2) == 0;
   assert true == divide(n1, gcd);
   assert true == divide(n2, gcd);
   assert true == (n2/gcd*gcd == n2);
+  close protect(n2/gcd*gcd == n2);
   
   
   assert n1/gcd*gcd == n1;
@@ -572,7 +573,8 @@ ensures n1%gcd(n1, n2) == 0 &*& n2%gcd(n1, n2) == 0;
   
   
   assert true == divide(n2, gcd);
-  assume(n2/gcd*gcd == n2); // Bug ?
+  open protect(n2/gcd*gcd == n2);
+  assert n2/gcd*gcd == n2;
   div_rem(n2, gcd);
   assert n2 == n2/gcd*gcd + n2%gcd;
   assert n2/gcd*gcd == n2/gcd*gcd + n2%gcd;
