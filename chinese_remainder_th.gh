@@ -502,7 +502,11 @@ lemma void gcd_geq_1(int n1, int n2)
 requires n1 > 0 &*& n2 > 0;
 ensures gcd(n1, n2) >= 1;
 {
-  assume(false);
+  if(gcd(n1, n2) < 1) {
+    one_divide_all(n1);
+    one_divide_all(n2);
+    gcd_holds(n1, n2, 1);
+  }
 }
 
 lemma void gcd_divide(int n1, int n2)
