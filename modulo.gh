@@ -333,6 +333,26 @@ ensures a%mod == b%mod;
   }
 }
 
+
+lemma void div_multiple(int n1, int n2)
+requires n1 >= 0 &*& n2 > 0;
+ensures n1*n2/n2 == n1;
+{
+  int i = 0;
+  assert 0*n2 == 0;
+  division_round_to_zero(0, n2);
+  for(; i < n1; i++)
+  invariant i <= n1
+  	&*& i >= 0
+  	&*& i*n2/n2 == i;
+  decreases n1 - i;
+  {
+    mul_nonnegative(i, n2);
+    div_incr(i*n2, n2);
+    assert i+1 == ((i*n2)+n2)/n2;
+  }
+}
+
   lemma void loop_injection(int k, int capacity)
   requires 0 <= k &*& 0 < capacity;
   ensures loop_fp(k + capacity, capacity) == loop_fp(k, capacity);

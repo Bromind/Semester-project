@@ -156,5 +156,4 @@ ensures a/b >= 0;
   }
 }
 
-
 #endif ARITH_GH
