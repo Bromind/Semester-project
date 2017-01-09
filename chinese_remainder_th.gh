@@ -649,6 +649,15 @@ ensures coprime(n1*n2, n3) &*& coprime(n1, n3) &*& coprime(n2, n3);
   assume(false);
 }
 
+lemma void close_div_rem(int a, int b)
+requires b != 0;
+ensures protect(a == a/b*b + a%b);
+{
+  div_rem(a, b);
+  close protect(a == a/b*b + a%b);
+}
+
+
 // x = diff * step
 lemma void bin_chinese_remainder_theorem(int n1, int n2, int x)
 requires coprime(n1, n2) &*& 0 == x%n1 &*& 0 == x % n2 &*& x < (n1*n2) &*& n1 > 0 &*& n2 > 0 &*& x >= 0;
@@ -658,38 +667,51 @@ ensures x == 0 &*& coprime(n1, n2);
     x_not_1(n1, n2, x);
   } else {
     if(x > 1) {
-      div_rem(x, n1);
-      assume(x == x/n1*n1 + x%n1);
-      note(x == x/n1*n1 + x%n1);
-    
-      div_rem(x, n2);
-      assume(x == x/n2*n2 + x%n1);
-      note(x == x/n2*n2 + x%n2);
+      //close protect(x > 1);
+      close_div_rem(x, n1);
+      close_div_rem(x, n2);
     
       int k1 = x/n1;
+      quotient_positive(x, n1);
       int k2 = x/n2;
       int alpha = k2;
       
+      open protect(x == x/n1*n1 + x%n1);
       assert x == k1*n1;
+      close protect(x == k1*n1);
+      if(k1 == 0){
+        assert k1*n1 == 0;
+        open protect(x == k1*n1);
+        assert x == 0;
+        //close protect(x == k1*n1);
+        open protect(x > 1);
+        assert false;
+      } else {
+        open protect(x == k1*n1);
+      }
+      open protect(x == x/n2*n2 + x%n2);
       assert x == k2*n2;
+      close protect(x == k2*n2);
       assert k1*n1 == k2*n2;
     
-      div_rem(k1, n2);
-      assume(k1 == k1/n2*n2 + k1%n2);
+      close_div_rem(k1, n2);
+      open protect(k1 == k1/n2*n2 + k1%n2);
       note(k1 == k1/n2*n2 + k1%n2);
+      close protect(k1 == k1/n2*n2 + k1%n2);
+      
       int beta = k1/n2;
       assert k1 == n2*beta + k1%n2;
       note(k1 == n2*beta + k1%n2);
-      assume(k1 == n2*beta + k1%n2);
       
       if(k1%n2 == 0) {
         if(beta == 0) {
           assert n2*beta == 0;
           assert k1%n2 == 0;
-          assume(k1 == n2*beta + k1%n2);
+          assert beta == k1/n2;
+          open protect(k1 == k1/n2*n2 + k1%n2);
           assert k1 == n2*beta + k1%n2;
           assert k1 == 0;
-          assume(x == k1*n1);
+          open protect(x == k1*n1);
           assert x == k1*n1;
           assert x == 0*n1;
           assert x == 0;
@@ -703,16 +725,20 @@ ensures x == 0 &*& coprime(n1, n2);
           mul_mono(n2, k1, n1);
           assert x >= n1*n2;
         }
-      } else {
+      } else { // k1%n2 != 0
         int a = gcd(k1, n2);
         quotient_positive(x, n1);
         gcd_geq_1(k1, n2);
         div_rem(n2, a);
         int b = n2/a;
         quotient_positive(n2, a);
+        close protect(n2 == b* a + n2%a);
         assert n2 == b * a + n2%a;
         gcd_divide(k1, n2);
+        assert n2%a == 0;
+        open protect(n2 == b * a + n2%a);
         assert n2 == b * a;
+        close protect(n2 == b* a + n2%a);
         note(n2 == b*a);
         
         div_rem(k1, a);
@@ -720,14 +746,18 @@ ensures x == 0 &*& coprime(n1, n2);
         quotient_positive(k1, a);
         assert k1 == gamma * a;
         note(k1 == gamma * a);
+        close protect(k1 == gamma * a);
        
         if(gcd(b, gamma) != 1)
         {
           assume(false);
         }
-        
+        open protect(x == k1*n1);
+        close protect(k1 == gamma * a);
+        open protect(x == k2*n2);
         assert k1 * n1 == k2 * n2;
         assert n2 == b * a;
+        close protect(n2 == b*a);
         quotient_positive(x, n2);
         mul_subst(n2, b*a, k2);
         assert k1 * n1 == k2 * (b * a);
@@ -737,19 +767,22 @@ ensures x == 0 &*& coprime(n1, n2);
         if(gcd(n1, b) != 1) {
           assume(false);
         }
-        if(a == 1)
-        {
+        if(a == 1) {
           if(b != n2) {
-            assume(n2 == b*a); // Remove
+            open protect(n2 == b*a);
             assert n2 == b * a;
             assert false;
+          } else {
+            open protect(n2 == b*a);
           }
           assert b == n2;
           
           if(gamma != k1) {
-            assume(k1 == gamma * a);
+            open protect(k1 == gamma * a);
             assert k1 == gamma * a;
             assert false;
+          } else {
+            open protect(k1 == gamma * a);
           }
           assert gamma == k1;
           assert gcd(gamma, b) == 1;
@@ -773,7 +806,10 @@ ensures x == 0 &*& coprime(n1, n2);
             }
             assert gcd(x, n2) >= n2;
           }
-        } else {
+        } else { // a != 1
+          open protect(n2 == b*a);
+          open protect(k1 == gamma * a);
+          
           assert gcd(n1, b) == 1;
           close coprime(n1, b);
           assert coprime(n1, b);
@@ -809,6 +845,9 @@ ensures x == 0 &*& coprime(n1, n2);
             assert false;
           }
           
+          open protect(k1 == k1/n2*n2 + k1%n2);
+          
+          assert coprime(n1, b);
           bin_chinese_remainder_theorem(n1, b, k2*b);
           assert k2*b == 0;
           mul_subst(k2*b, 0, a);
