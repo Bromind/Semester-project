@@ -2,6 +2,9 @@
 #define _MAP_GENERATOR_H_INCLUDED_
 #include <stdlib.h>
 #include <stddef.h>
+/*@
+#include "chinese_remainder_th.gh"
+@*/
 typedef unsigned long long hash_t ;
 typedef unsigned int entry_t;
 typedef unsigned int offset_t;

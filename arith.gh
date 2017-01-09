@@ -112,6 +112,18 @@ ensures a*x == a*y;
   mul_eq(a, y);
 }
 
+lemma void mul_subst_neq(int x, int y, int a)
+requires x != y &*& x >= 0 &*& y >= 0 &*& 0 < a;
+ensures a*x != a*y;
+{
+  if(x > y) {
+    mul_mono_strict(y, x, a);
+  } else {
+    assert x < y;
+    mul_mono_strict(x, y, a);
+  }
+}
+
  lemma void mul_negative(int a, int b)
  requires a < 0 &*& b > 0;
  ensures a*b <= 0-b;
@@ -131,17 +143,18 @@ ensures a*x == a*y;
     mul_eq(b, a);
  }
  
- lemma void quotient_positive(int a, int b)
- requires a >= 0 &*& b > 0;
- ensures a/b >= 0;
- {
-   if(a/b < 0) {
-     mul_negative(a/b, b);
-     div_rem(a, b);
-     assert a - a%b == a/b * b;
-     assert -b < a%b;
-     assert a - a%b > a - b;
-   }
- }
+lemma void quotient_positive(int a, int b)
+requires a >= 0 &*& b > 0;
+ensures a/b >= 0;
+{
+  if(a/b < 0) {
+    mul_negative(a/b, b);
+    div_rem(a, b);
+    assert a - a%b == a/b * b;
+    assert -b < a%b;
+    assert a - a%b > a - b;
+  }
+}
+
 
 #endif ARITH_GH
