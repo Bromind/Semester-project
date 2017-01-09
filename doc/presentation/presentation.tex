@@ -167,29 +167,31 @@
 \begin{frame}
 	\frametitle{Provided verification}
 	Example: successful search of \texttt{key3}
-	\begin{tikzpicture}
-		\draw (0, -3) node[anchor=east] (key3) {$h(\mathtt{key3})$};
+	\begin{center}
+		\begin{tikzpicture}
+			\draw (0, -3) node[anchor=east] (key3) {$h(\mathtt{key3})$};
 
-		\drawstruct{(8,0)}
-		\structcell[padding]{} ;
-		\structcell[padding]{} ;
-		\structcell[occupiedcell]{\texttt{not\_my\_key}} ;
-		\structcell[occupiedcell]{\texttt{not\_my\_key}} ; \coordinate(fourthCellOut) at (currentcell.east);
-		\structcell[freecell]{\texttt{my\_key}} ;
-		\structcell[padding]{} ;
+			\drawstruct{(8,0)}
+			\structcell[padding]{} ;
+			\structcell[padding]{} ;
+			\structcell[occupiedcell]{\texttt{not\_my\_key(3)}} ;
+			\structcell[occupiedcell]{\texttt{not\_my\_key(4)}} ; \coordinate(fourthCellOut) at (currentcell.east);
+			\structcell[freecell]{\texttt{my\_key}} ;
+			\structcell[padding]{} ;
 
-		\drawstruct{(3,0)}
-		\structcell[freecell]{} \coordinate(firstCell) at (currentcell.east) ;
-		\structcell[freecell]{} \coordinate(secondCell) at (currentcell.east);
-		\structcell[occupiedcell]{\keyvalue{key1}{value1}} \coordinate(thirdCell) at (currentcell.west); \coordinate(thirdCellOut) at (currentcell.east);
-		\structcell[occupiedcell]{\keyvalue{key2}{value2}} \coordinate(fourthCell) at (currentcell.west); \coordinate(fourthCellOut) at (currentcell.east);
-		\structcell[occupiedcell]{\keyvalue{key3}{value3}} \coordinate(fifthCell) at (currentcell.west); \coordinate(fifthCellOut) at (currentcell.east);
-		\structcell[freecell]{} \coordinate(sixthCell) at (currentcell.east);
+			\drawstruct{(3,0)}
+			\structcell[freecell]{} \coordinate(firstCell) at (currentcell.east) ;
+			\structcell[freecell]{} \coordinate(secondCell) at (currentcell.east);
+			\structcell[occupiedcell]{\keyvalue{key1}{value1}} \coordinate(thirdCell) at (currentcell.west); \coordinate(thirdCellOut) at (currentcell.east);
+			\structcell[occupiedcell]{\keyvalue{key2}{value2}} \coordinate(fourthCell) at (currentcell.west); \coordinate(fourthCellOut) at (currentcell.east);
+			\structcell[occupiedcell]{\keyvalue{key3}{value3}} \coordinate(fifthCell) at (currentcell.west); \coordinate(fifthCellOut) at (currentcell.east);
+			\structcell[freecell]{} \coordinate(sixthCell) at (currentcell.east);
 
-		\draw[->, red, thick] (key3) -- (thirdCell);
-		\draw[->, red, thick] (thirdCellOut) -- ++(1, 0) |- (fourthCellOut);
-		\draw[->, thick] (fourthCell) -- ++(-1, 0) |- (fifthCell);
-	\end{tikzpicture}
+			\draw[->, red, thick] (key3) -- (thirdCell);
+			\draw[->, red, thick] (thirdCellOut) -- ++(1, 0) |- (fourthCellOut);
+			\draw[->, thick] (fourthCell) -- ++(-1, 0) |- (fifthCell);
+		\end{tikzpicture}
+	\end{center}
 \end{frame}
 
 \begin{frame}
@@ -199,12 +201,12 @@
 		\draw (0, -5) node[anchor=east] (key4) {$h(\mathtt{key4})$};
 
 		\drawstruct{(8,0)}
-		\structcell[occupiedcell]{\texttt{not\_my\_key}} ;
-		\structcell[occupiedcell]{\texttt{not\_my\_key}} ;
-		\structcell[occupiedcell]{\texttt{not\_my\_key}} ;
-		\structcell[occupiedcell]{\texttt{not\_my\_key}} ;
-		\structcell[occupiedcell]{\texttt{not\_my\_key}} ;
-		\structcell[occupiedcell]{\texttt{not\_my\_key}} ;
+		\structcell[occupiedcell]{\texttt{not\_my\_key(1)}} ;
+		\structcell[occupiedcell]{\texttt{not\_my\_key(2)}} ;
+		\structcell[occupiedcell]{\texttt{not\_my\_key(3)}} ;
+		\structcell[occupiedcell]{\texttt{not\_my\_key(4)}} ;
+		\structcell[occupiedcell]{\texttt{not\_my\_key(5)}} ;
+		\structcell[occupiedcell]{\texttt{not\_my\_key(6)}} ;
 
 		\drawstruct{(3,0)}
 		\structcell[freecell]{\keyvalue{}{}} \coordinate(firstCell) at (currentcell.west) ; \coordinate(firstCellOut) at (currentcell.east);
@@ -226,6 +228,8 @@
 
 \begin{frame}
 	\frametitle{Provided verification}
+	Part before and after ``$\forall i. \mathtt{not\_my\_key(i)} = true$'' provided.\\
+	\vspace{1cm}
 	For insertion: 
 	\begin{itemize}
 		\item Same idea
@@ -299,48 +303,118 @@
 \section{Verification}
 \subsection{What to prove ?}
 \begin{frame}
-	\frametitle{Goal}
+	\frametitle{What to prove ?}
 	\begin{center}
 		Goal: show that increment by offset covers all the map.
 	\end{center}
 	\begin{itemize}
 		\item Not always true (chinese remainder theorem).
-		\item Requires: \texttt{offset} and \texttt{capacity} coprime ($gcd = 1$).
+		\item Requires: \texttt{offset} and \texttt{capacity} coprime ($gcd = 1$) (necessary and sufficient).
 	\end{itemize}
 \end{frame}
 
 \begin{frame}
-	\frametitle{Goal}
-	Insert \texttt{key4}: $h_1(\mathtt{key4}) = 5$, $h_2(\mathtt{key4}) = 2$.
-	\begin{tikzpicture}
-		\draw (0, -5) node[anchor=east] (key4) {$h(\mathtt{key4})$};
+	\frametitle{What to prove ?}
+	Insert \texttt{key4}: $h_1(\mathtt{key4}) = 5$, $h_2(\mathtt{key4}) = 2$: search empty ?
+	\begin{center}
+		\begin{tikzpicture}
+			\draw (0, -5) node[anchor=east] (key4) {$h(\mathtt{key4})$};
 
-		\drawstruct{(8,0)}
-		\structcell[occupiedcell]{\texttt{not\_my\_key}} ;
-		\structcell[padding]{} ;
-		\structcell[occupiedcell]{\texttt{not\_my\_key}} ;
-		\structcell[padding]{} ;
-		\structcell[occupiedcell]{\texttt{not\_my\_key}} ;
-		\structcell[padding]{} ;
+			\drawstruct{(7,0)}
+			\structcell[occupiedcell]{\texttt{not\_empty(1)}} ;
+			\structcell[padding]{} ;
+			\structcell[occupiedcell]{\texttt{not\_empty(3)}} ;
+			\structcell[padding]{} ;
+			\structcell[occupiedcell]{\texttt{not\_empty(5)}} ;
+			\structcell[padding]{} ;
 
-		\drawstruct{(3,0)}
-		\structcell[occupiedcell]{\keyvalue{key3}{value3}} \coordinate(firstCell) at (currentcell.west); \coordinate(firstCellOut) at (currentcell.east);
-		\structcell[freecell]{\keyvalue{}{}} \coordinate(secondCell) at (currentcell.west); \coordinate (secondCellOut) at (currentcell.east);
-		\structcell[occupiedcell]{\keyvalue{key1}{value1}} \coordinate(thirdCell) at (currentcell.west); \coordinate(thirdCellOut) at (currentcell.east);
-		\structcell[freecell]{\keyvalue{}{}} \coordinate(fourthCell) at (currentcell.west); \coordinate (fourthCellOut) at (currentcell.east);
-		\structcell[occupiedcell]{\keyvalue{key2}{value2}} \coordinate(fifthCell) at (currentcell.west); \coordinate(fourthCellOut) at (currentcell.east);
-		\structcell[freecell]{\keyvalue{}{}} \coordinate(sixthCell) at (currentcell.west); \coordinate (sixthCellOut) at (currentcell.east);
+			\drawstruct{(2,0)}
+			\structcell[occupiedcell]{\keyvalue{key3}{value3}} \coordinate(firstCell) at (currentcell.west); \coordinate(firstCellOut) at (currentcell.east);
+			\structcell[freecell]{\keyvalue{}{}} \coordinate(secondCell) at (currentcell.west); \coordinate (secondCellOut) at (currentcell.east);
+			\structcell[occupiedcell]{\keyvalue{key1}{value1}} \coordinate(thirdCell) at (currentcell.west); \coordinate(thirdCellOut) at (currentcell.east);
+			\structcell[freecell]{\keyvalue{}{}} \coordinate(fourthCell) at (currentcell.west); \coordinate (fourthCellOut) at (currentcell.east);
+			\structcell[occupiedcell]{\keyvalue{key2}{value2}} \coordinate(fifthCell) at (currentcell.west); \coordinate(fifthCellOut) at (currentcell.east);
+			\structcell[freecell]{\keyvalue{}{}} \coordinate(sixthCell) at (currentcell.west); \coordinate (sixthCellOut) at (currentcell.east);
 
-		\draw[->, red, thick] (key4) -- (fifthCell);
-		\draw[red, thick] (fifthCellOut) -| ++(1, -1.5) ;
-		\draw[->, red, thick] (firstCellOut)+(1, 0.5) |-(firstCellOut);
-		\draw[->, red, thick] (firstCell) -- ++(-1, 0) |- (thirdCell);
+			\draw[->, red, thick] (key4) -- (fifthCell);
+			\draw[red, thick] (fifthCellOut) -| ++(1, -1.5) ;
+			\draw[->, red, thick] (firstCellOut)+(1, 0.5) |-(firstCellOut);
+			\draw[->, red, thick] (firstCell) -- ++(-1, 0) |- (thirdCell);
 
-	\end{tikzpicture}
+		\end{tikzpicture}
+	\end{center}
 \end{frame}
 
 \subsection{Proof steps}
+\begin{frame}
+	\frametitle{Proof steps}
+	If the number of iteration is less than the capacity: 
+	\begin{itemize}
+		\item Build and updated a \texttt{list<option<nat>>} with the same pattern.
+		\item Each cell is: 
+			\begin{itemize}
+				\item \texttt{some(n)} if accessed after $n$ iterations.
+				\item \texttt{none} if not accessed.
+			\end{itemize}
+		\item Apply Chinese Remainder Theorem.
+		\item Deduce that only \texttt{none} are updated to \texttt{some}.
+		\item Hence, the number of \texttt{some} is the number of iteration.
+		\item For \texttt{capacity} iteration, all cells are some.
+	\end{itemize}
+\end{frame}
 
+\begin{frame}
+	\frametitle{Proof steps}
+
+
+	\begin{columns}
+		\begin{column}{0.5\textwidth}
+			\begin{tikzpicture}
+				\drawstruct{(0,0)}
+				\structcell[freecell]{\texttt{some(7)}} ;
+				\structcell[freecell]{\texttt{some(4)}} ;
+				\structcell[freecell]{\texttt{some(1)}} ;
+				\structcell[freecell]{\texttt{some(5)}} ;
+				\structcell[freecell]{\texttt{some(2)}} ;
+				\structcell[freecell]{\texttt{some(6)}} ;
+				\structcell[freecell]{\texttt{some(3)}} ;
+				\structname{\texttt{stripe(capacity=7, offset=2, iter=7)}};
+			\end{tikzpicture}
+		\end{column}
+		\begin{column}{0.5\textwidth}
+			$\Rightarrow \mathtt{count\_some = iter = 7}$\\
+			$\Rightarrow$ All cells are \texttt{some}.
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame}
+		If \texttt{some(n)}, then \texttt{prop(start+offset*n \% capa)}.
+	\begin{center}
+		\begin{tikzpicture}
+			\frametitle{Proof steps}
+			\drawstruct{(0,0)}
+			\structcell[occupiedcell]{\texttt{none}} ;
+			\structcell[freecell]{\texttt{some(4)}} ;
+			\structcell[freecell]{\texttt{some(1)}} ;
+			\structcell[freecell]{\texttt{some(5)}} ;
+			\structcell[freecell]{\texttt{some(2)}} ;
+			\structcell[occupiedcell]{\texttt{none}} ;
+			\structcell[freecell]{\texttt{some(3)}} ;
+			\structname{\texttt{stripe(capacity=7, offset=2, iter=7)}};
+
+			\drawstruct{(4,0)}
+			\structcell[padding]{} ;
+			\structcell[freecell]{\texttt{prop(2)} holds} ;
+			\structcell[freecell]{\texttt{prop(3)} holds} ;
+			\structcell[freecell]{\texttt{prop(4)} holds} ;
+			\structcell[freecell]{\texttt{prop(5)} holds} ;
+			\structcell[padding]{} ;
+			\structcell[freecell]{\texttt{prop(7)} holds} ;
+		\end{tikzpicture}
+	\end{center}
+
+\end{frame}
 
 \section{Conclusion}
 \subsection{Hash Table software}
@@ -366,9 +440,9 @@
 
 
 \begin{frame}
-\begin{center}
-\huge{Q\&A}
-\end{center}
+	\begin{center}
+		\huge{Q\&A}
+	\end{center}
 \end{frame}
 
 \end{document}
