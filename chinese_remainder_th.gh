@@ -657,17 +657,33 @@ ensures protect(a == a/b*b + a%b);
   close protect(a == a/b*b + a%b);
 }
 
+lemma void is_zero(int x)
+requires x >= 0 &*& false == (x >= 1);
+ensures x == 0;
+{
+}
 
 // x = diff * step
-lemma void bin_chinese_remainder_theorem(int n1, int n2, int x)
-requires coprime(n1, n2) &*& 0 == x%n1 &*& 0 == x % n2 &*& x < (n1*n2) &*& n1 > 0 &*& n2 > 0 &*& x >= 0;
+lemma void bin_chinese_remainder_theorem_helper(int n1, int n2, int x, nat loop_counter)
+requires coprime(n1, n2) &*& 0 == x%n1 &*& 0 == x % n2 &*& x < (n1*n2) &*& n1 > 0 &*& n2 > 0 &*& x >= 0 &*& n2 <= int_of_nat(loop_counter);
 ensures x == 0 &*& coprime(n1, n2);
 {
-  if(1 == x) {
+  switch(loop_counter) {
+  case zero: {
+    assert n2 > 0;
+    assert int_of_nat(loop_counter) == 0;
+    assert n2 <= 0;
+    
+    assert false;
+  }
+  
+  case succ(p_loop_counter): {
+ 
+  if(1 == x) { // contradiction
     x_not_1(n1, n2, x);
   } else {
+    assert x >= 0;
     if(x > 1) {
-      //close protect(x > 1);
       close_div_rem(x, n1);
       close_div_rem(x, n2);
     
@@ -704,7 +720,7 @@ ensures x == 0 &*& coprime(n1, n2);
       note(k1 == n2*beta + k1%n2);
       
       if(k1%n2 == 0) {
-        if(beta == 0) {
+        if(beta == 0) { // Prove that x == 0
           assert n2*beta == 0;
           assert k1%n2 == 0;
           assert beta == k1/n2;
@@ -715,7 +731,7 @@ ensures x == 0 &*& coprime(n1, n2);
           assert x == k1*n1;
           assert x == 0*n1;
           assert x == 0;
-        } else {
+        } else { // contradiction
           quotient_positive(x, n1);
           quotient_positive(x/n1, n2);
           assert beta >= 1;
@@ -724,6 +740,7 @@ ensures x == 0 &*& coprime(n1, n2);
           assert k1 >= n2;
           mul_mono(n2, k1, n1);
           assert x >= n1*n2;
+          assert false;
         }
       } else { // k1%n2 != 0
         int a = gcd(k1, n2);
@@ -809,6 +826,7 @@ ensures x == 0 &*& coprime(n1, n2);
         } else { // a != 1
           open protect(n2 == b*a);
           open protect(k1 == gamma * a);
+          open protect(k1 == gamma * a); // Dunno why it is twice here ?? oO
           
           assert gcd(n1, b) == 1;
           close coprime(n1, b);
@@ -848,15 +866,43 @@ ensures x == 0 &*& coprime(n1, n2);
           open protect(k1 == k1/n2*n2 + k1%n2);
           
           assert coprime(n1, b);
-          bin_chinese_remainder_theorem(n1, b, k2*b);
+          assert a*b == n2;
+          assert a > 1;
+          mul_mono_strict(1, a, b);
+          assert b < n2;
+          assert b <= n2 - 1;
+          assume (int_of_nat(p_loop_counter) <= b);
+          assert int_of_nat(p_loop_counter) <= b;
+          bin_chinese_remainder_theorem_helper(n1, b, k2*b, p_loop_counter);
           assert k2*b == 0;
           mul_subst(k2*b, 0, a);
           assert k2*b*a == 0;
+          assert n2 == b * a;
+          mul_subst(n2, b*a, k2);
+          mul_assoc(k2, b, a);
+          assert k2*n2 == 0;
           assert x == 0;
-        }
-      }
-    }
-  }
+        } // end of if(a == 1) else 
+      } // end if (k1%n2 == 0) else
+    } // end if(x > 1);
+  } // end if(x == 1) else;
+  assert x != 1;
+  assert false == (x > 1);
+  assert false == (x >= 1);
+  assert x >= 0;
+  is_zero(x);
+  assert x == 0;
+  } // End of case succ(p_loop_counter);
+  } // End of switch
+}
+
+
+// x = diff * step
+lemma void bin_chinese_remainder_theorem(int n1, int n2, int x)
+requires coprime(n1, n2) &*& 0 == x%n1 &*& 0 == x % n2 &*& x < (n1*n2) &*& n1 > 0 &*& n2 > 0 &*& x >= 0;
+ensures x == 0 &*& coprime(n1, n2);
+{
+  bin_chinese_remainder_theorem_helper(n1, n2, x, nat_of_int(n2));
 }
 
 #endif 
