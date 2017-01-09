@@ -490,6 +490,20 @@ ensures divide(n1, n3) == true ? divide(n2, n3) == false : true;
   } 
 }
 
+lemma void gcd_geq_1(int n1, int n2) 
+requires n1 > 0 &*& n2 > 0;
+ensures gcd(n1, n2) >= 1;
+{
+  assume(false);
+}
+
+lemma void gcd_divide(int n1, int n2)
+requires n1 > 0 &*& n2 > 0;
+ensures n1%gcd(n1, n2) == 0 &*& n2%gcd(n1, n2) == 0;
+{
+  assume(false);
+}
+
 lemma void x_not_1(int n1, int n2, int x)
 requires 0 == x%n1 &*& 0 == x%n2 &*& x < (n1*n2) &*& n1 > 0 &*& n2 > 0;
 ensures x != 1;
@@ -527,23 +541,21 @@ ensures x == 0 &*& coprime(n1, n2);
     assume(false);
   } else {
     if(x > 1) {
-      assume(false);
-    } else {
       div_rem(x, n1);
       assume(x == x/n1*n1 + x%n1);
       note(x == x/n1*n1 + x%n1);
-      
+    
       div_rem(x, n2);
       assume(x == x/n2*n2 + x%n1);
       note(x == x/n2*n2 + x%n2);
-      
+    
       int k1 = x/n1;
       int k2 = x/n2;
       
       assert x == k1*n1;
       assert x == k2*n2;
       assert k1*n1 == k2*n2;
-      
+    
       div_rem(k1, n2);
       assume(k1 == k1/n2*n2 + k1%n2);
       note(k1 == k1/n2*n2 + k1%n2);
@@ -574,11 +586,27 @@ ensures x == 0 &*& coprime(n1, n2);
           assert x >= n1*n2;
         }
       } else {
-        assume(false);
+        int a = gcd(k1, n2);
+        quotient_positive(x, n1);
+        gcd_geq_1(k1, n2);
+        div_rem(n2, a);
+        int b = n2/a;
+        assert n2 == b * a + n2%a;
+        gcd_divide(k1, n2);
+        assert n2 == b * a;
+        
+        div_rem(k1, a);
+        int gamma = k1/a;
+        assert k1 == gamma * a;
+       
+        if(gcd(b, gamma) != 1)
+        {
+          assume(false);
+        }
+        assert k1 * n1 == k2 * a * b;
       }
     }
   }
-  
 }
 
 #endif 
