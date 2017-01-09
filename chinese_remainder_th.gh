@@ -1,3 +1,6 @@
+#ifndef CHINESE_REMAINDER_TH
+#define CHINESE_REMAINDER_TH
+
 #include "up_to_conversions.gh"
 #include "arith.gh"
 #include "nth_prop.gh"
@@ -487,13 +490,95 @@ ensures divide(n1, n3) == true ? divide(n2, n3) == false : true;
   } 
 }
 
+lemma void x_not_1(int n1, int n2, int x)
+requires 0 == x%n1 &*& 0 == x%n2 &*& x < (n1*n2) &*& n1 > 0 &*& n2 > 0;
+ensures x != 1;
+{
+  assume(false);
+  assert x != n1*n2;
+  note(x != n1*n2);
+  if(x == 1) {
+    if(n1 > 1) {
+      division_round_to_zero(1, n1);
+      div_rem(1, n1);
+      assert x%n1 == 1;
+      assert false;
+    }
+    
+    if(n2 > 1) {
+      division_round_to_zero(1, n2);
+      div_rem(1, n2);
+      assert x%n2 == 1;
+      assert false;
+    }
+    assert n1*n2 == 1;
+    assert x == n1*n2;
+    note(x == n1*n2);
+  } else {
+  }
+}
 
 // x = diff * step
 lemma void bin_chinese_remainder_theorem(int n1, int n2, int x)
-requires coprime(n1, n2) &*& 0 == x%n1 &*& 0 == x % n2 &*& x < n1*n2 ;
-ensures x == 0;
+requires coprime(n1, n2) &*& 0 == x%n1 &*& 0 == x % n2 &*& x < (n1*n2) &*& n1 > 0 &*& n2 > 0 &*& x >= 0;
+ensures x == 0 &*& coprime(n1, n2);
 {
-  assume(false);
+  if(1 == x) {
+    assume(false);
+  } else {
+    if(x > 1) {
+      assume(false);
+    } else {
+      div_rem(x, n1);
+      assume(x == x/n1*n1 + x%n1);
+      note(x == x/n1*n1 + x%n1);
+      
+      div_rem(x, n2);
+      assume(x == x/n2*n2 + x%n1);
+      note(x == x/n2*n2 + x%n2);
+      
+      int k1 = x/n1;
+      int k2 = x/n2;
+      
+      assert x == k1*n1;
+      assert x == k2*n2;
+      assert k1*n1 == k2*n2;
+      
+      div_rem(k1, n2);
+      assume(k1 == k1/n2*n2 + k1%n2);
+      note(k1 == k1/n2*n2 + k1%n2);
+      int beta = k1/n2;
+      assert k1 == n2*beta + k1%n2;
+      note(k1 == n2*beta + k1%n2);
+      assume(k1 == n2*beta + k1%n2);
+      
+      if(k1%n2 == 0) {
+        if(beta == 0) {
+          assert n2*beta == 0;
+          assert k1%n2 == 0;
+          assume(k1 == n2*beta + k1%n2);
+          assert k1 == n2*beta + k1%n2;
+          assert k1 == 0;
+          assume(x == k1*n1);
+          assert x == k1*n1;
+          assert x == 0*n1;
+          assert x == 0;
+        } else {
+          quotient_positive(x, n1);
+          quotient_positive(x/n1, n2);
+          assert beta >= 1;
+          assert k1 == n2*beta;
+          mul_mono(1, beta, n2);
+          assert k1 >= n2;
+          mul_mono(n2, k1, n1);
+          assert x >= n1*n2;
+        }
+      } else {
+        assume(false);
+      }
+    }
+  }
+  
 }
 
- 
+#endif 
