@@ -13,38 +13,6 @@
 // //@ #include "logical_ops.gh"
 
 /*@
-
- lemma void mul_negative(int a, int b)
- requires a < 0 &*& b > 0;
- ensures a*b <= 0-b;
- {
-    int i = 1;
-    
-    assert -i >= i * a;
-    
-    for (; i < b; i ++)
-    invariant 0 < i &*& i <= b &*& -i >= i * a;
-    decreases b - i;
-    {
-    }
-    note(i == b);
-    note(mul(i, a) == mul(b, a));
-    note(i * a == mul(i, a));
-    mul_eq(b, a);
- }
- 
- lemma void quotient_positive(int a, int mod)
- requires a >= 0 &*& mod > 0;
- ensures a/mod >= 0;
- {
-   if(a/mod < 0) {
-     mul_negative(a/mod, mod);
-     div_rem(a, mod);
-     assert a - a%mod == a/mod * mod;
-     assert -mod < a%mod;
-     assert a - a%mod > a - mod;
-   }
- }
  
  lemma void mod_add(int a, int b, int mod)
  requires mod > 0 &*& a >= 0 &*& b >= 0;
