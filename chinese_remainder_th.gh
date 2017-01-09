@@ -605,18 +605,25 @@ ensures x != 1;
   }
 }
 
-lemma void divide_inside_paren(int n1, int n2, int n3, int n4, int a)
-requires n1 * (n2*a) == n3 * (n4 * a);
-ensures n1 * n2 == n3 * n4;
-{
-  assume(false);
-}
 
 lemma void mul_assoc(int n1, int n2, int n3)
 requires true;
 ensures n1*n2*n3 == n2*n3*n1;
 {
   assume(false);
+}
+
+lemma void divide_inside_paren(int n1, int n2, int n3, int n4, int a)
+requires n1 * (n2*a) == n3 * (n4 * a) &*& n1 >= 0 &*& n2 >= 0 &*& n3 >= 0 &*& n4 >= 0 &*& a > 0;
+ensures n1 * n2 == n3 * n4;
+{
+  mul_assoc(a, n2, n1);
+  mul_assoc(a, n4, n3);
+  if(n1*n2 != n3*n4) {
+    mul_nonnegative(n1, n2);
+    mul_nonnegative(n3, n4);
+    mul_subst_neq(n1*n2, n3*n4, a);
+  }
 }
 
 lemma void mod_multiple(int n1, int n2)
