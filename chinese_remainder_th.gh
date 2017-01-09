@@ -8,6 +8,7 @@
 #include <nat.gh>
 #include <list.gh>
 
+predicate protect(bool b) = b == true;
 predicate coprime(int n1, int n2) = gcd(n1, n2) == 1;
 
 fixpoint bool divide(int whole, int divisor)
@@ -581,9 +582,9 @@ lemma void x_not_1(int n1, int n2, int x)
 requires 0 == x%n1 &*& 0 == x%n2 &*& x < (n1*n2) &*& n1 > 0 &*& n2 > 0;
 ensures x != 1;
 {
-  assume(false);
   assert x != n1*n2;
   note(x != n1*n2);
+  close protect(x != n1*n2);
   if(x == 1) {
     if(n1 > 1) {
       division_round_to_zero(1, n1);
@@ -600,8 +601,9 @@ ensures x != 1;
     }
     assert n1*n2 == 1;
     assert x == n1*n2;
-    note(x == n1*n2);
+    open protect(x != n1*n2);
   } else {
+    open protect(x != n1*n2);
   }
 }
 
@@ -653,7 +655,7 @@ requires coprime(n1, n2) &*& 0 == x%n1 &*& 0 == x % n2 &*& x < (n1*n2) &*& n1 > 
 ensures x == 0 &*& coprime(n1, n2);
 {
   if(1 == x) {
-    assume(false);
+    x_not_1(n1, n2, x);
   } else {
     if(x > 1) {
       div_rem(x, n1);
