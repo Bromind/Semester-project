@@ -617,6 +617,14 @@ ensures n1*n2*n3 == n2*n3*n1;
   assume(false);
 }
 
+lemma void close_mul_assoc(int n1, int n2, int n3)
+requires true;
+ensures protect(n1*n2*n3 == n2*n3*n1);
+{
+  mul_assoc(n1, n2, n3);
+  close protect(n1*n2*n3 == n2*n3*n1);
+}
+
 lemma void divide_inside_paren(int n1, int n2, int n3, int n4, int a)
 requires n1 * (n2*a) == n3 * (n4 * a) &*& n1 >= 0 &*& n2 >= 0 &*& n3 >= 0 &*& n4 >= 0 &*& a > 0;
 ensures n1 * n2 == n3 * n4;
@@ -757,8 +765,15 @@ ensures x == 0 &*& coprime(n1, n2);
         assert n2%a == 0;
         open protect(n2 == b * a + n2%a);
         assert n2 == b * a;
+        close protect(n2 == b*a);
         close protect(n2 == b* a + n2%a);
         note(n2 == b*a);
+        if(b <= 0) {
+          assert b*a == 0;
+          open protect(n2 == b*a);
+          assert n2 == b * a;
+          assert false;
+        }
         
         div_rem(k1, a);
         int gamma = k1/a;
@@ -766,10 +781,62 @@ ensures x == 0 &*& coprime(n1, n2);
         assert k1 == gamma * a;
         note(k1 == gamma * a);
         close protect(k1 == gamma * a);
-       
-        if(gcd(b, gamma) != 1)
+        close protect(k1 == gamma * a);
+        if(gamma <= 0)
         {
-          assume(false);
+          assert gamma * a == 0;
+          open protect(k1 == gamma * a);
+          assert k1 == gamma * a;
+          assert false;
+        } else {
+          open protect(k1 == gamma * a);
+        }
+       
+        if(gcd(gamma, b) != 1)
+        {
+          int gcd = gcd(gamma, b);
+          open protect(b >= 1);
+          assert b >= 1;
+          gcd_geq_1(gamma, b);
+          gcd_divide(gamma, b);
+          assert b%gcd == 0;
+          close_div_rem(b, gcd);
+          open protect(b == b/gcd*gcd + b%gcd);
+          assert b == b/gcd*gcd + b%gcd;
+          assert b == b/gcd*gcd;
+          
+          close_div_rem(gamma, gcd);
+          open protect(gamma == gamma/gcd*gcd + gamma%gcd);
+          assert gamma == gamma/gcd*gcd;
+          
+          assert k1 == a * (gamma/gcd * gcd);
+          assert k1 == gamma/gcd * gcd * a;
+          assert n2 == a * (b/gcd * gcd);
+          mul_mono_strict(1, gcd, a);
+          assert a*gcd > a;
+          close_mul_assoc(gamma/gcd, gcd, a);
+          open protect((gamma/gcd) * gcd * a == gcd * a * (gamma/gcd));
+          assert true == ((gamma/gcd) * gcd * a == gcd * a * (gamma/gcd));
+          assert k1 == gcd * a * (gamma/gcd);
+          assert gamma >= 0;
+          assert gcd > 0;
+          quotient_positive(gamma, gcd);
+          div_multiple(gamma/gcd, gcd * a);
+          assert true == divide(k1, gcd * a);
+          
+          close_mul_assoc(b/gcd, gcd, a);
+          open protect((b/gcd) * gcd * a == gcd * a * (b/gcd));
+          assert n2 == a * gcd * (b/gcd);
+          quotient_positive(b, gcd);
+          div_multiple(b/gcd, gcd*a);
+          assert true == divide(n2, gcd * a);
+          
+          gcd_holds(k1, n2, gcd*a);
+          assert false;
+          
+          
+        } else {
+          open protect(b >= 1);
         }
         open protect(x == k1*n1);
         close protect(k1 == gamma * a);
@@ -784,7 +851,44 @@ ensures x == 0 &*& coprime(n1, n2);
         divide_inside_paren(n1, gamma, k2, b, a);
         assert n1 * gamma == k2 * b;
         if(gcd(n1, b) != 1) {
-          assume(false);
+          int gcd = gcd(n1, b);
+          gcd_geq_1(n1, b);
+          gcd_divide(n1, b);
+          
+          close_div_rem(n1, gcd);
+          open protect(n1 == n1/gcd*gcd + n1%gcd);
+          close_div_rem(b, gcd);
+          open protect(b == b/gcd*gcd + b%gcd);
+          
+          assert true == divide(n1, gcd);
+          assert true == divide(b, gcd);
+          
+          if(false == divide(n2, gcd)){
+            int k = b/gcd;
+            gcd_geq_1(n1, b);
+            quotient_positive(b, gcd);
+            assert k >= 0;
+            assert n2 == a*b;
+            assert b == b/gcd*gcd;
+            mul_subst(b, k*gcd, a);
+            mul_assoc(gcd, k, a);
+            assert n2 == a*k*gcd;
+            mul_nonnegative(a, k);
+            div_multiple(a*k, gcd);
+            
+            assert n2/gcd*gcd == n2;
+            
+            assert false;
+          }
+          assert true == divide(a*b, gcd);
+          open coprime(n1, n2);
+          assert gcd(n1, n2) == 1;
+          close coprime(n1, n2);
+          assert gcd > gcd(n1, n2);
+          
+          gcd_holds(n1, n2, gcd);
+          
+          assert false;
         }
         if(a == 1) {
           if(b != n2) {
@@ -873,8 +977,7 @@ ensures x == 0 &*& coprime(n1, n2);
           mul_mono_strict(1, a, b);
           assert b < n2;
           assert b <= n2 - 1;
-          assume (int_of_nat(p_loop_counter) <= b);
-          assert int_of_nat(p_loop_counter) <= b;
+          assert int_of_nat(p_loop_counter) >= b;
           bin_chinese_remainder_theorem_helper(n1, b, k2*b, p_loop_counter);
           assert k2*b == 0;
           mul_subst(k2*b, 0, a);
