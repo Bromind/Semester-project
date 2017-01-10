@@ -49,6 +49,11 @@
 \titlepage
 \end{frame}
 
+\begin{frame}{Outline}
+	\tableofcontents
+	
+\end{frame}
+
 \section{Introduction}
 \begin{frame}
 	\frametitle{Naive hash table}
@@ -161,7 +166,10 @@
 
 \begin{frame}
 	\frametitle{Provided implementation}
-	findEmpty, findKey
+	\begin{itemize}
+		\item A naive implementation
+		\item \texttt{findEmpty}, \texttt{findKey} perform the loops.
+	\end{itemize}
 \end{frame}
 
 \begin{frame}
@@ -359,33 +367,8 @@
 		\item Apply Chinese Remainder Theorem.
 		\item Deduce that only \texttt{none} are updated to \texttt{some}.
 		\item Hence, the number of \texttt{some} is the number of iteration.
-		\item For \texttt{capacity} iteration, all cells are some.
+		\item For \texttt{capacity} iteration, all cells are \texttt{some}.
 	\end{itemize}
-\end{frame}
-
-\begin{frame}
-	\frametitle{Proof steps}
-
-
-	\begin{columns}
-		\begin{column}{0.5\textwidth}
-			\begin{tikzpicture}
-				\drawstruct{(0,0)}
-				\structcell[freecell]{\texttt{some(7)}} ;
-				\structcell[freecell]{\texttt{some(4)}} ;
-				\structcell[freecell]{\texttt{some(1)}} ;
-				\structcell[freecell]{\texttt{some(5)}} ;
-				\structcell[freecell]{\texttt{some(2)}} ;
-				\structcell[freecell]{\texttt{some(6)}} ;
-				\structcell[freecell]{\texttt{some(3)}} ;
-				\structname{\texttt{stripe(capacity=7, offset=2, iter=7)}};
-			\end{tikzpicture}
-		\end{column}
-		\begin{column}{0.5\textwidth}
-			$\Rightarrow \mathtt{count\_some = iter = 7}$\\
-			$\Rightarrow$ All cells are \texttt{some}.
-		\end{column}
-	\end{columns}
 \end{frame}
 
 \begin{frame}
@@ -415,6 +398,31 @@
 	\end{center}
 
 \end{frame}
+\begin{frame}
+	\frametitle{Proof steps}
+
+
+	\begin{columns}
+		\begin{column}{0.5\textwidth}
+			\begin{tikzpicture}
+				\drawstruct{(0,0)}
+				\structcell[freecell]{\texttt{some(7)}} ;
+				\structcell[freecell]{\texttt{some(4)}} ;
+				\structcell[freecell]{\texttt{some(1)}} ;
+				\structcell[freecell]{\texttt{some(5)}} ;
+				\structcell[freecell]{\texttt{some(2)}} ;
+				\structcell[freecell]{\texttt{some(6)}} ;
+				\structcell[freecell]{\texttt{some(3)}} ;
+				\structname{\texttt{stripe(capacity=7, offset=2, iter=7)}};
+			\end{tikzpicture}
+		\end{column}
+		\begin{column}{0.5\textwidth}
+			$\Rightarrow \mathtt{count\_some = iter = 7}$\\
+			$\Rightarrow$ All cells are \texttt{some}.
+		\end{column}
+	\end{columns}
+\end{frame}
+
 
 \section{Conclusion}
 \subsection{Hash Table software}
@@ -427,6 +435,17 @@
 	\end{itemize}
 \end{frame}
 
+\subsection{Remaining work}
+\begin{frame}
+	\frametitle{Remaining work\footnote{Updated 10/01/2017@3am}}
+	\begin{itemize}
+		\item Two lemmas: \begin{itemize}
+				\item Multiplication associativity: $(n1\cdot n2)\cdot n3 = n1\cdot (n2\cdot n3)$
+				\item Coprime factorization: $a\bot c \wedge b\bot c \Rightarrow (a\cdot b)\bot c$
+			\end{itemize}
+		\item Some typing errors
+	\end{itemize}
+\end{frame}
 \subsection{Side effects}
 \begin{frame}
 	\frametitle{Side effects}
