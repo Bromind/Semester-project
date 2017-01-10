@@ -14,7 +14,7 @@
 \definecolor{lightred}{rgb}{0.8,0.8,1}
 \definecolor{lightgrey}{rgb}{0.8,0.8,0.8}
 
-\title{Verified double-hashing HashTable}
+\title{Verified double-hashing hash map}
 \author{Martin \textsc{Vassor}}
 
 \institute[\'Ecole polytechnique f\'ed\'erale de Lausanne] 
@@ -423,6 +423,14 @@
 	\end{columns}
 \end{frame}
 
+\begin{frame}
+	\frametitle{Chinese Remainder Theorem}
+	\begin{itemize}
+		\item Requires to implement $gcd$ related functions.
+		\item Almost proved.
+		\item Last assumption: Coprime factorization lemma ($a\bot c \wedge b\bot c \Rightarrow (a\cdot b)\bot c$).
+	\end{itemize}
+\end{frame}
 
 \section{Conclusion}
 \subsection{Hash Table software}
@@ -437,12 +445,10 @@
 
 \subsection{Remaining work}
 \begin{frame}
-	\frametitle{Remaining work\footnote{Updated 10/01/2017@3am}}
+	\frametitle{Remaining work}
 	\begin{itemize}
-		\item Two lemmas: \begin{itemize}
-				\item Multiplication associativity: $(n1\cdot n2)\cdot n3 = n1\cdot (n2\cdot n3)$
-				\item Coprime factorization: $a\bot c \wedge b\bot c \Rightarrow (a\cdot b)\bot c$
-			\end{itemize}
+		\item Coprime factorization lemma: $a\bot c \wedge b\bot c \Rightarrow (a\cdot b)\bot c$
+		\item Logical operations (\texttt{shift} and \texttt{bitwise\_and})
 		\item Some typing errors
 	\end{itemize}
 \end{frame}
