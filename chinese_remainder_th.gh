@@ -611,14 +611,25 @@ ensures x != 1;
 
 
 lemma void mul_assoc(int n1, int n2, int n3)
-requires true;
+requires n2 >= 0;
 ensures n1*n2*n3 == n2*n3*n1;
 {
-  assume(false);
+  int i = 0;
+  for(; i < n2; i++)
+  invariant n1*i*n3 == i*n3*n1 
+  	&*& i <= n2;
+  decreases n2 - i;
+  {
+    assert n1*(i+1)*n3 == (n1*i + n1)*n3;
+    assert true == ((n1*i+n1)*n3 == n1*i*n3 + n1*n3);
+    assert true == ((i+1) * n3 * n1 == (i*n3 + n3) * n1);
+    assert true == ((i*n3 + n3) * n1 == i*n3*n1 + n3*n1);
+    assert n1*i*n3 == i*n3*n1;
+  }
 }
 
 lemma void close_mul_assoc(int n1, int n2, int n3)
-requires true;
+requires n2 >= 0;
 ensures protect(n1*n2*n3 == n2*n3*n1);
 {
   mul_assoc(n1, n2, n3);
