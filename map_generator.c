@@ -657,14 +657,6 @@
 @*/
 
 
-/*@ fixpoint entry_t entry_of(hash_t hash) { 
-	return (entry_t) ((hash >> (sizeof(offset_t) * 8)) & 0xFFFFFFFF);
-} @*/
-
-/*@ fixpoint offset_t offset_of(hash_t hash) {
-	return (offset_t)(hash & 0x00000000FFFFFFFF);
-} @*/
-
 /*@
  lemma void and_smaller(unsigned long long a, unsigned long long b);
  requires true;
@@ -754,7 +746,7 @@ int hash_equal(hash_t h1, hash_t h2)
 }
 
 static
-int loop(unsigned int entry_point, unsigned int capacity)
+unsigned int loop(unsigned int entry_point, unsigned int capacity)
 //@ requires 0 < capacity &*& 2*capacity < INT_MAX;
 /*@ ensures 0 <= result &*& result < capacity &*&
             result == loop_fp(entry_point, capacity); @*/
@@ -767,7 +759,7 @@ int loop(unsigned int entry_point, unsigned int capacity)
   //@assert (res < capacity);
   int s_res = (int) res;
   //@ assert (res == s_res);
-  return s_res;
+  return res;
 }
 
 /*@
@@ -1132,7 +1124,7 @@ int find_key /*@ <kt> @*/ (int* busybits, void** keyps, hash_t *k_hashes, unsign
              0 <= start &*& 2*start < INT_MAX &*&
              [?f]is_map_keys_equality<kt>(eq, kpr) &*&
              coprime(offset_of(key_hash), capacity) &*&
-             offset_of(key_hash) < 0 &*& 
+             offset_of(key_hash) > 0 &*& 
              offset_of(key_hash) < capacity &*&
              start < capacity; @*/
 /*@ ensures hmapping<kt>(kpr, hsh, capacity, busybits, kps, k_hashes, hm) &*&
@@ -1152,12 +1144,12 @@ int find_key /*@ <kt> @*/ (int* busybits, void** keyps, hash_t *k_hashes, unsign
   int capacity_s = (int) capacity;
   offset_t offset = offset_from_hash(key_hash);
   //@ assert coprime(offset, capacity);
-  for (; i < capacity_s; ++i)
+  for (; i < capacity_s + 1; ++i)
     /*@ invariant pred_mapping(kps, bbs, kpr, ks) &*&
                   ints(busybits, capacity, bbs) &*&
                   ullongs(k_hashes, capacity, khs) &*&
                   pointers(keyps, capacity, kps) &*&
-                  0 <= i &*& i <= capacity &*&
+                  0 <= i &*& i <= capacity + 1 &*&
                   [f]is_map_keys_equality<kt>(eq, kpr) &*&
                   [kfr]kpr(keyp, k) &*&
                   hsh(k) == key_hash &*&
@@ -1170,7 +1162,7 @@ int find_key /*@ <kt> @*/ (int* busybits, void** keyps, hash_t *k_hashes, unsign
     //@ assert(sizeof(int) == 4);
     //@ assert(sizeof(long long) == 8);
     //@ assert(sizeof(hash_t) == 8);
-    int index = loop(start + ((unsigned int) i)*offset, capacity);
+    unsigned int index = loop(start + ((unsigned int) i)*offset, capacity);
     int bb = busybits[(int) index];
     hash_t kh = (hash_t) 0;
     kh = k_hashes[(int) index];
@@ -1187,7 +1179,7 @@ int find_key /*@ <kt> @*/ (int* busybits, void** keyps, hash_t *k_hashes, unsign
         /*@ recover_pred_mapping(kps, bbs, ks, index); @*/
         //@ hmap_find_this_key(hm, index, k);
         //@ close hmapping<kt>(kpr, hsh, capacity, busybits, kps, k_hashes, hm);
-        return index;
+        return (int) index;
       }
       //@ recover_pred_mapping(kps, bbs, ks, index);
     } else {
@@ -1205,7 +1197,8 @@ int find_key /*@ <kt> @*/ (int* busybits, void** keyps, hash_t *k_hashes, unsign
     //@ assert(nat_of_int(i+1) == succ(nat_of_int(i)));
   }
   //@ pred_mapping_same_len(bbs, ks);
-  //@ apply_CRT(capacity, ks, (not_my_key)(k), capacity, start, offset);
+  //@ assert i == capacity + 1;
+  //@ apply_CRT(i, ks, (not_my_key)(k), capacity, start, offset);
   //@ assert true == up_to(nat_of_int(length(ks)), (nthProp)(ks, (not_my_key)(k))); 
   //@ no_key_found(ks, k);
   //@ close hmapping<kt>(kpr, hsh, capacity, busybits, kps, k_hashes, hm);
@@ -1560,7 +1553,7 @@ void map_initialize /*@ <kt> @*/(int* busybits, map_keys_equality* eq,
       ints(busybits + i, capacity - i, drop(i,bbs)) &*&
       pointers(keyps, capacity, kplist) &*&
       ints(vals, capacity, vallist) &*&
-      ints(khs, capacity, khlist) &*&
+      ullongs(khs, capacity, khlist) &*&
       0 < capacity &*& 2*capacity < INT_MAX &*&
       0 <= i &*& i <= capacity;
       @*/
@@ -1898,13 +1891,14 @@ void map_initialize /*@ <kt> @*/(int* busybits, map_keys_equality* eq,
   @*/
 int map_get /*@ <kt> @*/(int* busybits, void** keyps, hash_t *k_hashes, int* values,
     void* keyp, map_keys_equality* eq, hash_t hash, int* value,
-    int capacity)
+    unsigned int capacity)
 /*@ requires mapping<kt>(?m, ?addrs, ?kp, ?recp, ?hsh, capacity, busybits,
                          keyps, k_hashes, values) &*&
              kp(keyp, ?k) &*&
              [?fr]is_map_keys_equality(eq, kp) &*&
              hsh(k) == hash &*&
-             *value |-> ?v; @*/
+             *value |-> ?v &*&
+             coprime(offset_of(hash), capacity); @*/
 /*@ ensures mapping<kt>(m, addrs, kp, recp, hsh, capacity, busybits,
                         keyps, k_hashes, values) &*&
             kp(keyp, k) &*&
@@ -1915,7 +1909,8 @@ int map_get /*@ <kt> @*/(int* busybits, void** keyps, hash_t *k_hashes, int* val
               nv == map_get_fp(m, k) &*&
               true == recp(k, nv)):
              (result == 0 &*&
-              *value |-> v)); @*/
+              *value |-> v)) &*&
+              coprime(offset_of(hash), capacity); @*/
 {
   hash_t gen;
   gen = entry_to_hash(gen, entry_from_hash(hash));
@@ -1923,7 +1918,7 @@ int map_get /*@ <kt> @*/(int* busybits, void** keyps, hash_t *k_hashes, int* val
 
   //@ open mapping(m, addrs, kp, recp, hsh, capacity, busybits, keyps, k_hashes, values);
   //@ open hmapping(kp, hsh, capacity, busybits, ?kps, k_hashes, ?hm);
-  int start = loop(entry_from_hash(gen), capacity);
+  unsigned int start = loop(entry_from_hash(gen), capacity);
   //@ close hmapping(kp, hsh, capacity, busybits, kps, k_hashes, hm);
   int index = find_key(busybits, keyps, k_hashes, start,
       keyp, eq, hash, capacity);

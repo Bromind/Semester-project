@@ -83,6 +83,16 @@ typedef int map_keys_equality /*@<K>(predicate (void*; K) keyp) @*/(void* k1, vo
   predicate map_key_hash<kt>(fixpoint (kt,int) hsh) = true;
   predicate map_record_property<kt>(fixpoint(kt,int,bool) prop) = true;
   @*/
+  
+  
+/*@ fixpoint entry_t entry_of(hash_t hash) { 
+	return (entry_t) ((hash >> (sizeof(offset_t) * 8)) & 0xFFFFFFFF);
+} @*/
+
+/*@ fixpoint offset_t offset_of(hash_t hash) {
+	return (offset_t)(hash & 0x00000000FFFFFFFF);
+} @*/
+
 
 /**
  * Values and keys are void*, and the actual keys and values should be managed
@@ -109,13 +119,14 @@ void map_initialize /*@ <kt> @*/(int* busybits, map_keys_equality* cmp,
 
 int map_get /*@ <kt> @*/(int* busybits, void** keyps, hash_t *k_hashes, int* values,
     void* keyp, map_keys_equality* eq, hash_t hash, int* value,
-    int capacity);
+    unsigned int capacity);
 /*@ requires mapping<kt>(?m, ?addrs, ?kp, ?recp, ?hsh, capacity, busybits,
                          keyps, k_hashes, values) &*&
              kp(keyp, ?k) &*&
              [?fr]is_map_keys_equality(eq, kp) &*&
              hsh(k) == hash &*&
-             *value |-> ?v; @*/
+             *value |-> ?v &*& 
+             coprime(offset_of(hash), capacity); @*/
 /*@ ensures mapping<kt>(m, addrs, kp, recp, hsh, capacity, busybits,
                         keyps, k_hashes, values) &*&
             kp(keyp, k) &*&
@@ -126,7 +137,8 @@ int map_get /*@ <kt> @*/(int* busybits, void** keyps, hash_t *k_hashes, int* val
               nv == map_get_fp(m, k) &*&
               true == recp(k, nv)):
              (result == 0 &*&
-              *value |-> v)); @*/
+              *value |-> v)) &*&
+              coprime(offset_of(hash), capacity); @*/
 
 int map_put /*@ <kt> @*/(int* busybits, void** keyps, hash_t *k_hashes, int* values,
     void* keyp, hash_t hash, int value,
