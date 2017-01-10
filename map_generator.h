@@ -142,12 +142,13 @@ int map_get /*@ <kt> @*/(int* busybits, void** keyps, hash_t *k_hashes, int* val
 
 int map_put /*@ <kt> @*/(int* busybits, void** keyps, hash_t *k_hashes, int* values,
     void* keyp, hash_t hash, int value,
-    int capacity);
+    unsigned int capacity);
 /*@ requires mapping<kt>(?m, ?addrs, ?kp, ?recp, ?hsh, capacity, busybits,
                          keyps, k_hashes, values) &*&
              [0.5]kp(keyp, ?k) &*& true == recp(k, value) &*&
              hsh(k) == hash &*&
-             false == map_has_fp(m, k); @*/
+             false == map_has_fp(m, k) &*&
+             offset_of(hash) > 0 &*& offset_of(hash) < capacity; @*/
 /*@ ensures true == recp(k, value) &*&
             (map_size_fp(m) < capacity ?
              (result == 1 &*&
@@ -160,7 +161,8 @@ int map_put /*@ <kt> @*/(int* busybits, void** keyps, hash_t *k_hashes, int* val
              (result == 0 &*&
               [0.5]kp(keyp, k) &*&
               mapping<kt>(m, addrs, kp, recp, hsh, capacity, busybits,
-                          keyps, k_hashes, values))); @*/
+                          keyps, k_hashes, values))) &*&
+              coprime(offset_of(hash), capacity); @*/
 
 //TODO: Keep track of the key pointers, in order to preserve the pointer value
 // when releasing it with map_erase.
