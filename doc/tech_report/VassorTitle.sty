@@ -1,0 +1,67 @@
+\ProvidesPackage{VassorTitle}
+\RequirePackage{graphicx}
+
+\newif\ifinstitution
+\newif\ifproject
+\newif\ifsupervisor
+\newif\ifimage
+
+\newcommand*{\project}[1]{
+	\projecttrue
+	\gdef\@project{#1}%
+}
+\newcommand*{\@project}{
+	\projectfalse
+}
+\newcommand*{\supervisor}[1]{
+	\supervisortrue
+	\gdef\@supervisor{#1}
+}
+\newcommand*{\@supervisor}{
+	\supervisorfalse
+}
+\newcommand*{\institution}[1]{
+	\institutiontrue
+	\gdef\@institution{#1}
+}
+\newcommand*{\@institution}{
+	\institutionfalse
+}
+\newcommand*{\image}[1]{
+	\imagetrue
+	\gdef\@image{#1}
+}
+\newcommand*{\@image}{
+	\imagefalse
+}
+\renewcommand*{\maketitle}{%
+	\begin{titlepage}
+		\ifimage
+		{\raggedleft%
+			\includegraphics[width=3cm]{\@image}\par
+		}\vspace{1cm}
+		\fi
+		\centering
+		\ifinstitution
+		{\scshape\LARGE \@institution\unskip\strut\par}
+		\vspace{1cm}
+		\fi
+		\ifproject
+		{\scshape\Large\@project\unskip\strut\par}
+		\vspace{1.5cm}
+		\fi
+		{\huge\bfseries\@title\unskip\strut\par}
+		\vspace{2cm}
+		{\Large\@author\unskip\strut\par}
+		\vfill
+		\ifsupervisor
+		supervised by\par
+		\@supervisor\unskip\strut\par
+		\fi
+
+		\vfill
+
+		{\large \@date\par}
+	\end{titlepage}
+}
+\endinput
