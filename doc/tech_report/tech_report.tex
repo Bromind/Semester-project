@@ -1,18 +1,20 @@
-\documentclass{article}
+\documentclass[oneside]{article}
 \usepackage[]{algorithm2e}
 \SetKw{Assert}{assert}
+\SetKw{Contradiction}{contradiction}
 \usepackage{drawstack}
 
 \usepackage[framemethod=tikz]{mdframed}
 \mdtheorem[linecolor=blue,frametitlerule=true]{definition}{Definition}
-\mdtheorem[linecolor=red,frametitlerule=true]{example}{Exampl}
+\mdtheorem[linecolor=red,frametitlerule=true]{example}{Example}
+\mdtheorem[linecolor=green,frametitlerule=true]{lemma}{Lemma}
 
 \usepackage{marginnote}
-\usepackage[outer=4.5cm, marginparwidth=3cm, marginparsep=0.5cm]{geometry}
+\usepackage{geometry}
 \usepackage{tikz}
 \usepackage[utf8]{inputenc}
 \usepackage{listings}
-\lstset{tabsize=2}
+\lstset{tabsize=3}
 \definecolor{lightred}{rgb}{1,0.9,0.9}
 \lstset{backgroundcolor=\color{lightred}}
 %\lstset{numbers=left}
@@ -39,7 +41,12 @@ A. \textsc{Zaostrovnykh}, Ph. D. Student}
 
 \begin{document}
 \maketitle
+
+\newgeometry{outer=4.5cm, marginparwidth=3cm, marginparsep=-0.5cm}
 \section{Introduction}
+
+
+
 \section{Implementation}
 
 
@@ -56,6 +63,72 @@ This \texttt{up\_to} statement is proved by the \emph{for}-loop invariant: at ea
 
 Finally, the \emph{for}-loop only proves that the \texttt{up\_to} statement holds when starting from \texttt{index = start} and looping. The lemma \texttt{by\_loop\_for\_all} prove that this loop access is equivalent to a continuous access from \texttt{0} to \texttt{length}.
 
+Example~\ref{expl:successful_search} represent a successful search in the map. The search starts at index $h(key3)$. As long as the key is not found at index $i$, \texttt{not\_my\_key(i)} is asserted. Finally, when $key3$ is found, it is ensured to be the right key and returned. 
+
+\begin{example}[Successful search]
+	\label{expl:successful_search}
+		\begin{tikzpicture}
+			\draw (0, -3) node[anchor=east] (key3) {$h(\mathtt{key3})$};
+
+			\drawstruct{(8,0)}
+			\structcell[padding]{} ;
+			\structcell[padding]{} ;
+			\structcell[occupiedcell]{\texttt{not\_my\_key(3)}} ;
+			\structcell[occupiedcell]{\texttt{not\_my\_key(4)}} ; \coordinate(fourthCellOut) at (currentcell.east);
+			\structcell[freecell]{\texttt{my\_key}} ;
+			\structcell[padding]{} ;
+
+			\drawstruct{(3,0)}
+			\structcell[freecell]{} \coordinate(firstCell) at (currentcell.east) ;
+			\structcell[freecell]{} \coordinate(secondCell) at (currentcell.east);
+			\structcell[occupiedcell]{\keyvalue{key1}{value1}} \coordinate(thirdCell) at (currentcell.west); \coordinate(thirdCellOut) at (currentcell.east);
+			\structcell[occupiedcell]{\keyvalue{key2}{value2}} \coordinate(fourthCell) at (currentcell.west); \coordinate(fourthCellOut) at (currentcell.east);
+			\structcell[occupiedcell]{\keyvalue{key3}{value3}} \coordinate(fifthCell) at (currentcell.west); \coordinate(fifthCellOut) at (currentcell.east);
+			\structcell[freecell]{} \coordinate(sixthCell) at (currentcell.east);
+
+			\draw[->, red, thick] (key3) -- (thirdCell);
+			\draw[->, red, thick] (thirdCellOut) -- ++(1, 0) |- (fourthCellOut);
+			\draw[->, thick] (fourthCell) -- ++(-1, 0) |- (fifthCell);
+		\end{tikzpicture}
+\end{example}
+
+In case of unsuccessful search, as in Example~\ref{expl:unsuccessful_search}, \texttt{not\_my\_key(i)} is asserted for all indexes, ensuring that the key is not present in the map.
+
+Hence, an invariant of the \emph{for}-loop is that \texttt{not\_my\_key} is asserted \emph{for all indexes from $start$ up to $i$}, by ring accesses, $i$ being the loop iterator.
+
+\begin{example}
+	\label{expl:unsuccessful_search}
+	\texttt{not\_my\_key} is ensured both when the cell is empty (green cell in this example), or when the cell is busy, but occupied by an other key (a busy cell is in red in this example).
+	\begin{tikzpicture}
+		\draw (0, -5) node[anchor=east] (key4) {$h(\mathtt{key4})$};
+
+		\drawstruct{(8,0)}
+		\structcell[occupiedcell]{\texttt{not\_my\_key(1)}} ;
+		\structcell[occupiedcell]{\texttt{not\_my\_key(2)}} ;
+		\structcell[occupiedcell]{\texttt{not\_my\_key(3)}} ;
+		\structcell[occupiedcell]{\texttt{not\_my\_key(4)}} ;
+		\structcell[occupiedcell]{\texttt{not\_my\_key(5)}} ;
+		\structcell[occupiedcell]{\texttt{not\_my\_key(6)}} ;
+
+		\drawstruct{(3,0)}
+		\structcell[freecell]{\keyvalue{}{}} \coordinate(firstCell) at (currentcell.west) ; \coordinate(firstCellOut) at (currentcell.east);
+		\structcell[freecell]{\keyvalue{}{}} \coordinate(secondCell) at (currentcell.west); \coordinate (secondCellOut) at (currentcell.east);
+		\structcell[occupiedcell]{\keyvalue{key1}{value1}} \coordinate(thirdCell) at (currentcell.west); \coordinate(thirdCellOut) at (currentcell.east);
+		\structcell[occupiedcell]{\keyvalue{key2}{value2}} \coordinate(fourthCell) at (currentcell.west); \coordinate(fourthCellOut) at (currentcell.east);
+		\structcell[occupiedcell]{\keyvalue{key3}{value3}} \coordinate(fifthCell) at (currentcell.west); \coordinate(fifthCellOut) at (currentcell.east);
+		\structcell[freecell]{\keyvalue{}{}} \coordinate(sixthCell) at (currentcell.west); \coordinate (sixthCellOut) at (currentcell.east);
+
+		\draw[->, red, thick] (key4) -- (fifthCell);
+		\draw[->, red, thick] (thirdCellOut) -- ++(1, 0) |- (fourthCellOut);
+		\draw[->, red, thick] (fifthCellOut) -- ++ (1, 0) |- (sixthCellOut);
+		\draw[red, thick] (sixthCell) -| ++(-1, -0.5);
+		\draw[->, red, thick] (firstCell)+(-1, 0.5) |- (firstCell);
+		\draw[->, red, thick] (firstCellOut) -- ++(1, 0) |- (secondCellOut);
+		\draw[->, red, thick] (secondCell) -- ++(-1, 0) |- (thirdCell);
+	\end{tikzpicture}
+	
+\end{example}
+
 \begin{figure}[b]
 	\lstinputlisting[language=C]{for_loop_orig_pruned.c}
 	\caption{Original \emph{for}-loop for searching a key}
@@ -63,8 +136,48 @@ Finally, the \emph{for}-loop only proves that the \texttt{up\_to} statement hold
 \end{figure}
 
 \subsubsection{Impact of the modifications}
-TODO
+The modifications have two main impacts: first, the accesses are not performed in the same order. The scond impact is that the specification is not true anymore in the general case.
 
+\paragraph{Access order:}
+As explain above, with double hashing, cells of the map are not accessed by loop anymore. Hence, the \texttt{by\_loop\_for\_all} lemma doesn't apply anymore. Let $stripe$ be the function which, given a loop iteration, returns the index of the cell looked-up at this iteration (parametrized by $start$, $step$ and $capacity$). This problem is solved by computing the antecedant of each cell. 
+
+Hence, at iteration $i$, for any cell $map[\mathtt{index}]$, if the antecedent of $map[\mathtt{index}]$ is less than $i$, then \texttt{not\_my\_key(index)} is ensured.
+
+The new way to ensure \texttt{not\_my\_key} for all indexes is then to ensures that all index has an antecedant w.r.t. the $stripe$ function.
+
+\paragraph{New requirements:}
+However, it is not always the case that every cell is reached. An example is provided in Example~\ref{expl:not_coprime}. Actually, after the Chinese remainder theorem, the $step$ and the $capacity$ must be coprime in order to ensure that every cell is eventually tested.
+
+Hence, this coprimeness is a new requirement of the specification. Technically, it is sufficient to have a capacity being a power of $2$ and to have only odd $offset$ hashes.
+
+\begin{example}
+	\label{expl:not_coprime}	
+		\begin{tikzpicture}
+			\draw (0, -5) node[anchor=east] (key4) {$h(\mathtt{key4})$};
+
+			\drawstruct{(7,0)}
+			\structcell[occupiedcell]{\texttt{not\_empty(1)}} ;
+			\structcell[padding]{} ;
+			\structcell[occupiedcell]{\texttt{not\_empty(3)}} ;
+			\structcell[padding]{} ;
+			\structcell[occupiedcell]{\texttt{not\_empty(5)}} ;
+			\structcell[padding]{} ;
+
+			\drawstruct{(2,0)}
+			\structcell[occupiedcell]{\keyvalue{key3}{value3}} \coordinate(firstCell) at (currentcell.west); \coordinate(firstCellOut) at (currentcell.east);
+			\structcell[freecell]{\keyvalue{}{}} \coordinate(secondCell) at (currentcell.west); \coordinate (secondCellOut) at (currentcell.east);
+			\structcell[occupiedcell]{\keyvalue{key1}{value1}} \coordinate(thirdCell) at (currentcell.west); \coordinate(thirdCellOut) at (currentcell.east);
+			\structcell[freecell]{\keyvalue{}{}} \coordinate(fourthCell) at (currentcell.west); \coordinate (fourthCellOut) at (currentcell.east);
+			\structcell[occupiedcell]{\keyvalue{key2}{value2}} \coordinate(fifthCell) at (currentcell.west); \coordinate(fifthCellOut) at (currentcell.east);
+			\structcell[freecell]{\keyvalue{}{}} \coordinate(sixthCell) at (currentcell.west); \coordinate (sixthCellOut) at (currentcell.east);
+
+			\draw[->, red, thick] (key4) -- (fifthCell);
+			\draw[red, thick] (fifthCellOut) -| ++(1, -1.5) ;
+			\draw[->, red, thick] (firstCellOut)+(1, 0.5) |-(firstCellOut);
+			\draw[->, red, thick] (firstCell) -- ++(-1, 0) |- (thirdCell);
+
+		\end{tikzpicture}
+\end{example}
 
 \subsection{The \texttt{stripe\_l\_fp} fixpoint}
 \subsubsection{Definition}
@@ -87,14 +200,16 @@ fixpoint int stripe(int start, int step, nat n, int capa) {
 The \texttt{stripe\_l\_fp} fixpoint builds a \texttt{list<option<nat>>} given a starting point, an offset, a number of accesses and a capacity. The base case of this fixpoint is to generate a \texttt{list} containing only \texttt{none}s (fixpoint \texttt{gen\_none}), if \texttt{zero} accesses are performed. The recursive case is to update the $start + n*offset \%capa$ cell, using the above \texttt{stripe} fixpoint.
 
 \begin{definition}[stripe\_l\_fp(int start, int step, nat bound, int capa)]
+	\marginnote{The \texttt{update (index, elem, list)} fixpoint returns \texttt{list} with the \texttt{index}-th element updated to \texttt{elem}.}
 	\begin{lstlisting}
 fixpoint list<option<nat> > stripe_l_fp(int start,
 	int step, nat n, int capa)
 {
 	switch(n) {
 		case zero: return gen_none(nat_of_int(capa));
-		case succ(m): return update(stripe(start, step, n, capa),
-			some(n), stripe_l_fp(start, step, m, capa));
+		case succ(m): return 
+			update(stripe(start, step, n, capa), some(n), 
+				stripe_l_fp(start, step, m, capa));
 	}
 }
  	\end{lstlisting}
@@ -122,19 +237,24 @@ The main property required is that the number of cell containing \texttt{some(i)
 
 There are also other properties which are used internally to prove the \texttt{count\_some} property. The main lemma is named \texttt{stripe\_l}.
 
-\begin{definition}[Prototype of \texttt{stripe\_l}]
+\begin{lemma}[Prototype of \texttt{stripe\_l}]
+	\marginnote{\texttt{list\_contains \_stripe} ensures that if a cell contains \texttt{some(i)}, then \texttt{i} is the antecedant of the cell index w.r.t. stripe.}
 	\begin{lstlisting}
-lemma list<option<nat> > stripe_l(int start, int step, nat n, int capa)
-requires 0 <= start &*& start < capa &*& step > 0 &*& int_of_nat(n) <= capa &*& coprime(step, capa) &*& step < capa;
+lemma list<option<nat> > stripe_l(int start, int step, nat n, 
+	int capa)
+requires 0 <= start &*& start < capa &*& step > 0 
+	&*& n <= capa &*& coprime(step, capa) &*& step < capa;
 ensures count_some(result) == n
-&*& length(result) == capa
-&*& true == up_to(nat_of_int(capa), (list_contains_stripes)(result, start, step))
-&*& true == up_to(nat_of_int(capa), (lst_opt_less_than_n)(result, n))
-&*& true == forall(result, opt_not_zero)
-&*& result == stripe_l_fp(start, step, n, capa)
-&*& coprime(step, capa);
+	&*& length(result) == capa
+	&*& true == up_to(nat_of_int(capa), 
+		(list_contains_stripes)(result, start, step))
+	&*& true == up_to(nat_of_int(capa), 
+		(lst_opt_less_than_n)(result, n))
+	&*& true == forall(result, opt_not_zero)
+	&*& result == stripe_l_fp(start, step, n, capa)
+	&*& coprime(step, capa);
 	\end{lstlisting}
-\end{definition}
+\end{lemma}
 
 \subsubsection{Proof of \texttt{stripe\_l}}
 The proof of these properies relies on the fact that the same cell is not updated twice. Once this is ensured, the construction of the fixpoint ensures the validity of the properties. 
@@ -142,7 +262,7 @@ The proof of these properies relies on the fact that the same cell is not update
 Algorithm~\ref{alg:proof_stripe_l} shows the main steps of the proof. In the base case, all trivially holds. In the inductive case, if the \texttt{stripe(start, step, n, capa)}-th cell (i.e. the one hit at $n$-th iteration) already contains \texttt{some(i)}, the \texttt{list\_contains\_stripes} property ensures that \texttt{stripe(start, step, i, capa)}-th cell is the one we are hitting. Hence, $start + step\times i \%capa = start + step\times n \%capa$, with $n-i < capa$. Then the Chinese remainder theorem leads to a contradiction.
 
 \begin{algorithm}
-	\caption{Proof of stripe\_l\label{alg:proof_stripe_l}}
+	\caption{Proof of \texttt{stripe\_l}\label{alg:proof_stripe_l}}
 
 	\KwIn{int start, int step, nat n, int capa}	
 
@@ -151,7 +271,7 @@ Algorithm~\ref{alg:proof_stripe_l} shows the main steps of the proof. In the bas
 			\tcp{All hold by construction}
 		}
 		\Case{succ(m)}{
-			\tcp{Recursive call}
+			\tcp{Recursive call, the termination is ensured by n > m}
 			list $lst \longleftarrow \mathtt{stripe\_l(start, step, m, capa)}$
 			
 			\tcp{Now, we want to update the stripe(start, step, n, capa)-th to some(n)}
@@ -159,6 +279,7 @@ Algorithm~\ref{alg:proof_stripe_l} shows the main steps of the proof. In the bas
 			\Switch{nth(stripe(start, step, n, capa), lst}{
 				\Case{some(i)}{
 					\Assert{$start + i\times step \%capa = start + n\times step \%capa$}\;
+					\marginnote{$n-i$ is noted $diff$ in the following parts}
 					\Assert{$(n-i)\times step\%capa = 0$}\;
 					\Assert{$n-i < capa$}\;
 					\tcp{The chinese remainder theorem applies and shows a contradiction}
@@ -168,7 +289,6 @@ Algorithm~\ref{alg:proof_stripe_l} shows the main steps of the proof. In the bas
 				}
 			}
 			\tcp{We now that the stripe(start, step, n, capa)-th cell contains a \texttt{none}, which we update to \texttt{some(n)}, so the properties hold for the updated list.}
-			\marginnote{The \texttt{update(index, elem, list)} fixpoint returns \texttt{list} with the \texttt{index}-th element updated to \texttt{elem}.}
 			\Return{update(stripe(start, step, n, capa), some(n), lst)}
 			
 		}
@@ -180,9 +300,80 @@ Algorithm~\ref{alg:proof_stripe_l} shows the main steps of the proof. In the bas
 
 \subsection{Proof of the \emph{Chinese remainder theorem}}
 \subsubsection{Properties}
+The goal of the \emph{Chinese remainder theorem} is to highlight a contradiction in the \texttt{stripe\_l} proof. We have that $diff\times step\%capa = 0$. The contradiction we want to highlight is that in the given environment, $diff$ can only be $0$, i.e. the supposed previous value is the same that the one we want to write, that is the $n$-th iteration is supposed to be already written to the list.
+
+This is reduced to the following lemma: if $x\%n1 = 0$, $x\%n2 = 0$, $n1$ and $n2$ are coprime, and $x < n1 \times n2$, then $x = 0$. It is also required that $n1 > 0$, $n2 > 0$ and $x \geq 0$.
+
+In \texttt{stripe\_l}, this is applied to $x = diff\times \mathtt{step}$, $n1 = \mathtt{step}$ and $n2 = \mathtt{capa}$.
+
+This lemma is a direct consequence of the \emph{uniqueness} property of the \emph{Chinese remainder theorem}. Although it is simple to show informally, Verifast first requires to build \emph{gcd} which is quite long. All the proof is done in a separate file \texttt{chinese\_remainder\_th.gh}. The proof takes around 1000 lines of code (which less than 200 are \emph{assert}-s or comments and could be remove).
+
 \subsubsection{Computation of \emph{gcd}}
 \subsubsection{\emph{gcd} properties}
 \subsubsection{Proof by contradiction}
+In Verifast, the proof of the \texttt{bin\_chinese\_remainder\_theorem} lemma is quite long (approx. 300 lines). However, most of it is only arithmetic statements. Hence, informally, the proof is much shorter. Algorithm~\ref{alg:proof_crt} sketches the main cases. The main part (\emph{if $x > 1$} branch) decompose $x$ into $n1\times k1 = n2\times k2$. After justifying why $k1\%n2 \neq 0$, it considers $gcd(k1, n2) = a$, which can not be $1$. Then remaining case ($a \neq 1$, $k1\%n2 \neq 0$, $x > 1$) calls recursively the theorem, on $\frac{n2}{a} = b$.
+\begin{algorithm}
+	\caption{Proof of \texttt{bin\_chinese\_remainder\_theorem}\label{alg:proof_crt}}
+	\uIf{$x = 1$}
+	{
+		$x\%n1 = 0 \Rightarrow n1 = 1$\;
+		$x\%n2 = 0 \Rightarrow n2 = 1$\;
+		\Assert{$n1\times n2 = 1$}\;
+		\Assert{$x = n1\times n2$}\;
+		\Contradiction\;
+	}
+	\uElseIf{$x > 1$}
+	{
+		$x\%n1 = 0 \Rightarrow \exists k1 | n1\times k1 = x$ \;
+		$x\%n2 = 0 \Rightarrow \exists k2 | n2\times k2 = x$ \;
+		\Assert{$k1 \neq 0$}\;
+		\eIf{$k1\%n2 = 0$}{
+			$\beta \longleftarrow k1/n2$\;
+			\Assert{$\beta\times n2 = k1$}\;
+			\Assert{$\beta \geq 1$}\;
+			\Assert{$\beta\times n2 \leq k1$}\;
+			\Assert{$x = n1\times k1 \geq n1\times n2$}\;
+			\Contradiction\;
+		}
+		{
+			$a \longleftarrow gcd(k1, n2)$\;
+			$b \longleftarrow n2/a$, \Assert{$b \neq 0$}\;
+			$\gamma \longleftarrow k2/a$\;
+			\Assert{$gcd(b, \gamma) = 1$}\;
+			\If{$gcd(n1, b) \neq 1$}{
+				\Assert{$gcd(n1, a\times b) \neq 1$}\;
+				\Assert{$gcd(n1, n2) \neq 1$}\;
+			}
+			\eIf{$a = 1$}{
+				\Assert{$\gamma = k1 \wedge b = n2$}\;
+				$gcd(b, \gamma) = 1 \wedge gcd(n1, b) = 1 \Rightarrow gcd(n1\times\gamma, b) = 1$\;
+				\Contradiction{$gcd(x, n2) = 1$}\;
+			}{
+				\tcp{The termination is ensured by b < n2}
+				\texttt{bin\_chinese\_remainder\_theorem}($n1$, $b$, $k2\times b$)\;
+				\Assert{$k2\times b = 0$}\;
+				\Assert{$k2 = 0$}\;
+				\Contradiction{$n2\times k2 = x = 0$}\;
+			}
+		}
+	}
+	\Else{
+		\Assert{$x = 0$}\;
+	}
+\end{algorithm}
+
+
+\subsubsection{Assumed lemma}
+One lemma remains assumed: 
+\begin{lemma}[\texttt{gcd\_mul}]
+	\begin{lstlisting}
+lemma void gcd_mul(int n1, int n2, int n3)
+requires coprime(n1, n3) &*& coprime(n2, n3);
+ensures coprime(n1*n2, n3) &*& coprime(n1, n3) 
+	&*& coprime(n2, n3);
+	\end{lstlisting}
+\end{lemma}
+
 
 \section{Conclusion}
 \subsection{Validity of benchmark}
