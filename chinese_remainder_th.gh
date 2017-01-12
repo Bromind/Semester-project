@@ -69,12 +69,13 @@ fixpoint list<int> prime_factor_decomposition(int n, nat bound) {
   }
 }
 
-lemma void smallest_prime_divisor_not_0(int n, int i, nat bound)
+lemma void smallest_prime_divisor_l(int n, int i, nat bound)
 requires int_of_nat(bound) > n-i &*& n > 1 &*& i >= 2 &*& i <= n &*&
   smallest_prime_divisor_helper(n, 2, nat_of_int(n+1)) == 
     smallest_prime_divisor_helper(n, i, nat_of_int(n+1-i));
   
-ensures smallest_prime_divisor(n) >= 2;
+ensures smallest_prime_divisor(n) >= 2 &*& 
+  true == divide(n, smallest_prime_divisor(n));
 {
   switch(bound) {
     case zero: {
@@ -106,7 +107,7 @@ case succ(p_bound): {
           assert smallest_prime_divisor_helper(n, i, nat_of_int(n+1-i)) == 
             smallest_prime_divisor_helper(n, i+1, nat_of_int(n+1-i-1));
           
-          smallest_prime_divisor_not_0(n, i+1, p_bound);
+          smallest_prime_divisor_l(n, i+1, p_bound);
         }
       }
     }
