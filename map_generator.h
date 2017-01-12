@@ -25,11 +25,12 @@ typedef int map_keys_equality /*@<K>(predicate (void*; K) keyp) @*/(void* k1, vo
                         list<pair<kt,void*> > addrs,
                         predicate (void*;kt) keyp,
                         fixpoint (kt,int,bool) recp,
-                        fixpoint (kt,int) hash,
+                        fixpoint (kt,int) hash_entry,
+                        fixpoint (kt, int) hash_offset,
                         int capacity,
                         int* busybits,
                         void** keyps,
-                        hash_t *k_hashes,
+                        entry_t *k_hashes,
                         int* values);
 
   fixpoint list<pair<kt,vt> > empty_map_fp<kt,vt>() { return nil; }
@@ -70,17 +71,18 @@ typedef int map_keys_equality /*@<K>(predicate (void*; K) keyp) @*/(void* k1, vo
 
 /*@
   lemma void map_get_keeps_recp<kt>(list<pair<kt,int> > m, kt k);
-  requires mapping(m, ?addrs, ?kp, ?rp, ?hsh,
+  requires mapping(m, ?addrs, ?kp, ?rp, ?hsh_entry, ?hsh_offset,
                    ?cap, ?bbs, ?kps, ?khs, ?vals) &*&
            true == map_has_fp(m, k);
   ensures true == rp(k, map_get_fp(m, k)) &*&
-          mapping(m, addrs, kp, rp, hsh,
+          mapping(m, addrs, kp, rp, hsh_entry, hsh_offset,
                   cap, bbs, kps, khs, vals);
   @*/
 
 /*@
   predicate map_key_type<kt>(kt k) = true;
-  predicate map_key_hash<kt>(fixpoint (kt,int) hsh) = true;
+  predicate map_key_hash_entry<kt>(fixpoint (kt, int) hsh) = true;
+  predicate map_key_hash_offset<kt>(fixpoint (kt,int) hsh) = true;
   predicate map_record_property<kt>(fixpoint(kt,int,bool) prop) = true;
   @*/
   
@@ -102,32 +104,33 @@ typedef int map_keys_equality /*@<K>(predicate (void*; K) keyp) @*/(void* k1, vo
  * int_key/ext_key that are much bigger than a 32bit integer.
  */
 void map_initialize /*@ <kt> @*/(int* busybits, map_keys_equality* cmp,
-    void** keyps, hash_t *khs, int* vals,
+    void** keyps, entry_t *khs, int* vals,
     int capacity);
-/*@ requires map_key_type<kt>(_) &*& map_key_hash<kt>(?hash) &*&
+/*@ requires map_key_type<kt>(_) &*& map_key_hash_entry<kt>(?hash_entry) &*& map_key_hash_offset<kt>(?hash_offset) &*&
              [?fr]is_map_keys_equality<kt>(cmp, ?keyp) &*&
              map_record_property<kt>(?recp) &*&
              ints(busybits, capacity, ?bbs) &*&
              pointers(keyps, capacity, ?kplist) &*&
              ints(vals, capacity, ?vallist) &*&
-             ullongs(khs, capacity, ?khlist) &*&
+             uints(khs, capacity, ?khlist) &*&
              0 < capacity &*& 2*capacity < INT_MAX; @*/
-/*@ ensures mapping<kt>(empty_map_fp(), empty_map_fp(), keyp, recp, hash,
+/*@ ensures mapping<kt>(empty_map_fp(), empty_map_fp(), keyp, recp, hash_entry, hash_offset,
                         capacity, busybits, keyps,
                         khs, vals) &*&
             [fr]is_map_keys_equality<kt>(cmp, keyp); @*/
 
-int map_get /*@ <kt> @*/(int* busybits, void** keyps, hash_t *k_hashes, int* values,
-    void* keyp, map_keys_equality* eq, hash_t hash, int* value,
+int map_get /*@ <kt> @*/(int* busybits, void** keyps, entry_t *k_hashes, int* values,
+    void* keyp, map_keys_equality* eq, entry_t hash_entry, offset_t hash_offset, int* value,
     unsigned int capacity);
-/*@ requires mapping<kt>(?m, ?addrs, ?kp, ?recp, ?hsh, capacity, busybits,
+/*@ requires mapping<kt>(?m, ?addrs, ?kp, ?recp, ?hsh_entry, ?hsh_offset, capacity, busybits,
                          keyps, k_hashes, values) &*&
              kp(keyp, ?k) &*&
              [?fr]is_map_keys_equality(eq, kp) &*&
-             hsh(k) == hash &*&
+             hsh_entry(k) == hash_entry &*&
+             hsh_offset(k) == hash_offset &*&
              *value |-> ?v &*& 
-             coprime(offset_of(hash), capacity); @*/
-/*@ ensures mapping<kt>(m, addrs, kp, recp, hsh, capacity, busybits,
+             coprime(hash_offset, capacity); @*/
+/*@ ensures mapping<kt>(m, addrs, kp, recp, hsh_entry, hsh_offset, capacity, busybits,
                         keyps, k_hashes, values) &*&
             kp(keyp, k) &*&
             [fr]is_map_keys_equality(eq, kp) &*&
@@ -138,43 +141,46 @@ int map_get /*@ <kt> @*/(int* busybits, void** keyps, hash_t *k_hashes, int* val
               true == recp(k, nv)):
              (result == 0 &*&
               *value |-> v)) &*&
-              coprime(offset_of(hash), capacity); @*/
+              coprime(hash_offset, capacity); @*/
 
-int map_put /*@ <kt> @*/(int* busybits, void** keyps, hash_t *k_hashes, int* values,
-    void* keyp, hash_t hash, int value,
+int map_put /*@ <kt> @*/(int* busybits, void** keyps, entry_t *k_hashes, int* values,
+    void* keyp, entry_t hash_entry, offset_t hash_offset, int value,
     unsigned int capacity);
-/*@ requires mapping<kt>(?m, ?addrs, ?kp, ?recp, ?hsh, capacity, busybits,
+/*@ requires mapping<kt>(?m, ?addrs, ?kp, ?recp, ?hsh_entry, ?hsh_offset, capacity, busybits,
                          keyps, k_hashes, values) &*&
              [0.5]kp(keyp, ?k) &*& true == recp(k, value) &*&
-             hsh(k) == hash &*&
+             hsh_entry(k) == hash_entry &*&
+             hsh_offset(k) == hash_offset &*& 
              false == map_has_fp(m, k) &*&
-             offset_of(hash) > 0 &*& offset_of(hash) < capacity; @*/
+             hash_offset > 0 &*& hash_offset < capacity &*& coprime(hash_offset, capacity); @*/
 /*@ ensures true == recp(k, value) &*&
             (map_size_fp(m) < capacity ?
              (result == 1 &*&
               mapping<kt>(map_put_fp(m, k, value),
                           map_put_fp(addrs, k, keyp),
                           kp, recp,
-                          hsh,
+                          hsh_entry, hsh_offset,
                           capacity, busybits,
                           keyps, k_hashes, values)) :
              (result == 0 &*&
               [0.5]kp(keyp, k) &*&
-              mapping<kt>(m, addrs, kp, recp, hsh, capacity, busybits,
+              mapping<kt>(m, addrs, kp, recp, hsh_entry, hsh_offset, capacity, busybits,
                           keyps, k_hashes, values))) &*&
-              coprime(offset_of(hash), capacity); @*/
+              coprime(hash_offset, capacity); @*/
 
 //TODO: Keep track of the key pointers, in order to preserve the pointer value
 // when releasing it with map_erase.
-int map_erase /*@ <kt> @*/(int* busybits, void** keyps, hash_t *key_hashes, void* keyp,
-    map_keys_equality* eq, hash_t hash, int capacity,
+int map_erase /*@ <kt> @*/(int* busybits, void** keyps, entry_t *key_hashes, void* keyp,
+    map_keys_equality* eq, entry_t hash_entry, offset_t hash_offset, unsigned int capacity,
     void** keyp_out);
-/*@ requires mapping<kt>(?m, ?addrs, ?kp, ?recp, ?hsh, capacity, busybits,
+/*@ requires mapping<kt>(?m, ?addrs, ?kp, ?recp, ?hsh_entry, ?hsh_offset, capacity, busybits,
                          keyps, key_hashes, ?values) &*&
              [0.5]kp(keyp, ?k) &*&
              [?fr]is_map_keys_equality<kt>(eq, kp) &*&
-             hsh(k) == hash &*&
-             *keyp_out |-> ?ko; @*/
+             hsh_entry(k) == hash_entry &*&
+             hsh_offset(k) == hash_offset &*&
+             *keyp_out |-> ?ko &*&
+             hash_offset > 0 &*& hash_offset < capacity &*& coprime(hash_offset, capacity); @*/
 /*@ ensures [0.5]kp(keyp, k) &*&
             [fr]is_map_keys_equality<kt>(eq, kp) &*&
             (map_has_fp(m, k) ?
@@ -184,17 +190,18 @@ int map_erase /*@ <kt> @*/(int* busybits, void** keyps, hash_t *key_hashes, void
               [0.5]kp(nko, k) &*&
               mapping<kt>(map_erase_fp(m, k),
                           map_erase_fp(addrs, k),
-                          kp, recp, hsh,
+                          kp, recp, hsh_entry, hsh_offset,
                           capacity, busybits, keyps, key_hashes, values)) :
              (result == 0 &*&
               *keyp_out |-> ko &*&
-              mapping<kt>(m, addrs, kp, recp, hsh,
-                          capacity, busybits, keyps, key_hashes, values))); @*/
+              mapping<kt>(m, addrs, kp, recp, hsh_entry, hsh_offset,
+                          capacity, busybits, keyps, key_hashes, values))) &*&
+             coprime(hash_offset, capacity); @*/
 
 int map_size/*@ <kt> @*/ (int* busybits, int capacity);
-/*@ requires mapping<kt>(?m, ?addrs, ?kp, ?recp, ?hsh, capacity, busybits,
+/*@ requires mapping<kt>(?m, ?addrs, ?kp, ?recp, ?hsh_entry, ?hsh_offset, capacity, busybits,
                          ?keyps, ?k_hashes, ?values); @*/
-/*@ ensures mapping<kt>(m, addrs, kp, recp, hsh, capacity, busybits,
+/*@ ensures mapping<kt>(m, addrs, kp, recp, hsh_entry, hsh_offset, capacity, busybits,
                         keyps, k_hashes, values) &*&
             result == map_size_fp(m);@*/
 
