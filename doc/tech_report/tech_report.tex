@@ -29,7 +29,7 @@
 	G. \textsc{Candea}, Pr.\\
 	A. \textsc{Zaostrovnykh}, Ph. D. Student
 }
-\project{Optionnal Semester Project}
+\project{Optional Semester Project}
 \author{Martin \textsc{Vassor}}
 \date{\today}
 
@@ -46,9 +46,9 @@
 
 \newgeometry{outer=4.5cm, marginparwidth=3cm, marginparsep=-0.5cm}
 \section{Introduction}
-This report explain, in an informal way, the implementation and verification of a double-hash hash map. It does not aim to provide a complete and detailled explication of each line of code. Instead, the goal is to synthesize the main points needed to understand both the code and the verification.
+This report explain, in an informal way, the implementation and verification of a double-hash hash map. It does not aim to provide a complete and detailed explication of each line of code. Instead, the goal is to synthesize the main points needed to understand both the code and the verification.
 
-The actual verification contains more than 100 new lemmas and fixpoints, and it would make no sense to foramlly describe each of them here, as a formal definition and proof are provided. Also, most of those are trivial proofs and the name is explicit enough to understand their behaviour.
+The actual verification contains more than 100 new lemmas and fixpoints, and it would make no sense to formally describe each of them here, as a formal definition and proof are provided. Also, most of those are trivial proofs and the name is explicit enough to understand their behaviour.
 
 Thus, this document is more intended to be a companion to understand the actual proof.
 
@@ -115,7 +115,7 @@ The following subsections show the results for both cases, for 70\% of read acce
 
 The code was compiled with GCC 4.9.3.
 \subsubsection{General case}
-Results are presented in Figure~\ref{fig:result_contains}. For this test case, 10000 accesses were performed. The intereting point is that the double hash implementation perform better with higher loads. This behaviour is due to the fact that the probability that a key is present increases with load. Hence, in an execution at higher load, there are less misses than at low loads. 
+Results are presented in Figure~\ref{fig:result_contains}. For this test case, 10000 accesses were performed. The interesting point is that the double hash implementation perform better with higher loads. This behaviour is due to the fact that the probability that a key is present increases with load. Hence, in an execution at higher load, there are less misses than at low loads. 
 
 At low loads, the naive implementation performs better than the double hash one. This is a good illustration of the locality problem: in the naive implementation, accesses are performed in order. Then, both spatial locality of cache lines and address prediction works better. An evaluation with cachegrind shows the difference (see Example~\ref{expl:cache}).
 \begin{example}[Cache accesses]
@@ -245,14 +245,14 @@ Hence, an invariant of the \emph{for}-loop is that \texttt{not\_my\_key} is asse
 \end{figure}
 
 \subsubsection{Impact of the modifications}
-The modifications have two main impacts: first, the accesses are not performed in the same order. The scond impact is that the specification is not true anymore in the general case.
+The modifications have two main impacts: first, the accesses are not performed in the same order. The second impact is that the specification is not true any more in the general case.
 
 \paragraph{Access order:}
-As explain above, with double hashing, cells of the map are not accessed by loop anymore. Hence, the \texttt{by\_loop\_for\_all} lemma doesn't apply anymore. Let $stripe$ be the function which, given a loop iteration, returns the index of the cell looked-up at this iteration (parametrized by $start$, $step$ and $capacity$). This problem is solved by computing the antecedant of each cell. 
+As explain above, with double hashing, cells of the map are not accessed by loop any more. Hence, the \texttt{by\_loop\_for\_all} lemma doesn't apply any more. Let $stripe$ be the function which, given a loop iteration, returns the index of the cell looked-up at this iteration (parametrized by $start$, $step$ and $capacity$). This problem is solved by computing the antecedent of each cell. 
 
 Hence, at iteration $i$, for any cell $map[\mathtt{index}]$, if the antecedent of $map[\mathtt{index}]$ is less than $i$, then \texttt{not\_my\_key(index)} is ensured.
 
-The new way to ensure \texttt{not\_my\_key} for all indexes is then to ensures that all index has an antecedant w.r.t. the $stripe$ function.
+The new way to ensure \texttt{not\_my\_key} for all indexes is then to ensures that all index has an antecedent w.r.t. the $stripe$ function.
 
 \paragraph{New requirements:}
 However, it is not always the case that every cell is reached. An example is provided in Example~\ref{expl:not_coprime}. Actually, after the Chinese remainder theorem, the $step$ and the $capacity$ must be coprime in order to ensure that every cell is eventually tested.
@@ -347,7 +347,7 @@ The main property required is that the number of cell containing \texttt{some(i)
 There are also other properties which are used internally to prove the \texttt{count\_some} property. The main lemma is named \texttt{stripe\_l}.
 
 \begin{lemma}[Prototype of \texttt{stripe\_l}]
-	\marginnote{\texttt{list\_contains \_stripe} ensures that if a cell contains \texttt{some(i)}, then \texttt{i} is the antecedant of the cell index w.r.t. stripe.}
+	\marginnote{\texttt{list\_contains \_stripe} ensures that if a cell contains \texttt{some(i)}, then \texttt{i} is the antecedent of the cell index w.r.t. stripe.}
 	\begin{lstlisting}
 lemma list<option<nat> > stripe_l(int start, int step, nat n, 
 	int capa)
@@ -366,7 +366,7 @@ ensures count_some(result) == n
 \end{lemma}
 
 \subsubsection{Proof of \texttt{stripe\_l}}
-The proof of these properies relies on the fact that the same cell is not updated twice. Once this is ensured, the construction of the fixpoint ensures the validity of the properties. 
+The proof of these properties relies on the fact that the same cell is not updated twice. Once this is ensured, the construction of the fixpoint ensures the validity of the properties. 
 
 Algorithm~\ref{alg:proof_stripe_l} shows the main steps of the proof. In the base case, all trivially holds. In the inductive case, if the \texttt{stripe(start, step, n, capa)}-th cell (i.e. the one hit at $n$-th iteration) already contains \texttt{some(i)}, the \texttt{list\_contains\_stripes} property ensures that \texttt{stripe(start, step, i, capa)}-th cell is the one we are hitting. Hence, $start + step\times i \%capa = start + step\times n \%capa$, with $n-i < capa$. Then the Chinese remainder theorem leads to a contradiction.
 
@@ -415,7 +415,7 @@ This is reduced to the following lemma: if $x\%n1 = 0$, $x\%n2 = 0$, $n1$ and $n
 
 In \texttt{stripe\_l}, this is applied to $x = diff\times \mathtt{step}$, $n1 = \mathtt{step}$ and $n2 = \mathtt{capa}$.
 
-This lemma is a direct consequence of the \emph{uniqueness} property of the \emph{Chinese remainder theorem}. Although it is simple to show informally, Verifast first requires to build \emph{gcd} which is quite long. All the proof is done in a separate file \texttt{chinese\_remainder\_th.gh}. The proof takes around 1000 lines of code (which less than 200 are \emph{assert}-s or comments and could be remove).
+This lemma is a direct consequence of the \emph{uniqueness} property of the \emph{Chinese remainder theorem}. Although it is simple to show informally, Verifast first requires to build \emph{gcd} which is quite long. All the proof is done in a separate file \texttt{Chinese\_remainder\_th.gh}. The proof takes around 1000 lines of code (which less than 200 are \emph{assert}-s or comments and could be remove).
 
 \subsubsection{Proof by contradiction}
 In Verifast, the proof of the \texttt{bin\_chinese\_remainder\_theorem} lemma is quite long (approx. 300 lines). However, most of it is only arithmetic statements. Hence, informally, the proof is much shorter. Algorithm~\ref{alg:proof_crt} sketches the main cases. The main part (\emph{if $x > 1$} branch) decompose $x$ into $n1\times k1 = n2\times k2$. After justifying why $k1\%n2 \neq 0$, it considers $gcd(k1, n2) = a$, which can not be $1$. Then remaining case ($a \neq 1$, $k1\%n2 \neq 0$, $x > 1$) calls recursively the theorem, on $\frac{n2}{a} = b$.
