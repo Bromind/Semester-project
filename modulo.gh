@@ -559,27 +559,5 @@ ensures n1*n2/n2 == n1;
         assert(true == nthProp(arr, prop, int_of_nat(len)));
     }
   }
-  
-  lemma void by_loop_for_all_by_index<t>(list<t> arr, fixpoint (t, bool) prop,
-                                int entry, int offset, int capacity, nat outlen)
-  requires length(arr) == capacity &*& int_of_nat(outlen) <= capacity &*&
-           true == up_to(nat_of_int(capacity), (stride_nth_prop)(arr, prop, capacity, entry, offset));
-  ensures true == up_to(outlen, (nthProp)(arr, prop));
-  {
-    switch(outlen) {
-      case zero: return;
-      case succ(len):
-        assume(up_to(outlen, (nthProp)(arr, prop))); //TODO
-      /*
-        by_loop_for_all_by_index(arr, prop, entry, offset, capacity, len);
-        int orig = loop_shift_inv(int_of_nat(len) * offset, shift, capacity);
-        up_to_covers_x(nat_of_int(capacity),
-                      (stride_nth_prop)(arr, prop, capacity, entry, offset),
-                      orig);
-        assert(true == byLoopNthProp(arr, prop, capacity, entry, offset, orig));
-        assert(true == nthProp(arr, prop, int_of_nat(len)));
-        */
-    }
-  }
 
 #endif//_MODULO_GH_INCLUDED_

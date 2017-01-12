@@ -129,7 +129,8 @@ int map_get /*@ <kt> @*/(int* busybits, void** keyps, entry_t *k_hashes, int* va
              hsh_entry(k) == hash_entry &*&
              hsh_offset(k) == hash_offset &*&
              *value |-> ?v &*& 
-             coprime(hash_offset, capacity); @*/
+             coprime(hash_offset, capacity) &*&
+             hash_offset > 0 &*& hash_offset < capacity; @*/
 /*@ ensures mapping<kt>(m, addrs, kp, recp, hsh_entry, hsh_offset, capacity, busybits,
                         keyps, k_hashes, values) &*&
             kp(keyp, k) &*&
