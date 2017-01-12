@@ -1,4 +1,4 @@
-CC_ARGS=-O3 -Wall -Werror -DSTATIC_TEST
+CC_ARGS=-g -O3 -Wall -Werror -DSTATIC_TEST
 
 all: static_test c cpp c_generator cpp_default
 

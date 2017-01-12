@@ -18,7 +18,11 @@ typedef int hash_t;
 // For the map table
 int *busybit;
 void** keyps;
+#ifdef GENERATOR
+entry_t *khs;
+#else
 hash_t *khs;
+#endif
 int *vals;
 
 size_t capacity = CAPACITY;
@@ -30,7 +34,13 @@ struct myInt {
 };
 
 clock_t parseFile(const char* filename, struct myInt keys[], size_t capacity);
+#ifdef GENERATOR
+entry_t hashKeyEntry(const struct myInt key);
+offset_t hashKeyOffset(const struct myInt key);
+#else
 hash_t hashKey(const struct myInt key);
+#endif
+
 
 int compare(void* key1, void* key2)
 {
@@ -78,6 +88,25 @@ int main(int argc, char* argv[])
 int value, res; 
 struct myInt* deleted;
 clock_t time = clock();
+
+#ifdef GENERATOR
+
+#define remove(x) \
+  map_erase(busybit, keyps, khs, &keys[(x)], compare, hashKeyEntry(keys[(x)]), hashKeyOffset(keys[(x)]), capacity, (void**) &deleted)
+#define insert(x, y) \
+  map_put(busybit, keyps, khs, vals, &keys[(x)], hashKeyEntry(keys[(x)]), hashKeyOffset(keys[(x)]), (y), capacity)
+
+#define ensure(x, y) \
+  res = map_get(busybit, keyps, khs, vals, &keys[(x)], compare, hashKeyEntry(keys[(x)]), hashKeyOffset(keys[(x)]), &value, capacity); \
+  if((y) < 0) /* Case not expected to be in the map */ \
+  { \
+    assert(res == 0); \
+  } else { \
+    assert((value == (y) )); \
+  }
+
+#else
+
 #define remove(x) \
   map_erase(busybit, keyps, khs, &keys[(x)], compare, hashKey(keys[(x)]), capacity, (void**) &deleted)
 #define insert(x, y) \
@@ -91,6 +120,8 @@ clock_t time = clock();
   } else { \
     assert((value == (y) )); \
   }
+#endif
+
 #define reset \
   time = clock();
 
@@ -106,24 +137,32 @@ time = clock() - time;
   return 0;
 }
 
+#ifndef GENERATOR
 hash_t hashKey(const struct myInt key)
 {
-#ifndef GENERATOR
   return (key.value %conflict)%capacity;
-#else
-  hash_t gen = {
-    .entry_point_hash = key.value,
-    .offset_hash = ((key.value*3%(capacity+1))*7)%capacity, // Somehow mix them, obviously not perfect, but better than nothing.
-  };
-  return gen;
-#endif
 }
+#else
+entry_t hashKeyEntry(const struct myInt key)
+{
+  return key.value;
+}
+
+offset_t hashKeyOffset(const struct myInt key)
+{
+    return ((key.value*3%(capacity+1))*7)%capacity; // Somehow mix them, obviously not perfect, but better than nothing.
+}
+#endif
 
 clock_t put(struct myInt keys[], int key, int value, size_t capacity)
 {
   clock_t begin, end;
   begin = clock();
+#ifdef GENERATOR
+  map_put(busybit, keyps, khs, vals, &keys[key], hashKeyEntry(keys[key]), hashKeyOffset(keys[key]), value, capacity);
+#else
   map_put(busybit, keyps, khs, vals, &keys[key], hashKey(keys[key]), value, capacity);
+#endif
   end = clock();
 
   return end - begin;
@@ -134,7 +173,11 @@ clock_t getAndCheck(struct myInt keys[], int key, int expected, size_t capacity)
   clock_t begin, end;
   int value, res;
   begin = clock();
+#ifdef GENERATOR
+  res = map_get(busybit, keyps, khs, vals, &keys[key], compare, hashKeyEntry(keys[key]), hashKeyOffset(keys[key]), &value, capacity);
+#else 
   res = map_get(busybit, keyps, khs, vals, &keys[key], compare, hashKey(keys[key]), &value, capacity);
+#endif
   if(expected < 0) // Case not expected to be in the map
   {
     assert(res == 0);
@@ -150,7 +193,11 @@ clock_t removeKey(struct myInt keys[], int key, size_t capacity)
   clock_t begin, end;
   struct myInt* deleted;
   begin = clock();
+#ifndef GENERATOR
   map_erase(busybit, keyps, khs, &keys[key], compare, hashKey(keys[key]), capacity, (void**) &deleted);
+#else
+  map_erase(busybit, keyps, khs, &keys[key], compare, hashKeyEntry(keys[key]), hashKeyOffset(keys[key]), capacity, (void**) &deleted);
+#endif
   end = clock();
   return end - begin;
 }

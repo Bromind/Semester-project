@@ -679,8 +679,8 @@ unsigned int loop(unsigned int entry_point, unsigned int capacity)
   //@ assert(2*capacity< INT_MAX);
   unsigned int res = (g + capacity)%capacity;
   //@ div_mod_gt_0(res, g + capacity, capacity);
-  //@assert (res < capacity);
-  int s_res = (int) res;
+  //@ assert (res < capacity);
+  //@ int s_res = (int) res;
   //@ assert (res == s_res);
   return res;
 }
