@@ -72,10 +72,24 @@ fixpoint list<int> prime_factor_decomposition(int n, nat bound) {
 lemma void smallest_prime_divisor_l(int n, int i, nat bound)
 requires int_of_nat(bound) > n-i &*& n > 1 &*& i >= 2 &*& i <= n &*&
   smallest_prime_divisor_helper(n, 2, nat_of_int(n+1)) == 
-    smallest_prime_divisor_helper(n, i, nat_of_int(n+1-i));
+    smallest_prime_divisor_helper(n, i, nat_of_int(n+3-i)) &*&
+  true == up_to(nat_of_int(i), 
+  (or)(
+    (or)((equals)(0), (equals)(1)),
+    (not)((divide)(n))
+    )
+  );
   
 ensures smallest_prime_divisor(n) >= 2 &*& 
-  true == divide(n, smallest_prime_divisor(n));
+  smallest_prime_divisor(n) <= n &*&
+  true == divide(n, smallest_prime_divisor(n)) &*& 
+  smallest_prime_divisor(n) == i ? true : true == not((divide)(n), i) &*&
+  true == up_to(nat_of_int(i), 
+  (or)(
+    (or)((equals)(0), (equals)(1)),
+    (not)((divide)(n))
+    )
+  );
 {
   switch(bound) {
     case zero: {
@@ -83,29 +97,52 @@ ensures smallest_prime_divisor(n) >= 2 &*&
       assert i < n;
     }
 case succ(p_bound): {
-      if(nat_of_int(n+1-i) == zero)
+      if(nat_of_int(n+3-i) == zero)
       {
-        int_of_nat_of_int(n+1-i);
+        int_of_nat_of_int(n+3-i);
         assert false;
       }
       if(i == n) {
         divide_itself(n);
-        assert nat_of_int(n+1-i) == succ(?a);
-        assert smallest_prime_divisor_helper(n, i, nat_of_int(n+1-i)) == n;
+        assert nat_of_int(n+3-i) == succ(?a);
+        assert smallest_prime_divisor_helper(n, i, nat_of_int(n+3-i)) == n;
         if(smallest_prime_divisor(n) < n){
+          assert smallest_prime_divisor(n) == smallest_prime_divisor_helper(n, 2, nat_of_int(n+1));
           assert false;
         }
       } else {
         if(true == divide(n, i)) {
           assert i >= 2;
-          assert nat_of_int(n+1-i) == succ(?a);
-          assert smallest_prime_divisor_helper(n, i, nat_of_int(n+1-i)) >= 2;
-        } else {
+          assert nat_of_int(n+3-i) == succ(?a);
+          assert smallest_prime_divisor_helper(n, i, nat_of_int(n+3-i)) >= 2;
+        } else { // i doesn't divide n
           assert n - (i+1) == n - i - 1;
           assert n - i - 1 < int_of_nat(p_bound);
-          assert succ(nat_of_int(n+1-i-1)) == nat_of_int(n+1-i);
-          assert smallest_prime_divisor_helper(n, i, nat_of_int(n+1-i)) == 
-            smallest_prime_divisor_helper(n, i+1, nat_of_int(n+1-i-1));
+          assert succ(nat_of_int(n+3-i-1)) == nat_of_int(n+3-i);
+          assert smallest_prime_divisor_helper(n, i, nat_of_int(n+3-i)) == 
+            smallest_prime_divisor_helper(n, i+1, nat_of_int(n+3-i-1));
+          
+          assert true == or(
+            (or)((equals)(0), (equals)(1)),
+            (not)((divide)(n)),
+            i
+          );
+          
+          assert true == up_to(nat_of_int(i), 
+            (or)(
+              (or)((equals)(0), (equals)(1)),
+              (not)((divide)(n))
+            )
+          );
+          
+          assert int_of_nat(nat_of_int(i)) == i;
+          
+          assert true == up_to(succ(nat_of_int(i)), 
+            (or)(
+              (or)((equals)(0), (equals)(1)),
+              (not)((divide)(n))
+            )
+          );
           
           smallest_prime_divisor_l(n, i+1, p_bound);
         }
