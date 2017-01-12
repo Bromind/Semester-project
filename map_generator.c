@@ -1235,18 +1235,22 @@ int find_empty /*@ <kt> @*/(int* busybits, unsigned int start, entry_t hash_entr
   int i = 0;
   int capacity_s = (int) capacity;
   offset_t offset = hash_offset;
+  unsigned int index = loop(start, capacity);
+  //@ mod_add(start, capacity, capacity);
+  //@ mod_rotate(start, capacity);
   for (; i < capacity_s + 1; ++i)
     /*@ invariant pred_mapping(kps, bbs, kp, ks) &*&
       ints(busybits, capacity, bbs) &*&
       uints(k_hashes, capacity, khs) &*&
       pointers(keyps, capacity, kps) &*&
       0 <= i &*& i <= capacity + 1&*&
-      true == up_to(nat_of_int(i), (stride_nth_prop)(ks, cell_busy, capacity, start, offset));
+      true == up_to(nat_of_int(i), (stride_nth_prop)(ks, cell_busy, capacity, start, offset))&*& 
+      index < capacity &*& offset < capacity &*& 2*capacity < INT_MAX &*& index == (i*offset+start)%capacity&*&
+      start >= 0;
       @*/
     //@ decreases capacity_s - i;
   {
     //@ pred_mapping_same_len(bbs, ks);
-    unsigned int index = loop(start + ((unsigned int) i)*offset, capacity);
     int bb = busybits[(int)index];
     if (0 == bb) {
       //@ zero_bbs_is_for_empty(bbs, ks, index);
@@ -1254,7 +1258,21 @@ int find_empty /*@ <kt> @*/(int* busybits, unsigned int start, entry_t hash_entr
       return (int)index;
     }
     //@ bb_nonzero_cell_busy(bbs, ks, index);
+    //@ assert(true == cell_busy(nth(index, ks)));
+    //@ assert index == (i*offset+start)%capacity;
+    //@ mul_nonnegative(i, offset);
+    //@ mod_add(i*offset + start, capacity, capacity);
+    //@ mod_rotate(i*offset + start, capacity);
     //@ assert(true == cell_busy(nth(loop_fp(i*offset+start,capacity), ks)));
+    
+    index = loop(index + offset, capacity);
+    //@ mul_nonnegative(i, offset);
+    //@ div_mod_gt_0(((i*offset + start)%capacity + offset)%capacity, (i*offset + start)%capacity + offset, capacity);
+    //@ mod_add((i*offset+start)%capacity + offset, capacity, capacity);
+    //@ mod_rotate((i*offset+start)%capacity + offset, capacity);
+    //@ mod_add(i*offset+start, offset, capacity);
+    //@ mul_distrib(i, offset);    
+    
     //@ assert(nat_of_int(i+1) == succ(nat_of_int(i)));
   }
   //@ pred_mapping_same_len(bbs, ks);
