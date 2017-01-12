@@ -1068,6 +1068,9 @@ int find_key /*@ <kt> @*/ (int* busybits, void** keyps, entry_t *k_hashes, unsig
   int i = 0;
   int capacity_s = (int) capacity;
   offset_t offset = hash_offset;
+  unsigned int index = loop(start, capacity);
+  //@ mod_add(start, capacity, capacity);
+  //@ mod_rotate(start, capacity);
   //@ assert coprime(offset, capacity);
   for (; i < capacity_s + 1; ++i)
     /*@ invariant pred_mapping(kps, bbs, kpr, ks) &*&
@@ -1080,7 +1083,9 @@ int find_key /*@ <kt> @*/ (int* busybits, void** keyps, entry_t *k_hashes, unsig
                   hsh_entry(k) == hash_entry &*&
                   hsh_offset(k) == hash_offset &*&
                   true == hash_list(ks, khs, hsh_entry) &*&
-                  true == up_to(nat_of_int(i),(stride_nth_prop)(ks, (not_my_key)(k), capacity, start, offset));
+                  true == up_to(nat_of_int(i),(stride_nth_prop)(ks, (not_my_key)(k), capacity, start, offset)) &*& 
+                  index < capacity &*& offset < capacity &*& 2*capacity < INT_MAX &*& index == (i*offset+start)%capacity&*&
+                  start >= 0;
     @*/
     //@ decreases capacity_s - i;
   {
@@ -1088,7 +1093,6 @@ int find_key /*@ <kt> @*/ (int* busybits, void** keyps, entry_t *k_hashes, unsig
     //@ assert(sizeof(int) == 4);
     //@ assert(sizeof(long long) == 8);
     //@ assert(sizeof(hash_t) == 8);
-    unsigned int index = loop(start + ((unsigned int) i)*offset, capacity);
     int bb = busybits[(int) index];
     entry_t kh = 0;
     kh = k_hashes[(int) index];
@@ -1118,8 +1122,20 @@ int find_key /*@ <kt> @*/ (int* busybits, void** keyps, entry_t *k_hashes, unsig
     }
     //@ assert(nth(index, ks) != some(k));
     //@ assert(true == not_my_key(k, nth(index, ks)));
+    //@ assert index == (i*offset+start)%capacity;
+    //@ mul_nonnegative(i, offset);
+    //@ mod_add(i*offset + start, capacity, capacity);
+    //@ mod_rotate(i*offset + start, capacity);
     //@ assert(true == not_my_key(k, nth(loop_fp(i*offset+start,capacity), ks)));
     
+    
+    index = loop(index + offset, capacity);
+    //@ mul_nonnegative(i, offset);
+    //@ div_mod_gt_0(((i*offset + start)%capacity + offset)%capacity, (i*offset + start)%capacity + offset, capacity);
+    //@ mod_add((i*offset+start)%capacity + offset, capacity, capacity);
+    //@ mod_rotate((i*offset+start)%capacity + offset, capacity);
+    //@ mod_add(i*offset+start, offset, capacity);
+    //@ mul_distrib(i, offset);    
     //@ assert(nat_of_int(i+1) == succ(nat_of_int(i)));
   }
   //@ pred_mapping_same_len(bbs, ks);
