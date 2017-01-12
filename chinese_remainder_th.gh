@@ -10,6 +10,12 @@
 
 predicate protect(bool b) = b == true;
 predicate coprime(int n1, int n2) = gcd(n1, n2) == 1;
+predicate is_prime(int n) = n > 1 &*& true == up_to(nat_of_int(n), 
+  (or)(
+    (or)((equals)(0), (equals)(1)),
+    (not)((divide)(n))
+    )
+  );
 
 fixpoint bool divide(int whole, int divisor)
 {
@@ -29,6 +35,82 @@ requires true;
 ensures divide(whole, 1) == true;
 {
   div_rem(whole, 1);
+}
+
+fixpoint bool not<t>(fixpoint(t, bool) fp, t elem) 
+{
+  return fp(elem) == false;
+}
+
+fixpoint bool or<t>(fixpoint(t, bool) fp1, fixpoint(t, bool) fp2, t elem)
+{
+  return fp1(elem) || fp2(elem);
+}
+
+fixpoint int smallest_prime_divisor_helper(int n, int i, nat bound)
+{
+  switch(bound) {
+   case zero: return 0;
+   case succ(p_bound): return divide(n, i) == true ? i : smallest_prime_divisor_helper(n, i+1, p_bound);
+  }
+}
+
+fixpoint int smallest_prime_divisor(int n)
+{
+  return smallest_prime_divisor_helper(n, 2, nat_of_int(n+1));
+}
+
+fixpoint list<int> prime_factor_decomposition(int n, nat bound) {
+  switch(bound) {
+    case zero: return nil;
+    case succ(p_bound): 
+      return n == 1 ? cons(1, nil) : cons(smallest_prime_divisor(n), 
+        prime_factor_decomposition(n/smallest_prime_divisor(n), p_bound));
+  }
+}
+
+lemma void smallest_prime_divisor_not_0(int n, int i, nat bound)
+requires int_of_nat(bound) > n-i &*& n > 1 &*& i >= 2 &*& i <= n &*&
+  smallest_prime_divisor_helper(n, 2, nat_of_int(n+1)) == 
+    smallest_prime_divisor_helper(n, i, nat_of_int(n+1-i));
+  
+ensures smallest_prime_divisor(n) >= 2;
+{
+  switch(bound) {
+    case zero: {
+      assert n - i < 0;
+      assert i < n;
+    }
+case succ(p_bound): {
+      if(nat_of_int(n+1-i) == zero)
+      {
+        int_of_nat_of_int(n+1-i);
+        assert false;
+      }
+      if(i == n) {
+        divide_itself(n);
+        assert nat_of_int(n+1-i) == succ(?a);
+        assert smallest_prime_divisor_helper(n, i, nat_of_int(n+1-i)) == n;
+        if(smallest_prime_divisor(n) < n){
+          assert false;
+        }
+      } else {
+        if(true == divide(n, i)) {
+          assert i >= 2;
+          assert nat_of_int(n+1-i) == succ(?a);
+          assert smallest_prime_divisor_helper(n, i, nat_of_int(n+1-i)) >= 2;
+        } else {
+          assert n - (i+1) == n - i - 1;
+          assert n - i - 1 < int_of_nat(p_bound);
+          assert succ(nat_of_int(n+1-i-1)) == nat_of_int(n+1-i);
+          assert smallest_prime_divisor_helper(n, i, nat_of_int(n+1-i)) == 
+            smallest_prime_divisor_helper(n, i+1, nat_of_int(n+1-i-1));
+          
+          smallest_prime_divisor_not_0(n, i+1, p_bound);
+        }
+      }
+    }
+  }
 }
 
 lemma void divisor_below_n(int whole, int divisor)
@@ -240,11 +322,6 @@ ensures true == list_contains(elem, ls);
       }
     }
   }
-}
-
-fixpoint bool not<t>(fixpoint(t, bool) fp, t elem) 
-{
-  return fp(elem) == false;
 }
 
 lemma void not_exists_prop_to_not_exists<t>(list<t> lst, fixpoint(t, bool) prop, t elem)
