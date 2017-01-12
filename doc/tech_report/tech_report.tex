@@ -50,7 +50,7 @@ This report explain, in an informal way, the implementation and verification of 
 
 The actual verification contains more than 100 new lemmas and fixpoints, and it would make no sense to foramlly describe each of them here, as a formal definition and proof are provided. Also, most of those are trivial proofs and the name is explicit enough to understand their behaviour.
 
-Thus, this document is more intended to be an help when reading the actual proof.
+Thus, this document is more intended to be a companion to understand the actual proof.
 
 
 \section{Implementation}
@@ -105,6 +105,36 @@ For instance, Example~\ref{expl:double_h_impl} shows the same accesses as the pr
 	\end{center}
 \end{example}
 \subsection{Benchmark}
+Two cases have been tested: the general case, where any value can been searched for. The worst case been trying to access a value not present (this requires to go through the whole array), a second realistic case have been tested, where the values searched for where in the map. 
+
+The value were compared to the naive implementation and with two C++ implementations using the standard \texttt{unordered\_map} data structure. The first C++ version is one using the default hash function, the second using the same hash function as in the C versions.
+
+The test consist of uniformly distributed accesses (among all possible keys in the general case, and among existing keys in the second one). The probability of insertion/deletion is determined in function of the current load and the target load.
+
+The following subsections show the results for both cases, for 70\% of read accesses. It appears that the percentage of read accesses does not influence ``the shape'' of the result. Results for other read proportion as well as raw data are available on the github repository.
+
+The code was compiled with GCC 4.9.3.
+\subsubsection{General case}
+Results are presented in Figure~\ref{fig:result_contains}. For this test case, 10000 accesses were performed. The intereting point is that the double hash implementation perform better with higher loads. This behaviour is due to the fact that the probability that a key is present increases with load. Hence, in an execution at higher load, there are less misses than at low loads. 
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{result_example_contains.png}
+	\caption{Timings for 70\% read accesses, including non existing keys.}
+	\label{fig:result_contains}
+\end{figure}
+
+\subsubsection{Access only existing keys}
+In the case all accessed keys exist, double hash implementation is approximatively an order of magnitude faster than C++, on GCC 4.9.3. However, some performance issues have been reported for \texttt{unordered\_map} higher than 4.7.1 ($3\times$ slower than 4.6.2). Hence, this performance evaluation should be performed again with a lower version for a fair comparison. 
+
+However, compared to the naive C implementation, the results are quite good: the double hash implementation is $2$ orders of magnitude faster than the naive one.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{result_example_no_contains.png}
+	\caption{Timings for 70\% read accesses, excluding non existing keys.}
+	\label{fig:result_no_contains}
+\end{figure}
 
 \section{Verification}
 
@@ -364,8 +394,6 @@ In \texttt{stripe\_l}, this is applied to $x = diff\times \mathtt{step}$, $n1 = 
 
 This lemma is a direct consequence of the \emph{uniqueness} property of the \emph{Chinese remainder theorem}. Although it is simple to show informally, Verifast first requires to build \emph{gcd} which is quite long. All the proof is done in a separate file \texttt{chinese\_remainder\_th.gh}. The proof takes around 1000 lines of code (which less than 200 are \emph{assert}-s or comments and could be remove).
 
-\subsubsection{Computation of \emph{gcd}}
-\subsubsection{\emph{gcd} properties}
 \subsubsection{Proof by contradiction}
 In Verifast, the proof of the \texttt{bin\_chinese\_remainder\_theorem} lemma is quite long (approx. 300 lines). However, most of it is only arithmetic statements. Hence, informally, the proof is much shorter. Algorithm~\ref{alg:proof_crt} sketches the main cases. The main part (\emph{if $x > 1$} branch) decompose $x$ into $n1\times k1 = n2\times k2$. After justifying why $k1\%n2 \neq 0$, it considers $gcd(k1, n2) = a$, which can not be $1$. Then remaining case ($a \neq 1$, $k1\%n2 \neq 0$, $x > 1$) calls recursively the theorem, on $\frac{n2}{a} = b$.
 \begin{algorithm}
@@ -433,7 +461,19 @@ ensures coprime(n1*n2, n3) &*& coprime(n1, n3)
 
 \section{Conclusion}
 \subsection{Validity of benchmark}
+The benchmark has been done to give an idea of the performance gain. Of course, performance evaluation could be much improved, with more time available. In particular, one could improve the following points: 
+\begin{itemize}
+	\item Test on different compilers, as GCC greater than 4.7.1 suffer from performance issues on \texttt{ordered map}.
+	\item Use an other distribution. Here, accesses are uniformly distributed. Other distribution such as Zipf's distribution might be more suitable. Another idea is to adapt some real program to this hash table to have real accesses.
+\end{itemize}
+
 \subsection{Forthcoming work}
+Although most of the work is completed, some parts remain to do: 
+\begin{itemize}
+	\item Some part of the prove still need to be adapted due to type changes (from 32 bits hashes to 64 bits hashes). Actually, an other idea is to change method signature to explicitly have 2 hashes.
+	\item The \texttt{gcd\_mul} lemma is to be proved. Proving it might requires to prove prime factor decomposition in Verifast. 
+	\item Some implementation details are still often changing. One detail (likely to be removed soon), performs logical operations, which are not well develop in Verifast. For the moment two lemmas about the semantic of logical \texttt{and} are assumed.
+\end{itemize}
 
 
 \end{document}
