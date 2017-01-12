@@ -117,6 +117,29 @@ The code was compiled with GCC 4.9.3.
 \subsubsection{General case}
 Results are presented in Figure~\ref{fig:result_contains}. For this test case, 10000 accesses were performed. The intereting point is that the double hash implementation perform better with higher loads. This behaviour is due to the fact that the probability that a key is present increases with load. Hence, in an execution at higher load, there are less misses than at low loads. 
 
+At low loads, the naive implementation performs better than the double hash one. This is a good illustration of the locality problem: in the naive implementation, accesses are performed in order. Then, both spatial locality of cache lines and address prediction works better. An evaluation with cachegrind shows the difference (see Example~\ref{expl:cache}).
+\begin{example}[Cache accesses]
+	\label{expl:cache}
+Cachegrind results for load = $10\%$, $70\%$ of read accesses, first for the naive implementation: 
+	\begin{verbatim}
+D   refs:        319,195,365  (297,779,797 rd   + 21,415,568 wr)
+D1  misses:       27,235,744  ( 27,203,118 rd   +     32,626 wr)
+LLd misses:           10,861  (      5,701 rd   +      5,160 wr)
+D1  miss rate:           8.5% (        9.1%     +        0.1%  )
+LLd miss rate:           0.0% (        0.0%     +        0.0%  )
+	\end{verbatim}
+And for the double hash implementation: 
+	\begin{verbatim}
+D   refs:        328,259,239  (328,032,233 rd   + 227,006 wr)
+D1  misses:      303,932,169  (303,902,705 rd   +  29,464 wr)
+LLd misses:           11,745  (      4,032 rd   +   7,713 wr)
+D1  miss rate:          92.5% (       92.6%     +    12.9%  )
+LLd miss rate:           0.0% (        0.0%     +     3.3%  )
+	\end{verbatim}
+
+In this example, there are more than $90\%$ of data cache misses in L1 for the double hash implementation, while the naive one achieve less than $10\%$. In the double hash implementation, almost all accesses hit on the LLC.
+\end{example}
+
 \begin{figure}
 	\centering
 	\includegraphics[width=\textwidth]{result_example_contains.png}
