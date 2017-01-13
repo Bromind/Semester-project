@@ -4,85 +4,85 @@
 #include "nth_prop.gh"
 #include "arith.gh"
  
- lemma void forall_fp_to_fp<t>(list<t> lst, fixpoint(t, bool) fp, nat index)
- requires true == forall(lst, fp) &*& int_of_nat(index) < length(lst);
- ensures true == fp(nth(int_of_nat(index), lst));
- {
-   switch(index) {
-     case zero: {
-       assert(length(lst) > 0);
-       assert(lst == cons(?hd, _));
-       assert true == fp(hd);
-     }
-     case succ(p_index): {
-       assert length(lst) > 1;
-       assert lst == cons(_, ?tl);
-       assert true == forall(tl, fp);
-       forall_fp_to_fp(tail(lst), fp, p_index);
-     }
-   }
- }
+lemma void forall_fp_to_fp<t>(list<t> lst, fixpoint(t, bool) fp, nat index)
+requires true == forall(lst, fp) &*& int_of_nat(index) < length(lst);
+ensures true == fp(nth(int_of_nat(index), lst));
+{
+  switch(index) {
+    case zero: {
+      assert(length(lst) > 0);
+      assert(lst == cons(?hd, _));
+      assert true == fp(hd);
+    }
+    case succ(p_index): {
+      assert length(lst) > 1;
+      assert lst == cons(_, ?tl);
+      assert true == forall(tl, fp);
+      forall_fp_to_fp(tail(lst), fp, p_index);
+    }
+  }
+}
 
- fixpoint bool forall_fp_to_up_to_fp<t>(fixpoint(t, bool) fp, list<t> lst, int index)
- {
-   return fp(nth(index, lst));
- }
- 
- lemma void forall_to_up_to_length<t>(list<t> lst_forall, list<t> lst_orig, fixpoint(t, bool) fp)
- requires forall(lst_orig, fp) == true &*& length(lst_forall) <= length(lst_orig);
- ensures true == up_to(nat_of_int(length(lst_forall)), (forall_fp_to_up_to_fp)(fp, lst_orig));
- {
-   switch(lst_forall) {
-     case nil:
-     case cons(t, tail_forall): {
-       assert length(tail_forall) + 1 == length(lst_forall);
-       assert succ(nat_of_int(length(tail_forall))) == nat_of_int(length(lst_forall));
-     
-       forall_to_up_to_length(tail_forall, lst_orig, fp);
-       forall_fp_to_fp(lst_orig, fp, nat_of_int(length(tail_forall)));
-       
-       assert true == fp(nth(length(tail_forall), lst_orig));
-       assert forall_fp_to_up_to_fp(fp, lst_orig, length(tail_forall)) == fp(nth(length(tail_forall), lst_orig));
-       
-       fixpoint(int, bool) prop = (forall_fp_to_up_to_fp)(fp, lst_orig);
-       note(prop(length(tail_forall)) == true);
-     }
-   }
- }
- 
- lemma void up_to_length_to_forall<t>(list<t> lst_forall, int n_drop, list<t> lst_orig, fixpoint(t, bool) fp)
- requires true == up_to(nat_of_int(length(lst_orig)), (forall_fp_to_up_to_fp)(fp, lst_orig))
- 	&*& drop(n_drop, lst_orig) == lst_forall
- 	&*& n_drop >= 0
- 	&*& n_drop <= length(lst_orig);
- ensures true == forall(lst_forall, fp);
- {
-   switch(lst_forall) {
-     case nil:
-     case cons(hd, tl): {
-       assert n_drop < length(lst_orig);
-       assert cons(hd, tl) == drop(n_drop, lst_orig);
-       drop_n_plus_one(n_drop, lst_orig);
-       assert tl == drop(n_drop + 1, lst_orig);
-       
-       assert length(lst_forall) >= 1;
-       assert length(drop(n_drop, lst_orig)) >= 1;
-       assert length(drop(n_drop, lst_orig)) == length(lst_orig) - n_drop;
-       assert length(lst_orig) - n_drop >= 1;
-       
-       up_to_length_to_forall(tl, n_drop + 1, lst_orig, fp);
-       if(fp(hd) == false){
-         assert hd == nth(n_drop, lst_orig);
-         assert fp(nth(n_drop, lst_orig)) == false;
-         fixpoint(int, bool) prop = (forall_fp_to_up_to_fp)(fp, lst_orig);
-         assert prop(n_drop) == false;
-         
-         up_to_covers_x(nat_of_int(length(lst_orig)), prop, n_drop);
-         
-         assert false;
-       }
-     }
-   }
- }
- 
+fixpoint bool forall_fp_to_up_to_fp<t>(fixpoint(t, bool) fp, list<t> lst, int index)
+{
+  return fp(nth(index, lst));
+}
+
+lemma void forall_to_up_to_length<t>(list<t> lst_forall, list<t> lst_orig, fixpoint(t, bool) fp)
+requires forall(lst_orig, fp) == true &*& length(lst_forall) <= length(lst_orig);
+ensures true == up_to(nat_of_int(length(lst_forall)), (forall_fp_to_up_to_fp)(fp, lst_orig));
+{
+  switch(lst_forall) {
+    case nil:
+    case cons(t, tail_forall): {
+      assert length(tail_forall) + 1 == length(lst_forall);
+      assert succ(nat_of_int(length(tail_forall))) == nat_of_int(length(lst_forall));
+    
+      forall_to_up_to_length(tail_forall, lst_orig, fp);
+      forall_fp_to_fp(lst_orig, fp, nat_of_int(length(tail_forall)));
+      
+      assert true == fp(nth(length(tail_forall), lst_orig));
+      assert forall_fp_to_up_to_fp(fp, lst_orig, length(tail_forall)) == fp(nth(length(tail_forall), lst_orig));
+      
+      fixpoint(int, bool) prop = (forall_fp_to_up_to_fp)(fp, lst_orig);
+      note(prop(length(tail_forall)) == true);
+    }
+  }
+}
+
+lemma void up_to_length_to_forall<t>(list<t> lst_forall, int n_drop, list<t> lst_orig, fixpoint(t, bool) fp)
+requires true == up_to(nat_of_int(length(lst_orig)), (forall_fp_to_up_to_fp)(fp, lst_orig))
+	&*& drop(n_drop, lst_orig) == lst_forall
+	&*& n_drop >= 0
+	&*& n_drop <= length(lst_orig);
+ensures true == forall(lst_forall, fp);
+{
+  switch(lst_forall) {
+    case nil:
+    case cons(hd, tl): {
+      assert n_drop < length(lst_orig);
+      assert cons(hd, tl) == drop(n_drop, lst_orig);
+      drop_n_plus_one(n_drop, lst_orig);
+      assert tl == drop(n_drop + 1, lst_orig);
+      
+      assert length(lst_forall) >= 1;
+      assert length(drop(n_drop, lst_orig)) >= 1;
+      assert length(drop(n_drop, lst_orig)) == length(lst_orig) - n_drop;
+      assert length(lst_orig) - n_drop >= 1;
+      
+      up_to_length_to_forall(tl, n_drop + 1, lst_orig, fp);
+      if(fp(hd) == false){
+        assert hd == nth(n_drop, lst_orig);
+        assert fp(nth(n_drop, lst_orig)) == false;
+        fixpoint(int, bool) prop = (forall_fp_to_up_to_fp)(fp, lst_orig);
+        assert prop(n_drop) == false;
+        
+        up_to_covers_x(nat_of_int(length(lst_orig)), prop, n_drop);
+        
+        assert false;
+      }
+    }
+  }
+}
+
 #endif

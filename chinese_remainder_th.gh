@@ -14,11 +14,9 @@
 #include <nat.gh>
 #include <list.gh>
 
-
-
 lemma void close_mul_assoc(int n1, int n2, int n3)
-requires n2 >= 0;
-ensures protect(n1*n2*n3 == n2*n3*n1);
+  requires n2 >= 0;
+  ensures protect(n1*n2*n3 == n2*n3*n1);
 {
   mul_assoc(n1, n2, n3);
   close protect(n1*n2*n3 == n2*n3*n1);
@@ -31,15 +29,11 @@ predicate is_prime(int n) = n > 1 &*& true == up_to(nat_of_int(n),
     )
   );
 
-
-
-
-
 fixpoint int smallest_prime_divisor_helper(int n, int i, nat bound)
 {
   switch(bound) {
-   case zero: return 0;
-   case succ(p_bound): return divide(n, i) == true ? i : smallest_prime_divisor_helper(n, i+1, p_bound);
+    case zero: return 0;
+    case succ(p_bound): return divide(n, i) == true ? i : smallest_prime_divisor_helper(n, i+1, p_bound);
   }
 }
 
@@ -75,7 +69,7 @@ ensures smallest_prime_divisor(n) >= 2 &*&
       assert n - i < 0;
       assert i < n;
     }
-case succ(p_bound): {
+    case succ(p_bound): {
       if(nat_of_int(n+3-i) == zero)
       {
         int_of_nat_of_int(n+3-i);
@@ -225,40 +219,40 @@ requires n > 1 &*& int_of_nat(bound) > n;
 ensures n/smallest_prime_divisor(n) < n &*&
   n/smallest_prime_divisor(n) >= 1;
 {
-up_to_prime_intro(n);
-smallest_prime_divisor_l(n, 2, nat_of_int(n-2+1));
-assert true == divide(n, smallest_prime_divisor(n));
-assume(n/smallest_prime_divisor(n) * smallest_prime_divisor(n) == n);
-assert n/smallest_prime_divisor(n) * smallest_prime_divisor(n) == n;
-assert smallest_prime_divisor(n) >= 2;
-
-if(n/smallest_prime_divisor(n) >= n) {
-  mul_mono(n, n/smallest_prime_divisor(n), smallest_prime_divisor(n));
   up_to_prime_intro(n);
   smallest_prime_divisor_l(n, 2, nat_of_int(n-2+1));
   assert true == divide(n, smallest_prime_divisor(n));
-  assert n*smallest_prime_divisor(n) <= n/smallest_prime_divisor(n)*smallest_prime_divisor(n);
-    
-  if(smallest_prime_divisor(n) > 1)
-  {
-    mul_mono_strict(1, smallest_prime_divisor(n), n);
-    assert n < smallest_prime_divisor(n)*n;
-    assume(false);
+  assume(n/smallest_prime_divisor(n) * smallest_prime_divisor(n) == n);
+  assert n/smallest_prime_divisor(n) * smallest_prime_divisor(n) == n;
+  assert smallest_prime_divisor(n) >= 2;
+
+  if(n/smallest_prime_divisor(n) >= n) {
+    mul_mono(n, n/smallest_prime_divisor(n), smallest_prime_divisor(n));
+    up_to_prime_intro(n);
+    smallest_prime_divisor_l(n, 2, nat_of_int(n-2+1));
+    assert true == divide(n, smallest_prime_divisor(n));
+    assert n*smallest_prime_divisor(n) <= n/smallest_prime_divisor(n)*smallest_prime_divisor(n);
+
+    if(smallest_prime_divisor(n) > 1)
+    {
+      mul_mono_strict(1, smallest_prime_divisor(n), n);
+      assert n < smallest_prime_divisor(n)*n;
+      assume(false);
+      assert false;
+    }
     assert false;
   }
-  assert false;
-}
-if(n/smallest_prime_divisor(n) < 1){
-  assume(false);
-  smallest_prime_divisor_l(n, 2, nat_of_int(n+1));
-          
-  quotient_positive(n, smallest_prime_divisor(n));
-  assert n/smallest_prime_divisor(n) == 0;
-  mul_subst(n/smallest_prime_divisor(n), 0, smallest_prime_divisor(n));
-   
-  assert n == 0;
-  assert false;
-}
+  if(n/smallest_prime_divisor(n) < 1){
+    assume(false);
+    smallest_prime_divisor_l(n, 2, nat_of_int(n+1));
+
+    quotient_positive(n, smallest_prime_divisor(n));
+    assert n/smallest_prime_divisor(n) == 0;
+    mul_subst(n/smallest_prime_divisor(n), 0, smallest_prime_divisor(n));
+
+    assert n == 0;
+    assert false;
+  }
 }
 
 lemma void prime_factor_decomposition_l(int n, nat bound) 
@@ -289,6 +283,7 @@ ensures prod_list(prime_factor_decomposition(n, bound)) == n;
     }
   }
 }
+
 /*
 lemma void prime_factor_decomposition_mult(int n1, int n2, nat bound1, nat bound2)
 requires int_of_nat(bound1) > n1 &*& int_of_nat(bound2) > n2 &*& n1 >= 1 &*& n2 >= 1;
@@ -364,10 +359,6 @@ ensures true == up_to(bound, (coprime_dont_share_prime)(n1, n2));
   }
 }
 */
-
-
-
-
 
 lemma void x_not_1(int n1, int n2, int x)
 requires 0 == x%n1 &*& 0 == x%n2 &*& x < (n1*n2) &*& n1 > 0 &*& n2 > 0;
