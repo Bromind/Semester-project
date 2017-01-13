@@ -126,7 +126,7 @@ The test consists of uniformly distributed accesses (among all possible keys in 
 
 The following subsections show the results for both cases, for 70\% of read accesses. It appears that the percentage of read accesses does not influence ``the shape'' of the result. Results for other read proportions, as well as raw data, are available on the github repository.
 
-The code was compiled with GCC 4.9.3. It appears that bug as been reported for version greater than 4.6.2: performances of \texttt{unordered\_map} are $3\times$ slower compared to 4.6.2\footnote{\url{https://gcc.gnu.org/bugzilla/show_bug.cgi?id=54075}}.
+The code was first compiled with GCC 4.9.3. It appears that bug as been reported for version greater than 4.6.2: performances of \texttt{unordered\_map} are $3\times$ slower compared to 4.6.2\footnote{\url{https://gcc.gnu.org/bugzilla/show_bug.cgi?id=54075}}. In the presented results, C++ timings are measured on a GCC 4.5.4 compiled version.
 \subsubsection{General case}
 Figure~\ref{fig:result_contains} presents the results, in the general case. For this test case, 10000 accesses were performed. The interesting point is that the double hash implementation performs better with higher loads than with low loads. This behaviour is due to the fact that the probability that a key is present increases with load. Hence, in an execution at higher load, there are less misses than at low loads. 
 
@@ -161,9 +161,9 @@ In this example, there are more than $90\%$ of data cache misses in L1 for the d
 \end{figure}
 
 \subsubsection{Access only existing keys}
-In the case all accessed keys exist, double hash implementation is approximatively an order of magnitude faster than C++, on GCC 4.9.3. However, some performance issues have been reported for \texttt{unordered\_map} higher than 4.7.1 ($3\times$ slower than 4.6.2). Hence, this performance evaluation should be performed again with a lower version for a fair comparison. 
+In the case all accessed keys exist, double hash implementation is approximatively an order of magnitude faster than C++. 
 
-However, compared to the naive C implementation, the results are quite good: the double hash implementation is $2$ orders of magnitude faster than the naive one.
+Compared to the naive C implementation, the results are quite good: the double hash implementation is $2$ orders of magnitude faster than the naive one.
 
 \begin{figure}[p]
 	\centering
@@ -511,11 +511,7 @@ Second, formally proving the correctness of the map. The semantic of \emph{corre
 We completed the formal proof, except for one lemma: 
 $$a\bot c \wedge b\bot c \Rightarrow (a\times b)\bot c$$
 \subsection{Validity of benchmark}
-We benchmarked the map to give an idea of the performance gain. Of course, performance evaluation could be much improved, with more time available. In particular, one could improve the following points: 
-\begin{itemize}
-	\item Test on different compilers, as GCC greater than 4.7.1 suffer from performance issues on \texttt{unordered map}.
-	\item Use an other access distribution. Here, accesses are uniformly distributed. Other distribution such as Zipf's distribution might be more suitable. Another idea is to adapt some real program to this hash table to have real accesses timings.
-\end{itemize}
+We benchmarked the map to give an idea of the performance gain. Of course, performance evaluation could be much improved, with more time available. In particular, one use an other access distribution. Here, accesses are uniformly distributed. Other distribution such as Zipf's distribution might be more suitable. Another idea is to adapt some real program to this hash table to have real accesses timings.
 
 \subsection{Forthcoming work}
 Although most of the work is completed, some parts remain to be done: 
