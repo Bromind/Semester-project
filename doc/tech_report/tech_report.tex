@@ -1,4 +1,13 @@
 \documentclass[oneside]{article}
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks, 
+	citecolor=black,
+	filecolor=black,
+	linkcolor=black,
+	urlcolor=black
+}
+
 \usepackage[]{algorithm2e}
 \SetKw{Assert}{assert}
 \SetKw{Contradiction}{contradiction}
@@ -113,7 +122,7 @@ The test consist of uniformly distributed accesses (among all possible keys in t
 
 The following subsections show the results for both cases, for 70\% of read accesses. It appears that the percentage of read accesses does not influence ``the shape'' of the result. Results for other read proportion as well as raw data are available on the github repository.
 
-The code was compiled with GCC 4.9.3.
+The code was compiled with GCC 4.9.3. It appears that bug as been reported for version greater than 4.6.2: performances of \texttt{unordered\_map} are $3\times$ slower compared to 4.6.2\footnote{\url{https://gcc.gnu.org/bugzilla/show_bug.cgi?id=54075}}.
 \subsubsection{General case}
 Results are presented in Figure~\ref{fig:result_contains}. For this test case, 10000 accesses were performed. The interesting point is that the double hash implementation perform better with higher loads. This behaviour is due to the fact that the probability that a key is present increases with load. Hence, in an execution at higher load, there are less misses than at low loads. 
 
@@ -483,19 +492,27 @@ ensures coprime(n1*n2, n3) &*& coprime(n1, n3)
 
 
 \section{Conclusion}
+\subsection{Work done}
+This semester project was two folds: 
+
+First, analysing the provided implementation to see which part could be improved. After that, I implemented an optimization, which, I later learn, is called \emph{double hashing} (before learning that, I called it map with offset generator, which explain some naming, e.g. \texttt{map\_generator.c}).
+
+Second, formally proving that the map is correct. The semantic of \emph{correctness} is the same as the previous one. The only difference in the specification is the requirement of coprime capacity and offset, which is easily achieved, for instance taking a capacity $2^n$ and an odd offset.
+
+The formal proof has been completed, except for one lemma: 
+$$a\bot c \wedge b\bot c \Rightarrow (a\times b)\bot c$$
 \subsection{Validity of benchmark}
 The benchmark has been done to give an idea of the performance gain. Of course, performance evaluation could be much improved, with more time available. In particular, one could improve the following points: 
 \begin{itemize}
-	\item Test on different compilers, as GCC greater than 4.7.1 suffer from performance issues on \texttt{ordered map}.
+	\item Test on different compilers, as GCC greater than 4.7.1 suffer from performance issues on \texttt{unordered map}.
 	\item Use an other distribution. Here, accesses are uniformly distributed. Other distribution such as Zipf's distribution might be more suitable. Another idea is to adapt some real program to this hash table to have real accesses.
 \end{itemize}
 
 \subsection{Forthcoming work}
 Although most of the work is completed, some parts remain to do: 
 \begin{itemize}
-	\item Some part of the prove still need to be adapted due to type changes (from 32 bits hashes to 64 bits hashes). Actually, an other idea is to change method signature to explicitly have 2 hashes.
 	\item The \texttt{gcd\_mul} lemma is to be proved. Proving it might requires to prove prime factor decomposition in Verifast. 
-	\item Some implementation details are still often changing. One detail (likely to be removed soon), performs logical operations, which are not well develop in Verifast. For the moment two lemmas about the semantic of logical \texttt{and} are assumed.
+	\item Formally prove that a capacity of $2^n$ and an odd \emph{offset hash} are coprime.
 \end{itemize}
 
 
