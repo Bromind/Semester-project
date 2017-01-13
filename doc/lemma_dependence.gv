@@ -1,76 +1,94 @@
 digraph stripe_l {
-	mul_negative;
-	quotient_positive;
-	mod_add;
-	mod_succ_zero_helper;
-	mod_succ_zero;
-	div_eq_helper;
-	div_eq;
+# main goals 
 
-	mod_of_succ_eq_succ_of_mod;
-	mod_pred_eq;
+	find_empty -> apply_CRT;
+	find_key -> apply_CRT;
 
-	is_n[shape=box];
-	is_none[shape=box];
-	is_some[shape=box];
-	is_zero[shape=box];
-	is_not_zero[shape=box];
-	gen_none[shape=box];
-	opt_less_than_n[shape=box];
-	opt_not_zero[shape=box];
-	lst_opt_less_than_n[shape=box];
-	lst_opt_not_zero[shape=box];
-
-	gen_none_less_than;
-	gen_none_l;
-
+	CRT_pred;
+	apply_CRT;
 	count_some[shape=box];
-	count_some_less_than_length;
 	count_some_forall;
-	stripe[shape=box];
-	list_contains_stripes_helper[shape=box];
-	list_contains_stripes[shape=box];
-
-	stripe_less_than_capa;
-	list_none_less_than_n;
-	list_none_contains_stripes;
+	count_some_incr;
+	count_some_less_than_length;
+	decrease_mod_0;
+	decrease_one_step_stripe;
+	decrease_stripe;
+	div_eq;
+	div_eq_helper;
 	forall_fp_to_fp;
 	forall_fp_to_up_to_fp[shape=box];
 	forall_to_up_to_length;
+	gen_none[shape=box];
+	gen_none_l;
+	gen_none_less_than;
+	is_none[shape=box];
+	is_some[shape=box];
+	list_contains_stripes[shape=box];
+	list_contains_stripes_helper[shape=box];
+	list_none_contains_stripes;
+	list_none_less_than_n;
+	loop_fp_pos;
+	lst_opt_less_than_n[shape=box];
+	lst_opt_not_zero[shape=box];
+	mod_add;
+	mod_eq_sub;
+	mod_of_succ_eq_succ_of_mod;
+	mod_pred_eq;
+	mod_succ_zero;
+	mod_succ_zero_helper;
+	mul_distrib;
+	mul_negative;
+	nat_diff_int_diff;
+	opt_less_than_n[shape=box];
+	opt_not_zero[shape=box];
+	quotient_positive;
+	stride_to_stripe;
+	stripe[shape=box];
+	stripe_l;
+	stripe_l_fp[shape=box];
+	stripe_less_than_capa;
+	stripe_to_arith;
 	up_to_length_to_forall;
-	count_some_incr;
+	up_to_weak;
 	updated_list_contains_stripes;
 	updated_list_less_than_n;
-	updated_list_not_zero_up_to;
 	updated_list_not_zero_forall;
-	stripe_to_arith;
-	mod_eq_sub;
-	CRT_pred;
-	decrease_one_step_stripe;
-	decrease_stripe;
-	mul_distrib;
-	decrease_mod_0;
+	updated_list_not_zero_up_to;
 
-	stripe_l_fp[shape=box];
-
-	stripe_l;
-
-	nat_diff_int_diff;
-	up_to_weak;
-	loop_fp_pos;
-	stride_to_stripe;
-	apply_CRT;
-
+	# mul_distrib;
+	CRT_pred -> {stripe stripe_to_arith mod_add mod_eq_sub}
 	apply_CRT -> {coprime up_to_weak stripe_l count_some count_some_forall forall_fp_to_fp stripe_l_fp is_some stride_to_stripe}
-
-	stride_to_stripe -> {coprime is_some stripe_l_fp stripe_l gen_none forall_fp_to_fp lst_opt_less_than_n up_to_weak list_contains_stripes stripe_to_arith loop_fp_pos}
-
+	count_some -> count_some;
+	count_some_forall -> {count_some count_some_less_than_length}
+	count_some_incr -> {count_some count_some_incr}
+	count_some_less_than_length -> count_some_less_than_length;
+	decrease_mod_0 -> {decrease_mod_0 mul_distrib }
+	decrease_one_step_stripe -> {stripe stripe_less_than_capa mod_eq_sub}
+	decrease_stripe -> {decrease_one_step_stripe decrease_stripe stripe}
+	div_eq -> {div_eq_helper quotient_positive}
+	div_eq_helper
+	forall_fp_to_fp -> forall_fp_to_fp;
+	forall_to_up_to_length -> {forall_to_up_to_length forall_fp_to_fp}
+	gen_none -> gen_none;
+	gen_none_l -> {gen_none is_none count_some opt_not_zero gen_none_l}
+	gen_none_less_than -> {gen_none opt_less_than_n gen_none_less_than}
+	is_some -> is_none;
+	list_contains_stripes -> list_contains_stripes_helper;
+	list_contains_stripes_helper -> stripe;
+	list_none_contains_stripes -> {list_contains_stripes list_none_contains_stripes is_none}
+	list_none_less_than_n -> {opt_less_than_n lst_opt_less_than_n list_none_less_than_n}
 	loop_fp_pos -> mod_add;
-
-	up_to_weak -> {up_to_weak nat_diff_int_diff}
-
+	lst_opt_less_than_n -> opt_less_than_n;
+	lst_opt_not_zero -> opt_not_zero;
+	mod_add -> quotient_positive;
+	mod_eq_sub -> {mod_pred_eq}
+	mod_of_succ_eq_succ_of_mod -> div_eq;
+	mod_pred_eq -> {mod_succ_zero mod_of_succ_eq_succ_of_mod }
+	mod_succ_zero -> mod_succ_zero_helper;
 	nat_diff_int_diff -> nat_diff_int_diff;
-
+	quotient_positive -> mul_negative;
+	stride_to_stripe -> {coprime is_some stripe_l_fp stripe_l gen_none forall_fp_to_fp lst_opt_less_than_n up_to_weak list_contains_stripes stripe_to_arith loop_fp_pos}
+	stripe -> stripe;
 	stripe_l -> CRT_pred;
 	stripe_l -> bin_chinese_remainder_theorem;
 	stripe_l -> coprime;
@@ -93,88 +111,17 @@ digraph stripe_l {
 	stripe_l -> updated_list_contains_stripes;
 	stripe_l -> updated_list_less_than_n;
 	stripe_l -> updated_list_not_zero_forall;
-
 	stripe_l_fp -> gen_none;
 	stripe_l_fp -> stripe;
 	stripe_l_fp -> stripe_l_fp;
-
-	decrease_mod_0 -> {decrease_mod_0 mul_distrib }
-
-	# mul_distrib;
-
-	decrease_stripe -> {decrease_one_step_stripe decrease_stripe stripe}
-
-	decrease_one_step_stripe -> {stripe stripe_less_than_capa mod_eq_sub}
-
-	CRT_pred -> {stripe stripe_to_arith mod_add mod_eq_sub}
-
-	mod_eq_sub -> {mod_pred_eq}
-
-	stripe_to_arith -> {stripe stripe_to_arith mod_add}
-
-	updated_list_not_zero_forall -> {opt_not_zero stripe forall_to_up_to_length updated_list_not_zero_up_to up_to_length_to_forall }
-
-	updated_list_not_zero_up_to -> {forall_fp_to_up_to_fp opt_not_zero updated_list_not_zero_up_to stripe stripe_less_than_capa}
-
-	updated_list_less_than_n -> {lst_opt_less_than_n stripe updated_list_less_than_n stripe_less_than_capa}
-
-	updated_list_contains_stripes -> {list_contains_stripes updated_list_contains_stripes stripe stripe_less_than_capa}
-
-	count_some_incr -> {count_some count_some_incr}
-
-	up_to_length_to_forall -> {forall_fp_to_up_to_fp up_to_length_to_forall}
-
-	forall_to_up_to_length -> {forall_to_up_to_length forall_fp_to_fp}
-
-	forall_fp_to_fp -> forall_fp_to_fp;
-
-	list_none_contains_stripes -> {list_contains_stripes list_none_contains_stripes is_none}
-
-	list_none_less_than_n -> {opt_less_than_n lst_opt_less_than_n list_none_less_than_n}
-
 	stripe_less_than_capa -> {stripe stripe_less_than_capa}
-
-	list_contains_stripes -> list_contains_stripes_helper;
-
-	list_contains_stripes_helper -> stripe;
-
-	stripe -> stripe;
-
-	count_some_forall -> {count_some count_some_less_than_length}
-
-	count_some_less_than_length -> count_some_less_than_length;
-
-	count_some -> count_some;
-
-	gen_none_l -> {gen_none is_none count_some opt_not_zero gen_none_l}
-
-	gen_none_less_than -> {gen_none opt_less_than_n gen_none_less_than}
-
-	lst_opt_not_zero -> opt_not_zero;
-
-	lst_opt_less_than_n -> opt_less_than_n;
-
-	gen_none -> gen_none;
-
-	is_not_zero -> is_n;
-
-	is_zero -> is_n;
-
-	is_some -> is_none;
-
-	mod_pred_eq -> {mod_succ_zero mod_of_succ_eq_succ_of_mod }
-
-	mod_of_succ_eq_succ_of_mod -> div_eq;
-
-	div_eq -> {div_eq_helper quotient_positive}
-
-	#div_eq_helper
-
-	mod_succ_zero -> mod_succ_zero_helper;
-
-	mod_add -> quotient_positive;
-
-	quotient_positive -> mul_negative;
+	stripe_to_arith -> {stripe stripe_to_arith mod_add}
+	up_to_length_to_forall -> {forall_fp_to_up_to_fp up_to_length_to_forall}
+	up_to_weak -> {up_to_weak nat_diff_int_diff}
+	updated_list_contains_stripes -> {list_contains_stripes updated_list_contains_stripes stripe stripe_less_than_capa}
+	updated_list_less_than_n -> {lst_opt_less_than_n stripe updated_list_less_than_n stripe_less_than_capa}
+	updated_list_not_zero_forall -> {opt_not_zero stripe forall_to_up_to_length updated_list_not_zero_up_to up_to_length_to_forall }
+	updated_list_not_zero_up_to -> {forall_fp_to_up_to_fp opt_not_zero updated_list_not_zero_up_to stripe stripe_less_than_capa}
 
 
 	## chinese_remainder_theorem
@@ -185,15 +132,26 @@ digraph stripe_l {
 	common_divisors_contains_all_divisors;
 	common_divisors_fp[shape=box];
 	common_divisors_up_to;
-	coprime;
+	contains_elem_to_exist_prop;
+	coprime[color=green];
+	close_div_rem;
+	close_mul_assoc;
+	protect[color=green];
 	divide[shape=box];
 	divisor_below_n;
+	divide_itself;
+	divide_inside_paren;
+	mul_assoc;
+	mod_multiple;
+	gcd_mul[color=red];
 	divisors_fp[shape=box];
 	equals[shape=box];
 	forall_contains_to_prop;
 	forall_gen_divisor_contains_divisors;
 	gcd[shape=box];
 	gcd_holds;
+	gcd_geq_1;
+	gcd_divide;
 	gen_divisor_contains_all_divisors_below_bound;
 	gen_divisor_order_head;
 	gen_divisors[shape=box];
@@ -201,12 +159,12 @@ digraph stripe_l {
 	gen_divisors_head;
 	gen_divisors_head_eq_bound;
 	gen_divisors_tail;
-	geq_than[shape=box];
 	greater_than[shape=box];
 	greatest_common_divisor[shape=box];
 	greatest_common_divisor_l;
 	greatest_common_divisor_return_true_divisor_iff_exists;
 	greatest_common_divisor_tail_less_than;
+	is_zero;
 	length_gen_divisors;
 	leq_than[shape=box];
 	leq_than_transitive;
@@ -218,82 +176,64 @@ digraph stripe_l {
 	merge_list_and_lemma;
 	merge_list_and_lemma_converse;
 	merge_list_and_lemma_true;
-	neq[shape=box];
+	mul_assoc;
+	mul_subst_neq;
+	mod_multiple;
 	not[shape=box];
 	not_exists_prop_to_not_exists;
 	nth_greater_than_succ[shape=box];
 	one_divide_all;
 	snd_true[shape=box];
-	bin_chinese_remainder_theorem[color=blue];
+	x_not_1;
 
-	gcd_holds -> {gcd divide common_divisors_contains_all_divisors greatest_common_divisor_l merge_list_and gen_divisors}
-	
-	gcd -> {greatest_common_divisor merge_list_and gen_divisors}
 
-	greatest_common_divisor_l -> {greatest_common_divisor equals greatest_common_divisor_tail_less_than greatest_common_divisor_l greatest_common_divisor_return_true_divisor_iff_exists not_exists_prop_to_not_exists}
-
-	greatest_common_divisor_return_true_divisor_iff_exists -> {greatest_common_divisor greatest_common_divisor_return_true_divisor_iff_exists}
-
-	greatest_common_divisor_tail_less_than -> {leq_than greatest_common_divisor}
-
-	greatest_common_divisor -> {greater_than greatest_common_divisor}
-	
-	common_divisors -> {gen_divisors merge_list_and common_divisors_fp common_divisors_up_to up_to_length_to_forall}
-
-	common_divisors_up_to -> {gen_divisors merge_list_and forall_fp_to_fp common_divisors_fp list_contains_nth merge_list_and_lemma_true merge_list_and_lemma_converse length_gen_divisors forall_gen_divisor_contains_divisors forall_contains_to_prop}
-
-	common_divisors_contains_all_divisors -> {divide merge_list_and gen_divisors equals divisor_below_n gen_divisor_contains_all_divisors_below_bound merge_list_and_lemma}
-
-	common_divisors_contains_1 -> {merge_list_and gen_divisors equals gen_divisors_contains_1 merge_list_and_lemma}
-
-	merge_list_and_lemma_converse -> {list_contains merge_list_and merge_list_and_lemma_true forall_contains_to_prop merge_list_and_lemma_converse}
-
-	merge_list_and_lemma -> {equals merge_list_and list_exists_equals_to_contains merge_list_and_lemma}
-
-	merge_list_and_lemma_true -> {merge_list_and merge_list_and_lemma_true}
-
-	merge_list_and -> {list_contains merge_list_and}
-
-	forall_contains_to_prop -> {list_contains forall_contains_to_prop}
-
-	not_exists_prop_to_not_exists -> {equals not_exists_prop_to_not_exists}
-
-	#not
-
-	list_exists_equals_to_contains -> {equals list_contains list_exists_equals_to_contains}
-
-	list_contains_nth -> {list_contains list_contains_nth}
-
-	list_contains -> list_contains;
-
-	forall_gen_divisor_contains_divisors -> {gen_divisors divisors_fp gen_divisors_tail forall_gen_divisor_contains_divisors}
-
-	gen_divisors_tail -> {gen_divisors gen_divisors}
-
-	gen_divisors_head -> {gen_divisors divisors_fp length_gen_divisors}
+	bin_chinese_remainder_theorem;
+	bin_chinese_remainder_theorem_helper;
 
 	all_divisors_in_gen_divisors -> {divide gen_divisors equals divisor_below_n gen_divisor_contains_all_divisors_below_bound}
-
-	nth_greater_than_succ -> less_than;
-
-	gen_divisor_order_head -> {less_than gen_divisors}
-
-	gen_divisors_head_eq_bound -> {gen_divisors divide}
-
-	leq_than_transitive -> leq_than;
-
-	gen_divisor_contains_all_divisors_below_bound -> {divide gen_divisors equals gen_divisor_contains_all_divisors_below_bound}
-
-	length_gen_divisors -> {gen_divisors length_gen_divisors}
-
-	gen_divisors_contains_1 -> {gen_divisors equals one_divide_all gen_divisors_contains_1}
-
-	gen_divisors -> {divide gen_divisors}
-
+	bin_chinese_remainder_theorem -> bin_chinese_remainder_theorem_helper;
+	bin_chinese_remainder_theorem_helper -> {bin_chinese_remainder_theorem_helper close_div_rem close_mul_assoc coprime divide divide_inside_paren divide_itself div_multiple gcd gcd_divide gcd_geq_1 gcd_holds gcd_mul is_zero mul_assoc mul_negative protect quotient_positive x_not_1}
+	close_div_rem -> {protect};
+	close_mul_assoc -> {protect mul_assoc}
+	common_divisors -> {gen_divisors merge_list_and common_divisors_fp common_divisors_up_to up_to_length_to_forall}
+	common_divisors_contains_1 -> {merge_list_and gen_divisors equals gen_divisors_contains_1 merge_list_and_lemma list_contains list_exists_equals_to_contains}
+	common_divisors_contains_all_divisors -> {divide merge_list_and gen_divisors equals divisor_below_n gen_divisor_contains_all_divisors_below_bound merge_list_and_lemma}
 	common_divisors_fp -> divide;
-
+	common_divisors_up_to -> {gen_divisors merge_list_and forall_fp_to_fp common_divisors_fp list_contains_nth merge_list_and_lemma_true merge_list_and_lemma_converse length_gen_divisors forall_gen_divisor_contains_divisors forall_contains_to_prop snd_true}
+	contains_elem_to_exist_prop -> {list_contains contains_elem_to_exist_prop}
+	divide_inside_paren -> {mul_assoc mul_subst_neq}
 	divisor_below_n -> divide;
-
+	forall_contains_to_prop -> {list_contains forall_contains_to_prop}
+	forall_gen_divisor_contains_divisors -> {gen_divisors divisors_fp gen_divisors_tail forall_gen_divisor_contains_divisors}
+	gcd -> {greatest_common_divisor merge_list_and gen_divisors}
+	gcd_divide -> {common_divisors common_divisors_contains_1 common_divisors_fp contains_elem_to_exist_prop divide forall_contains_to_prop gcd gcd_geq_1 gen_divisors greatest_common_divisor greatest_common_divisor_in_common_divisors greatest_common_divisor_return_true_divisor_iff_exists list_contains merge_list_and protect snd_true}
+	gcd_geq_1 -> {one_divide_all gcd_holds};
+	gcd_holds -> {gcd divide common_divisors_contains_all_divisors greatest_common_divisor_l merge_list_and gen_divisors}
+	gen_divisor_contains_all_divisors_below_bound -> {divide gen_divisors equals gen_divisor_contains_all_divisors_below_bound}
+	gen_divisor_order_head -> {less_than gen_divisors}
+	gen_divisors -> {divide gen_divisors}
+	gen_divisors_contains_1 -> {gen_divisors equals one_divide_all gen_divisors_contains_1}
+	gen_divisors_head -> {gen_divisors divisors_fp length_gen_divisors}
+	gen_divisors_head_eq_bound -> {gen_divisors divide}
+	gen_divisors_tail -> {gen_divisors gen_divisors}
+	greatest_common_divisor -> {greater_than greatest_common_divisor}
+	greatest_common_divisor_in_common_divisors -> {greatest_common_divisor list_contains greatest_common_divisor_in_common_divisors}
+	greatest_common_divisor_l -> {greatest_common_divisor equals greatest_common_divisor_tail_less_than greatest_common_divisor_l greatest_common_divisor_return_true_divisor_iff_exists not_exists_prop_to_not_exists snd_true}
+	greatest_common_divisor_return_true_divisor_iff_exists -> {greatest_common_divisor greatest_common_divisor_return_true_divisor_iff_exists snd_true}
+	greatest_common_divisor_tail_less_than -> {leq_than greatest_common_divisor}
+	length_gen_divisors -> {gen_divisors length_gen_divisors}
+	leq_than_transitive -> leq_than;
+	list_contains -> list_contains;
+	list_contains_nth -> {list_contains list_contains_nth}
+	list_exists_equals_to_contains -> {equals list_contains list_exists_equals_to_contains}
+	merge_list_and -> {list_contains merge_list_and}
+	merge_list_and_lemma -> {equals merge_list_and list_exists_equals_to_contains merge_list_and_lemma}
+	merge_list_and_lemma_converse -> {list_contains merge_list_and merge_list_and_lemma_true forall_contains_to_prop merge_list_and_lemma_converse snd_true}
+	merge_list_and_lemma_true -> {merge_list_and merge_list_and_lemma_true snd_true}
+	mod_multiple -> {div_multiple}
+	not_exists_prop_to_not_exists -> {equals not_exists_prop_to_not_exists}
+	nth_greater_than_succ -> less_than;
 	one_divide_all -> divide;
+	x_not_1 -> {protect}
 }
 
