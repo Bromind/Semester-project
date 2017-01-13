@@ -10,6 +10,11 @@ lemma void note(bool b)
 
 fixpoint int mul(int x, int y) { return x * y; }
 
+lemma void mul_distrib(int a, int b)
+requires true;
+ensures a*b + b == (a+1)*b;
+{}
+
 lemma void mul_eq(int x, int y)
     requires true;
     ensures mul(x, y) == x * y;
