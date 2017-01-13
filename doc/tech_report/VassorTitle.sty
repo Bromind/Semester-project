@@ -4,6 +4,7 @@
 \newif\ifinstitution
 \newif\ifproject
 \newif\ifsupervisor
+\newif\ifcollaborator
 \newif\ifimage
 
 \newcommand*{\project}[1]{
@@ -19,6 +20,13 @@
 }
 \newcommand*{\@supervisor}{
 	\supervisorfalse
+}
+\newcommand*{\collaborator}[1]{
+	\collaboratortrue
+	\gdef\@collaborator{#1}
+}
+\newcommand*{\@collaborator}{
+	\collaboratorfalse
 }
 \newcommand*{\institution}[1]{
 	\institutiontrue
@@ -54,6 +62,20 @@
 		\vspace{2cm}
 		{\Large\@author\unskip\strut\par}
 		\vfill
+		
+		\ifcollaborator
+		in collaboration with\par
+		\@collaborator\unskip\strut\par
+		\fi
+		
+		\ifcollaborator
+		\ifsupervisor
+		\vspace{.5cm}
+		and
+		\vspace{.5cm}
+		\fi
+		\fi
+
 		\ifsupervisor
 		supervised by\par
 		\@supervisor\unskip\strut\par
