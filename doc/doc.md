@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This document is a short synthesis of the semester project I am doing at DSLab, EPFL. A complete report will eventually be uploaded.
+This document is a short synthesis of the semester project I am doing at DSLab, EPFL. A more detailed *Companion to the proof* is provided [here](https://github.com/Bromind/Semester-project/raw/master/doc/tech_report/tech_report.pdf)
 
 ## Files & Build instruction
 
@@ -71,7 +71,7 @@ The script `test_load.sh` run all these steps. As generating files is quite long
 
 In the current state, the script reuses the files in the `test_files` folder.
 
-### Performance results
+### Performance results (under GCC 4.9.3)
 
 The relevant performance graph are in the sub-directories `load_test_contains` and `load_test_wo_contains`. These folders contain both graphs and numerical data. One can see that the time used by the double-hash table is almost always comparable to the C++ standard implementation. 
 
@@ -79,15 +79,22 @@ In particular, when only existing data is accessed (do not test for existence), 
 
 ## Implementation
 
-### Function provided
+### Function modified from Arseniy's version
 
-### Internal functions
+The for loop increase by *offset* instead of +1, where *offset* is provided as an argument. Notice that function signatures change due to that.
+
 
 ## Proof
 
-### Overview
-
 ### Todo list
+[ ] `gcd_mul` (i.e. coprime(a, c) and coprime(b, c) => coprime(ab, c))
 
 ### Dependence graph of lemmas
 ![alt tag](https://github.com/Bromind/Semester-project/blob/master/doc/lemma_dependence.png)
+
+## Remaining work
+[ ] Benchmark on non-bugged GCC.
+
+[ ] `gcd_mul`.
+
+[ ] Merge into Arseniy's repo.
