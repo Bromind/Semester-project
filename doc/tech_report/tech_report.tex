@@ -14,9 +14,9 @@
 \usepackage{drawstack}
 
 \usepackage[framemethod=tikz]{mdframed}
-\mdtheorem[linecolor=blue,frametitlerule=true]{definition}{Definition}
-\mdtheorem[linecolor=red,frametitlerule=true]{example}{Example}
-\mdtheorem[linecolor=green,frametitlerule=true]{lemma}{Lemma}
+\mdtheorem[linecolor=blue,frametitlerule=true, nobreak=true]{definition}{Definition}
+\mdtheorem[linecolor=red,frametitlerule=true, nobreak=true]{example}{Example}
+\mdtheorem[linecolor=green,frametitlerule=true, nobreak=true]{lemma}{Lemma}
 
 \usepackage{marginnote}
 \usepackage{geometry}
@@ -150,9 +150,9 @@ LLd miss rate:           0.0% (        0.0%     +     3.3%  )
 In this example, there are more than $90\%$ of data cache misses in L1 for the double hash implementation, while the naive one achieve less than $10\%$. In the double hash implementation, almost all accesses hit on the LLC.
 \end{example}
 
-\begin{figure}
+\begin{figure}[p]
 	\centering
-	\includegraphics[height=.45\textheight]{result_example_contains.png}
+	\includegraphics[height=.4\textheight]{result_example_contains.png}
 	\caption{Timings for 70\% read accesses, including non existing keys.}
 	\label{fig:result_contains}
 \end{figure}
@@ -162,9 +162,9 @@ In the case all accessed keys exist, double hash implementation is approximative
 
 However, compared to the naive C implementation, the results are quite good: the double hash implementation is $2$ orders of magnitude faster than the naive one.
 
-\begin{figure}
+\begin{figure}[p]
 	\centering
-	\includegraphics[height=.45\textheight]{result_example_no_contains.png}
+	\includegraphics[height=.4\textheight]{result_example_no_contains.png}
 	\caption{Timings for 70\% read accesses, excluding non existing keys.}
 	\label{fig:result_no_contains}
 \end{figure}
@@ -303,7 +303,7 @@ Hence, this coprimeness is a new requirement of the specification. Technically, 
 \subsubsection{Definition}
 
 First, we define a fixpoint, which returns the index to be updated after $n$ iterations with an offset of $step$, starting from $start$ with capacity $capa$. 
-\marginnote{A lemma ensuring that $\mathtt{stripe} = start + n*step \% capa$ is proved.}
+\marginnote{We proved a lemma ensuring $\mathtt{stripe} = start + n*step \% capa$.}
 \begin{definition}[stripe(int start, int step, nat n, int capa)]
 	\begin{lstlisting}
 fixpoint int stripe(int start, int step, nat n, int capa) {
@@ -317,7 +317,7 @@ fixpoint int stripe(int start, int step, nat n, int capa) {
 	
 \end{definition}
 
-The \texttt{stripe\_l\_fp} fixpoint builds a \texttt{list<option<nat>>} given a starting point, an offset, a number of accesses and a capacity. The base case of this fixpoint is to generate a \texttt{list} containing only \texttt{none}s (fixpoint \texttt{gen\_none}), if \texttt{zero} accesses are performed. The recursive case is to update the $start + n*offset \%capa$ cell, using the above \texttt{stripe} fixpoint.
+The \texttt{stripe\_l\_fp} fixpoint builds a \texttt{list<option<nat>>} given a starting point, an offset, a number of accesses and a capacity. The base case of this fixpoint is to generate a \texttt{list} containing only \texttt{none}s (fixpoint \texttt{gen\_none}), if \texttt{zero} accesses are performed. The recursive case is to update the $start + n*offset \%capa$ cell, using the above \texttt{stripe} fixpoint. 
 
 \begin{definition}[stripe\_l\_fp(int start, int step, nat bound, int capa)]
 	\marginnote{The \texttt{update (index, elem, list)} fixpoint returns \texttt{list} with the \texttt{index}-th element updated to \texttt{elem}.}
@@ -358,7 +358,6 @@ The main property required is that the number of cell containing \texttt{some(i)
 There are also other properties which are used internally to prove the \texttt{count\_some} property. The main lemma is named \texttt{stripe\_l}.
 
 \begin{lemma}[Prototype of \texttt{stripe\_l}]
-	\marginnote{\texttt{list\_contains \_stripe} ensures that if a cell contains \texttt{some(i)}, then \texttt{i} is the antecedent of the cell index w.r.t. stripe.}
 	\begin{lstlisting}
 lemma list<option<nat> > stripe_l(int start, int step, nat n, 
 	int capa)
@@ -399,7 +398,7 @@ Algorithm~\ref{alg:proof_stripe_l} shows the main steps of the proof. In the bas
 			\Switch{nth(stripe(start, step, n, capa), lst}{
 				\Case{some(i)}{
 					\Assert{$start + i\times step \%capa = start + n\times step \%capa$}\;
-					\marginnote{$n-i$ is noted $diff$ in the following parts}
+					\marginnote{$diff = n-i$ in the following parts}
 					\Assert{$(n-i)\times step\%capa = 0$}\;
 					\Assert{$n-i < capa$}\;
 					\tcp{The chinese remainder theorem applies and shows a contradiction}
