@@ -172,7 +172,7 @@ However, compared to the naive C implementation, the results are quite good: the
 \section{Verification}
 
 \subsection{Provided proof}
-\subsubsection{Requirement (\texttt{R})}
+\subsubsection{Requirement}
 \marginnote{\texttt{up\_to(nat, prop)} verifies that \texttt{prop} is ensured for all \texttt{i} below \texttt{nat}: \\
 \texttt{up\_to(0, prop) = true}\\
 \texttt{up\_to(n, prop) = prop(n-1) \&\& up\_to(n-1, prop)}}
@@ -353,7 +353,7 @@ fixpoint list<option<nat> > stripe_l_fp(int start,
 
 
 \subsubsection{Properties}
-The main property required is that the number of cell containing \texttt{some(i)} (for any \texttt{i}) is equal to the number of steps done. This property will later be used to ensures that the loop eventually reaches all cells (see Subsection~\ref{seq:stripe_to_stride}). The function that counts the number of such cells is named \texttt{count\_some(list<option<nat>> list)}.
+The main property required is that the number of cell containing \texttt{some(i)} (for any \texttt{i}) is equal to the number of steps done. This property will later be used to ensures that the loop eventually reaches all cells. The function that counts the number of such cells is named \texttt{count\_some(list<option<nat>> list)}.
 
 There are also other properties which are used internally to prove the \texttt{count\_some} property. The main lemma is named \texttt{stripe\_l}.
 
@@ -414,8 +414,6 @@ Algorithm~\ref{alg:proof_stripe_l} shows the main steps of the proof. In the bas
 	}
 \end{algorithm}
 
-\subsubsection{From \texttt{stripe} fixpoint to \texttt{R}}
-\label{seq:stripe_to_stride}
 
 \subsection{Proof of the \emph{Chinese remainder theorem}}
 \subsubsection{Properties}
