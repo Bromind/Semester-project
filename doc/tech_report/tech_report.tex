@@ -55,16 +55,16 @@
 
 \newgeometry{outer=4.5cm, marginparwidth=3cm, marginparsep=-0.5cm}
 \section{Introduction}
-This report explain, in an informal way, the implementation and verification of a double-hash hash map. It does not aim to provide a complete and detailed explication of each line of code. Instead, the goal is to synthesize the main points needed to understand both the code and the verification.
+This report explains, in an informal way, the implementation and verification of a double-hash hash map. It does not aim to provide a complete and detailed explication of each line of code. Instead, the goal is to synthesize the main points needed to understand both the code and the verification.
 
-The actual verification contains more than 100 new lemmas and fixpoints, and it would make no sense to formally describe each of them here, as a formal definition and proof are provided. Also, most of those are trivial proofs and the name is explicit enough to understand their behaviour.
+The actual verification contains more than 100 new lemmas and fixpoints, and it would make no sense to formally describe each of them here, as formal definitions and proofs are provided. Also, most of those are simple and the name is explicit enough to understand their behaviour.
 
 Thus, this document is more intended to be a companion to understand the actual proof.
 
 
 \section{Implementation}
 \subsection{Provided implementation}
-The implementation I was provided was a naive hash map, in which a $<key, value>$ tuple is inserted at the first free cell after $h(key)$, where $h$ is a given hash function.
+I was provided a naive hash map implementation, in which a $<key, value>$ tuple is inserted at the first free cell after $h(key)$, where $h$ is a given hash function.
 
 Thus, in case of multiple conflicts, the same cells will be tested. For instance, in Example~\ref{expl:naive_impl}, if $h(key1) = h(key2) = h(key3)$, then there is $2$ unsuccessful accesses before finding an empty cell to insert $key3$ in.
 
@@ -98,7 +98,7 @@ For instance, Example~\ref{expl:double_h_impl} shows the same accesses as the pr
 	\label{expl:double_h_impl}
 	\begin{center}
 		\begin{tikzpicture}
-			\draw (0, -3) node[anchor=east] (key3) {$h_1(\mathtt{key3})$};
+			\draw (0, -3) node[align=right,anchor=east] (key3) {$h_1(\mathtt{key1})$\\$ = h_1(\mathtt{key2})$\\$=h_1(\mathtt{key3})$};
 
 			\drawstruct{(3,0)}
 			\structcell[occupiedcell]{\keyvalue{key3}{value3}} \coordinate(firstCell) at (currentcell.east) ; \coordinate(firstCellOut) at (currentcell.east);
@@ -109,22 +109,23 @@ For instance, Example~\ref{expl:double_h_impl} shows the same accesses as the pr
 			\structcell[occupiedcell]{\keyvalue{key2}{value2}} \coordinate(sixthCell) at (currentcell.east); \coordinate(sixthCellOut) at (currentcell.east);
 
 			\draw[->, red, thick] (key3) -- (thirdCell);
-			\draw[->, thick] (thirdCellOut) -- ++(1, 0) |- (firstCellOut) node [pos=0.5, anchor=west] {$h_2(\mathtt{key3})=4$};
+			\draw[->, thick] (thirdCellOut) +(0,0.1) -- ++(1, 0.1) |- (firstCellOut) node [pos=0.5, anchor=west] {$h_2(\mathtt{key3})=4$};
+			\draw[->, thick] (thirdCellOut) +(0,-0.1)-- ++(1, -0.1) |- (sixthCellOut) node [pos=0.5, anchor=west] {$h_2(\mathtt{key2})=2$};
 		\end{tikzpicture}
 	\end{center}
 \end{example}
 \subsection{Benchmark}
-Two cases have been tested: the general case, where any value can been searched for. The worst case been trying to access a value not present (this requires to go through the whole array), a second realistic case have been tested, where the values searched for where in the map. 
+We tested two cases: the general case, where any value can be searched for. The worst case been trying to access a value not present (this requires to go through the whole array), we tested a second realistic case, where the values searched for were in the map. 
 
-The value were compared to the naive implementation and with two C++ implementations using the standard \texttt{unordered\_map} data structure. The first C++ version is one using the default hash function, the second using the same hash function as in the C versions.
+We compared the results with the naive implementation and with two C++ implementations using the standard \texttt{unordered\_map} data structure. The first C++ version uses the default hash function, the second uses the same hash function as in the C versions.
 
-The test consist of uniformly distributed accesses (among all possible keys in the general case, and among existing keys in the second one). The probability of insertion/deletion is determined in function of the current load and the target load.
+The test consists of uniformly distributed accesses (among all possible keys in the general case, and among existing keys in the second one). The probability of insertion/deletion is determined in function of the current load and the target load.
 
-The following subsections show the results for both cases, for 70\% of read accesses. It appears that the percentage of read accesses does not influence ``the shape'' of the result. Results for other read proportion as well as raw data are available on the github repository.
+The following subsections show the results for both cases, for 70\% of read accesses. It appears that the percentage of read accesses does not influence ``the shape'' of the result. Results for other read proportions, as well as raw data, are available on the github repository.
 
 The code was compiled with GCC 4.9.3. It appears that bug as been reported for version greater than 4.6.2: performances of \texttt{unordered\_map} are $3\times$ slower compared to 4.6.2\footnote{\url{https://gcc.gnu.org/bugzilla/show_bug.cgi?id=54075}}.
 \subsubsection{General case}
-Results are presented in Figure~\ref{fig:result_contains}. For this test case, 10000 accesses were performed. The interesting point is that the double hash implementation perform better with higher loads. This behaviour is due to the fact that the probability that a key is present increases with load. Hence, in an execution at higher load, there are less misses than at low loads. 
+Figure~\ref{fig:result_contains} present the results, in the general case. For this test case, 10000 accesses were performed. The interesting point is that the double hash implementation perform better with higher loads than with low loads. This behaviour is due to the fact that the probability that a key is present increases with load. Hence, in an execution at higher load, there are less misses than at low loads. 
 
 At low loads, the naive implementation performs better than the double hash one. This is a good illustration of the locality problem: in the naive implementation, accesses are performed in order. Then, both spatial locality of cache lines and address prediction works better. An evaluation with cachegrind shows the difference (see Example~\ref{expl:cache}).
 \begin{example}[Cache accesses]
@@ -151,7 +152,7 @@ In this example, there are more than $90\%$ of data cache misses in L1 for the d
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\textwidth]{result_example_contains.png}
+	\includegraphics[height=.45\textheight]{result_example_contains.png}
 	\caption{Timings for 70\% read accesses, including non existing keys.}
 	\label{fig:result_contains}
 \end{figure}
@@ -163,7 +164,7 @@ However, compared to the naive C implementation, the results are quite good: the
 
 \begin{figure}
 	\centering
-	\includegraphics[width=\textwidth]{result_example_no_contains.png}
+	\includegraphics[height=.45\textheight]{result_example_no_contains.png}
 	\caption{Timings for 70\% read accesses, excluding non existing keys.}
 	\label{fig:result_no_contains}
 \end{figure}
@@ -175,13 +176,13 @@ However, compared to the naive C implementation, the results are quite good: the
 \marginnote{\texttt{up\_to(nat, prop)} verifies that \texttt{prop} is ensured for all \texttt{i} below \texttt{nat}: \\
 \texttt{up\_to(0, prop) = true}\\
 \texttt{up\_to(n, prop) = prop(n-1) \&\& up\_to(n-1, prop)}}
-Figure~\ref{fig:for_loop_orig_pruned} present the relevant part of the proof of the original loop in \texttt{find\_key}. The last statement (\texttt{no\_key\_found(ks, k)}) requires the property \texttt{not\_my\_key(k)} to be verified for all current keys in the mapping, ensured by the \texttt{up\_to(nat\_of\_int(length(ks)), \ldots(not\_my\_key)(k)\ldots)} statement.
+Figure~\ref{fig:for_loop_orig_pruned} presents the relevant part of the proof of the original loop in \texttt{find\_key}. The last statement (\texttt{no\_key\_found(ks, k)}) requires the property \texttt{not\_my\_key(k)} to be verified for all current keys in the mapping, ensured by the \texttt{up\_to(nat\_of\_int(length(ks)), \ldots(not\_my\_key)(k)\ldots)} statement.
 
-This \texttt{up\_to} statement is proved by the \emph{for}-loop invariant: at each round, \texttt{not\_my\_key(k, nth(index, ks))} is ensured, either because the cell is empty (\texttt{no\_busy\_no\_key} lemma), either because the hash does not match (\texttt{no\_hash\_no\_key} lemma), either because the key does not match (hence inferred by Verifast). 
+The \emph{for}-loop invariant proves this \texttt{up\_to} statement: at each round, \texttt{not\_my\_key(k, nth(index, ks))} is ensured, either because the cell is empty (\texttt{no\_busy\_no\_key} lemma), either because the hash does not match (\texttt{no\_hash\_no\_key} lemma), either because the key does not match (hence inferred by Verifast). 
 
 Finally, the \emph{for}-loop only proves that the \texttt{up\_to} statement holds when starting from \texttt{index = start} and looping. The lemma \texttt{by\_loop\_for\_all} prove that this loop access is equivalent to a continuous access from \texttt{0} to \texttt{length}.
 
-Example~\ref{expl:successful_search} represent a successful search in the map. The search starts at index $h(key3)$. As long as the key is not found at index $i$, \texttt{not\_my\_key(i)} is asserted. Finally, when $key3$ is found, it is ensured to be the right key and returned. 
+Example~\ref{expl:successful_search} represents a successful search in the map. The search starts at index $h(key3)$. As long as the key is not found at index $i$, \texttt{not\_my\_key(i)} is asserted. Finally, when $key3$ is found, it is ensured to be the right key and returned. 
 
 \begin{example}[Successful search]
 	\label{expl:successful_search}
@@ -254,6 +255,7 @@ Hence, an invariant of the \emph{for}-loop is that \texttt{not\_my\_key} is asse
 \end{figure}
 
 \subsubsection{Impact of the modifications}
+
 The modifications have two main impacts: first, the accesses are not performed in the same order. The second impact is that the specification is not true any more in the general case.
 
 \paragraph{Access order:}
@@ -264,7 +266,7 @@ Hence, at iteration $i$, for any cell $map[\mathtt{index}]$, if the antecedent o
 The new way to ensure \texttt{not\_my\_key} for all indexes is then to ensures that all index has an antecedent w.r.t. the $stripe$ function.
 
 \paragraph{New requirements:}
-However, it is not always the case that every cell is reached. An example is provided in Example~\ref{expl:not_coprime}. Actually, after the Chinese remainder theorem, the $step$ and the $capacity$ must be coprime in order to ensure that every cell is eventually tested.
+However, it is not always the case that the loop eventually reach every cell. Example~\ref{expl:not_coprime} shows such a case. Actually, after the Chinese remainder theorem, the $step$ and the $capacity$ must be coprime in order to ensure that every cell is eventually tested.
 
 Hence, this coprimeness is a new requirement of the specification. Technically, it is sufficient to have a capacity being a power of $2$ and to have only odd $offset$ hashes.
 
@@ -300,7 +302,7 @@ Hence, this coprimeness is a new requirement of the specification. Technically, 
 \subsection{The \texttt{stripe\_l\_fp} fixpoint}
 \subsubsection{Definition}
 
-First, a fixpoint is defined, which returns the index to be updated after $n$ iterations with an offset of $step$, starting from $start$ with capacity $capa$. 
+First, we define a fixpoint, which returns the index to be updated after $n$ iterations with an offset of $step$, starting from $start$ with capacity $capa$. 
 \marginnote{A lemma ensuring that $\mathtt{stripe} = start + n*step \% capa$ is proved.}
 \begin{definition}[stripe(int start, int step, nat n, int capa)]
 	\begin{lstlisting}
@@ -351,7 +353,7 @@ fixpoint list<option<nat> > stripe_l_fp(int start,
 
 
 \subsubsection{Properties}
-The main property required is that the number of cell containing \texttt{some(i)} (for any \texttt{i}) is equal to the number of steps done. This property will later be used to ensures that all cells are eventually reached (see Subsection~\ref{seq:stripe_to_stride}). The function that count the number of such cells is named \texttt{count\_some(list<option<nat>> list)}.
+The main property required is that the number of cell containing \texttt{some(i)} (for any \texttt{i}) is equal to the number of steps done. This property will later be used to ensures that the loop eventually reaches all cells (see Subsection~\ref{seq:stripe_to_stride}). The function that counts the number of such cells is named \texttt{count\_some(list<option<nat>> list)}.
 
 There are also other properties which are used internally to prove the \texttt{count\_some} property. The main lemma is named \texttt{stripe\_l}.
 
@@ -424,10 +426,10 @@ This is reduced to the following lemma: if $x\%n1 = 0$, $x\%n2 = 0$, $n1$ and $n
 
 In \texttt{stripe\_l}, this is applied to $x = diff\times \mathtt{step}$, $n1 = \mathtt{step}$ and $n2 = \mathtt{capa}$.
 
-This lemma is a direct consequence of the \emph{uniqueness} property of the \emph{Chinese remainder theorem}. Although it is simple to show informally, Verifast first requires to build \emph{gcd} which is quite long. All the proof is done in a separate file \texttt{Chinese\_remainder\_th.gh}. The proof takes around 1000 lines of code (which less than 200 are \emph{assert}-s or comments and could be remove).
+This lemma is a direct consequence of the \emph{uniqueness} property of the \emph{Chinese remainder theorem}. Although it is simple to show informally, Verifast first requires to build \emph{gcd} which is quite long. All the proof is done in a separate file \texttt{Chinese\_remainder\_th.gh}. 
 
 \subsubsection{Proof by contradiction}
-In Verifast, the proof of the \texttt{bin\_chinese\_remainder\_theorem} lemma is quite long (approx. 300 lines). However, most of it is only arithmetic statements. Hence, informally, the proof is much shorter. Algorithm~\ref{alg:proof_crt} sketches the main cases. The main part (\emph{if $x > 1$} branch) decompose $x$ into $n1\times k1 = n2\times k2$. After justifying why $k1\%n2 \neq 0$, it considers $gcd(k1, n2) = a$, which can not be $1$. Then remaining case ($a \neq 1$, $k1\%n2 \neq 0$, $x > 1$) calls recursively the theorem, on $\frac{n2}{a} = b$.
+In Verifast, the proof of the \texttt{bin\_chinese\_remainder\_theorem} lemma is quite long (approx. 300 lines). However, most of it is only arithmetic statements. Hence, informally, the proof is much shorter. Algorithm~\ref{alg:proof_crt} sketches the main cases. The main part (\emph{if $x > 1$} branch) decomposes $x$ into $n1\times k1 = n2\times k2$. After justifying why $k1\%n2 \neq 0$, it considers $gcd(k1, n2) = a$, which can not be $1$. Then, the remaining case ($a \neq 1$, $k1\%n2 \neq 0$, $x > 1$) calls recursively the theorem, on $\frac{n2}{a} = b$.
 \begin{algorithm}
 	\caption{Proof of \texttt{bin\_chinese\_remainder\_theorem}\label{alg:proof_crt}}
 	\uIf{$x = 1$}
@@ -495,23 +497,23 @@ ensures coprime(n1*n2, n3) &*& coprime(n1, n3)
 \subsection{Work done}
 This semester project was two folds: 
 
-First, analysing the provided implementation to see which part could be improved. After that, I implemented an optimization, which, I later learn, is called \emph{double hashing} (before learning that, I called it map with offset generator, which explain some naming, e.g. \texttt{map\_generator.c}).
+First, analysing the provided implementation to see which part could be improved. After that, I implemented an optimization, which, I later learn, is called \emph{double hashing} (before learning that, I called it ``map with offset generator'', which explain some naming, e.g. \texttt{map\_generator.c}).
 
-Second, formally proving that the map is correct. The semantic of \emph{correctness} is the same as the previous one. The only difference in the specification is the requirement of coprime capacity and offset, which is easily achieved, for instance taking a capacity $2^n$ and an odd offset.
+Second, formally proving the correctness of the map. The semantic of \emph{correctness} is the same as the previous one. The only difference in the specification is the requirement of coprime capacity and offset. Taking a capacity $2^n$ and an odd offset fulfils this requirement.
 
-The formal proof has been completed, except for one lemma: 
+We completed the formal proof, except for one lemma: 
 $$a\bot c \wedge b\bot c \Rightarrow (a\times b)\bot c$$
 \subsection{Validity of benchmark}
-The benchmark has been done to give an idea of the performance gain. Of course, performance evaluation could be much improved, with more time available. In particular, one could improve the following points: 
+We benchmarked the map to give an idea of the performance gain. Of course, performance evaluation could be much improved, with more time available. In particular, one could improve the following points: 
 \begin{itemize}
 	\item Test on different compilers, as GCC greater than 4.7.1 suffer from performance issues on \texttt{unordered map}.
-	\item Use an other distribution. Here, accesses are uniformly distributed. Other distribution such as Zipf's distribution might be more suitable. Another idea is to adapt some real program to this hash table to have real accesses.
+	\item Use an other access distribution. Here, accesses are uniformly distributed. Other distribution such as Zipf's distribution might be more suitable. Another idea is to adapt some real program to this hash table to have real accesses timings.
 \end{itemize}
 
 \subsection{Forthcoming work}
 Although most of the work is completed, some parts remain to do: 
 \begin{itemize}
-	\item The \texttt{gcd\_mul} lemma is to be proved. Proving it might requires to prove prime factor decomposition in Verifast. 
+	\item The \texttt{gcd\_mul} lemma is to be proved. A way to prove it is to use the prime factor decomposition, and showing that the prime factor decomposition of a product is the union of the prime factors of two factors.
 	\item Formally prove that a capacity of $2^n$ and an odd \emph{offset hash} are coprime.
 \end{itemize}
 
