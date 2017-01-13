@@ -1,0 +1,44 @@
+#ifndef BOOLEAN_FIXPOINTS
+#define BOOLEAN_FIXPOINTS
+
+fixpoint bool leq_than(pair<int, bool> a, pair<int, bool> b)
+{
+  return fst(a) >= fst(b);
+}
+
+fixpoint bool geq_than(pair<int, bool> a, pair<int, bool> b)
+{
+  return fst(a) <= fst(b);
+}
+
+fixpoint bool greater_than(pair<int, bool> a, pair<int, bool> b)
+{
+  return fst(a) < fst(b);
+}
+
+fixpoint bool less_than(pair<int, bool> a, pair<int, bool> b)
+{
+  return fst(a) > fst(b);
+}
+
+fixpoint bool neq<t>(t a, t b)
+{
+  return a != b;
+}
+
+fixpoint bool equals<t>(t a, t b)
+{
+  return a == b;
+}
+
+fixpoint bool not<t>(fixpoint(t, bool) fp, t elem) 
+{
+  return fp(elem) == false;
+}
+
+fixpoint bool or<t>(fixpoint(t, bool) fp1, fixpoint(t, bool) fp2, t elem)
+{
+  return fp1(elem) || fp2(elem);
+}
+
+#endif

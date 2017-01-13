@@ -1,0 +1,93 @@
+#ifndef LIST_LEMMA
+#define LIST_LEMMA
+
+#include "boolean_fixpoints.gh"
+
+fixpoint bool list_contains<t>(t elem, list<t> ls)
+{
+  switch(ls) {
+    case nil : return false;
+    case cons(hd, tl): return hd == elem ? true : list_contains(elem, tl);
+  }
+}
+
+lemma void list_contains_nth<t>(list<t> lst, int n)
+requires n >= 0 &*& n < length(lst);
+ensures true == list_contains(nth(n, lst), lst);
+{
+  switch(lst){
+    case nil: {
+      assert false;
+    }
+    case cons(hd, tl): {
+      if(n == 0) {
+        assert nth(n, lst) == hd;
+      } else {
+        list_contains_nth(tl, n-1);
+      }
+    }
+  }
+}
+
+lemma void list_exists_equal_to_contains<t>(list<t> ls, t elem)
+requires true == exists(ls, (equals)(elem));
+ensures true == list_contains(elem, ls);
+{
+  switch(ls){
+    case nil: 
+    case cons(hd, tl): {
+      if(exists(tl, (equals)(elem)) == false) {
+        if(equals(elem, hd) == false) {
+        }
+      } else {
+        list_exists_equal_to_contains(tl, elem);
+      }
+    }
+  }
+}
+
+lemma void not_exists_prop_to_not_exists<t>(list<t> lst, fixpoint(t, bool) prop, t elem)
+requires false == exists(lst, prop) &*& true == prop(elem);
+ensures false == exists(lst, (equals)(elem));
+{
+  switch(lst)
+  {
+    case nil:
+    case cons(hd, tl): {
+      if(hd == elem){}
+      not_exists_prop_to_not_exists(tl, prop, elem);
+    }
+  }
+}
+
+lemma void contains_elem_to_exist_prop<t>(list<t> lst, t elem, fixpoint(t, bool) prop)
+requires prop(elem) == true &*& true == list_contains(elem, lst);
+ensures true == exists(lst, prop);
+{
+  switch(lst) {
+    case nil:
+    case cons(hd, tl): {
+      if(hd == elem) {
+      } else {
+        contains_elem_to_exist_prop(tl, elem, prop);
+      }
+    }
+  }
+}
+
+lemma void forall_contains_to_prop<t>(list<t> lst, fixpoint(t, bool) prop, t elem)
+requires true == forall(lst, prop) &*& true == list_contains(elem, lst);
+ensures true == prop(elem);
+{
+  switch(lst) {
+    case nil: 
+    case cons(hd, tl): {
+      if(hd == elem) {
+      } else {
+        forall_contains_to_prop(tl, prop, elem);
+      }
+    }
+  }
+}
+
+#endif

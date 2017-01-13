@@ -1,0 +1,72 @@
+#ifndef LIST_MERGE_AND
+#define LIST_MERGE_AND
+
+#include "list_lemma.gh"
+#include "boolean_fixpoints.gh"
+
+fixpoint bool snd_true(pair<int, bool> p)
+{
+  return snd(p) == true;
+}
+
+fixpoint list<pair<int, bool> > merge_list_and(list<pair<int, bool> > lst1, list<pair<int, bool> > lst2)
+{
+  switch(lst1) {
+    case nil: return nil;
+    case cons(pair, tail): return list_contains(pair, lst2) && snd(pair) == true ? cons(pair, merge_list_and(tail, lst2)) : merge_list_and(tail, lst2);
+  }
+}
+
+lemma void merge_list_and_lemma_true(list<pair<int, bool> > lst1, list<pair<int, bool> > lst2)
+requires true;
+ensures true == forall(merge_list_and(lst1, lst2), snd_true);
+{
+  switch(lst1){
+    case nil:
+    case cons(hd, tl): {
+      merge_list_and_lemma_true(tl, lst2);
+    }
+  }
+}
+
+lemma void merge_list_and_lemma(list<pair<int, bool> > lst1, list<pair<int, bool> > lst2, pair<int, bool> pair)
+requires true == exists(lst1, (equals)(pair)) &*& true == exists(lst2, (equals)(pair)) &*& snd(pair) == true;
+ensures true == exists(merge_list_and(lst1, lst2), (equals)(pair));
+{
+  switch(lst1) {
+    case nil: assert false;
+    case cons(hd, tl): {
+      if(hd == pair) {
+        list_exists_equal_to_contains(lst2, pair);
+      } else {
+        merge_list_and_lemma(tl, lst2, pair);
+      }
+    }
+  }
+}
+
+lemma void merge_list_and_lemma_converse(list<pair<int, bool> > lst1, list<pair<int, bool> > lst2, pair<int, bool> pair)
+requires true == list_contains(pair, merge_list_and(lst1, lst2));
+ensures true == list_contains(pair, lst1) &*& true == list_contains(pair, lst2);
+{
+  switch(lst1)
+  {
+    case nil:
+    case cons(hd, tl): {
+      merge_list_and_lemma_true(lst1, lst2);
+      if(hd == pair) {
+        if(list_contains(hd, lst2)) {
+        } else {
+          forall_contains_to_prop(merge_list_and(lst1, lst2), snd_true, hd);
+          merge_list_and_lemma_converse(tl, lst2, pair);
+          assert snd(hd) == true;
+          assert false == list_contains(pair, merge_list_and(lst1, lst2));
+        }
+      } else {
+        merge_list_and_lemma_converse(tl, lst2, pair);
+      }
+    }
+  }
+}
+
+#endif

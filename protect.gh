@@ -1,0 +1,6 @@
+#ifndef PROTECT
+#define PROTECT
+
+predicate protect(bool b) = b == true;
+
+#endif

@@ -1,0 +1,161 @@
+#ifndef DIVISORS
+#define DIVISORS
+
+#include "modulo.gh"
+#include "boolean_fixpoints.gh"
+
+fixpoint bool divide(int whole, int divisor)
+{
+  return whole/divisor * divisor == whole;
+}
+
+lemma void divide_l(int whole, int divisor)
+requires true == divide(whole, divisor);
+ensures whole/divisor * divisor == whole;
+{
+}
+
+lemma void divide_itself(int whole)
+requires whole > 0;
+ensures true == divide(whole, whole);
+{
+  div_incr(0, whole);
+  division_round_to_zero(0, whole);
+}
+
+lemma void one_divide_all(int whole)
+requires true;
+ensures divide(whole, 1) == true;
+{
+  div_rem(whole, 1);
+}
+
+lemma void divisor_below_n(int whole, int divisor)
+requires divisor > whole &*& whole > 0 &*& divisor > 0;
+ensures divide(whole, divisor) == false;
+{
+  division_round_to_zero(whole, divisor);
+  assert whole/divisor == 0;
+  mul_subst(0, whole/divisor, divisor);
+}
+
+fixpoint bool divisors_fp(int whole, pair<int, bool> n_divide)
+{
+  return divide(whole, fst(n_divide)) == snd(n_divide);
+}
+
+fixpoint list<pair<int, bool> > gen_divisors(nat bound, int whole)
+{
+  switch(bound) {
+    case zero: return nil;
+    case succ(p_bound): return cons(pair(int_of_nat(bound), divide(whole, int_of_nat(bound))), gen_divisors(p_bound, whole));
+  }
+}
+
+lemma void gen_divisors_contains_1(nat bound, int whole)
+requires gen_divisors(succ(bound), whole) == cons(?pair, ?tail);
+ensures true == exists(gen_divisors(succ(bound), whole), (equals)(pair(1, true)));
+{
+  switch(bound) {
+    case(zero): {
+      assert int_of_nat(succ(bound)) == 1;
+      one_divide_all(whole);
+      assert pair == pair(1, true);
+    }
+    case(succ(p_bound)): {
+      gen_divisors_contains_1(p_bound, whole);
+      assert true == exists(tail, (equals)(pair(1, true)));
+    }
+  }
+}
+
+lemma void length_gen_divisors(nat bound, int whole)
+requires true;
+ensures length(gen_divisors(bound, whole)) == int_of_nat(bound);
+{
+  switch(bound) {
+    case zero: 
+    case succ(p_bound): length_gen_divisors(p_bound, whole);
+  }
+}
+
+lemma void gen_divisor_contains_all_divisors_below_bound(nat bound, int whole, int divisor)
+requires whole >= 0 &*& int_of_nat(bound) >= divisor &*& divisor > 0;
+ensures divide(whole, divisor) ? true == exists(gen_divisors(bound, whole), (equals)(pair(divisor, true))) : true == exists(gen_divisors(bound, whole), (equals)(pair(divisor, false)));
+{
+  switch(bound) {
+    case zero: 
+    case succ(p_bound): {
+      if(int_of_nat(bound) == divisor) {
+        list<pair<int, bool> > divs = gen_divisors(bound, whole);
+        pair<int, bool> hd = head(divs);
+        assert divs == cons(pair(int_of_nat(bound), divide(whole, int_of_nat(bound))), gen_divisors(p_bound, whole));
+      } else {
+        gen_divisor_contains_all_divisors_below_bound(p_bound, whole, divisor);
+      }
+    }
+  }
+}
+
+lemma void gen_divisors_head_eq_bound(int whole, nat bound)
+requires bound == succ(?p_bound);
+ensures head(gen_divisors(bound, whole)) == pair(int_of_nat(bound), divide(whole, int_of_nat(bound)));
+{
+  assert gen_divisors(bound, whole) == cons(pair(int_of_nat(bound), divide(whole, int_of_nat(bound))), gen_divisors(p_bound, whole));
+}
+
+lemma void gen_divisor_order_head(int whole, nat gen_bound)
+requires gen_bound == succ(?p_gen_bound);
+ensures true == less_than(head(gen_divisors(succ(gen_bound), whole)), head(gen_divisors(gen_bound, whole)));
+{
+}
+
+fixpoint bool nth_greater_than_succ(list<pair<int, bool> > lst, int index)
+{
+  return less_than(nth(index, lst), nth(index+1, lst));
+}
+
+lemma void all_divisors_in_gen_divisors(int whole, int n)
+requires n > 0 &*& whole > 0;
+ensures divide(whole, n) ? true == exists(gen_divisors(nat_of_int(whole), whole), (equals)(pair(n, true))) : true;
+{
+  if(n > whole) {
+    divisor_below_n(whole, n);
+  } else {
+    gen_divisor_contains_all_divisors_below_bound(nat_of_int(whole), whole, n);
+  }
+}
+
+lemma void gen_divisors_head(list<pair<int, bool> > lst, nat bound, int whole)
+requires lst == gen_divisors(bound, whole);
+ensures bound == zero ? true : true == divisors_fp(whole, head(lst));
+{
+  length_gen_divisors(bound, whole);
+  assert length(lst) == int_of_nat(bound);
+  switch(bound) {
+    case zero:
+    case succ(p_bound):
+  } 
+}
+
+lemma void gen_divisors_tail(list<pair<int, bool> > lst, nat s_bound, int whole)
+requires lst == gen_divisors(s_bound, whole) &*& s_bound == succ(?bound);
+ensures tail(lst) == gen_divisors(bound, whole);
+{
+}
+
+lemma void forall_gen_divisor_contains_divisors(list<pair<int, bool> > lst, int whole)
+requires lst == gen_divisors(nat_of_int(length(lst)), whole);
+ensures true == forall(lst, (divisors_fp)(whole));
+{
+  switch(lst) {
+    case nil:
+    case cons(pair, tl): {
+      gen_divisors_tail(lst, succ(nat_of_int(length(tl))), whole);
+      forall_gen_divisor_contains_divisors(tl, whole);
+      assert true == forall(tl, (divisors_fp)(whole));
+    }
+  }
+}
+
+#endif DIVISORS

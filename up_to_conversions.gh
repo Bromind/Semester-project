@@ -23,9 +23,6 @@
    }
  }
 
- 
-  
-  
  fixpoint bool forall_fp_to_up_to_fp<t>(fixpoint(t, bool) fp, list<t> lst, int index)
  {
    return fp(nth(index, lst));
