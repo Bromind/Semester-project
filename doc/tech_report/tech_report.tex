@@ -1,4 +1,5 @@
 \documentclass[oneside]{article}
+\usepackage{amsmath}
 \usepackage{hyperref}
 \hypersetup{
 	colorlinks, 
@@ -24,8 +25,10 @@
 \usepackage[utf8]{inputenc}
 \usepackage{listings}
 \lstset{tabsize=3}
-\definecolor{lightred}{rgb}{1,0.9,0.9}
+\definecolor{lightred}{rgb}{1,0.98,0.98}
 \lstset{backgroundcolor=\color{lightred}}
+\lstset{commentstyle=\color{purple!40!black}}
+\lstset{keywordstyle=\bfseries\color{green!40!black}}
 %\lstset{numbers=left}
 
 
@@ -53,7 +56,7 @@
 \begin{document}
 \maketitle
 
-\newgeometry{outer=4.5cm, marginparwidth=3cm, marginparsep=-0.5cm}
+\newgeometry{inner=2cm, outer=5cm, marginparwidth=3cm, marginparsep=0.5cm}
 \section{Introduction}
 This report explains, in an informal way, the implementation and verification of a double-hash hash map. It does not aim to provide a complete and detailed explication of each line of code. Instead, the goal is to synthesize the main points needed to understand both the code and the verification.
 
@@ -90,7 +93,7 @@ Thus, in case of multiple conflicts, the same cells will be tested. For instance
 \end{example}
 
 \subsection{Double-hash implementation}
-The solution implemented during this project is \emph{double-hashing}. In double-hashing, instead of searching in the following cell in case of conflict, the key is re-hashed using a second hash-function. This second hash-function determines an offset, and after each unsuccessful try, the $current\_index + offset$-th cell is looked-up. 
+The solution implemented during this project is \emph{double-hashing}. In double-hashing, instead of searching in the following cell in case of conflict, the key is re-hashed using a second hash-function. This second hash-function determines an offset, and after each unsuccessful try, the $current\_index + \text{\emph{offset}}$-th cell is looked-up. 
 
 For instance, Example~\ref{expl:double_h_impl} shows the same accesses as the previous example, but with double-hashing (the first hash-function being the same). As $key2$ and $key3$ have different second hashes, their second choice cell is not the same. Then inserting $key3$ only conflicts with $key1$. 
 
@@ -110,12 +113,12 @@ For instance, Example~\ref{expl:double_h_impl} shows the same accesses as the pr
 
 			\draw[->, red, thick] (key3) -- (thirdCell);
 			\draw[->, thick] (thirdCellOut) +(0,0.1) -- ++(1, 0.1) |- (firstCellOut) node [pos=0.5, anchor=west] {$h_2(\mathtt{key3})=4$};
-			\draw[->, thick] (thirdCellOut) +(0,-0.1)-- ++(1, -0.1) |- (sixthCellOut) node [pos=0.5, anchor=west] {$h_2(\mathtt{key2})=2$};
+			\draw[->, thick] (thirdCellOut) +(0,-0.1)-- ++(1, -0.1) |- (sixthCellOut) node [pos=0.5, anchor=west] {$h_2(\mathtt{key2})=3$};
 		\end{tikzpicture}
 	\end{center}
 \end{example}
 \subsection{Benchmark}
-We tested two cases: the general case, where any value can be searched for. The worst case been trying to access a value not present (this requires to go through the whole array), we tested a second realistic case, where the values searched for were in the map. 
+We tested two cases: the general case, where any value can be searched for. The worst case being trying to access a value not present (this requires to go through the whole array), we tested a second realistic case, where the values searched for were in the map. 
 
 We compared the results with the naive implementation and with two C++ implementations using the standard \texttt{unordered\_map} data structure. The first C++ version uses the default hash function, the second uses the same hash function as in the C versions.
 
@@ -125,7 +128,7 @@ The following subsections show the results for both cases, for 70\% of read acce
 
 The code was compiled with GCC 4.9.3. It appears that bug as been reported for version greater than 4.6.2: performances of \texttt{unordered\_map} are $3\times$ slower compared to 4.6.2\footnote{\url{https://gcc.gnu.org/bugzilla/show_bug.cgi?id=54075}}.
 \subsubsection{General case}
-Figure~\ref{fig:result_contains} present the results, in the general case. For this test case, 10000 accesses were performed. The interesting point is that the double hash implementation perform better with higher loads than with low loads. This behaviour is due to the fact that the probability that a key is present increases with load. Hence, in an execution at higher load, there are less misses than at low loads. 
+Figure~\ref{fig:result_contains} presents the results, in the general case. For this test case, 10000 accesses were performed. The interesting point is that the double hash implementation performs better with higher loads than with low loads. This behaviour is due to the fact that the probability that a key is present increases with load. Hence, in an execution at higher load, there are less misses than at low loads. 
 
 At low loads, the naive implementation performs better than the double hash one. This is a good illustration of the locality problem: in the naive implementation, accesses are performed in order. Then, both spatial locality of cache lines and address prediction works better. An evaluation with cachegrind shows the difference (see Example~\ref{expl:cache}).
 \begin{example}[Cache accesses]
@@ -171,7 +174,7 @@ However, compared to the naive C implementation, the results are quite good: the
 
 \section{Verification}
 
-\subsection{Provided proof}
+\subsection{Initial proof}
 \subsubsection{Requirement}
 \marginnote{\texttt{up\_to(nat, prop)} verifies that \texttt{prop} is ensured for all \texttt{i} below \texttt{nat}: \\
 \texttt{up\_to(0, prop) = true}\\
@@ -180,12 +183,13 @@ Figure~\ref{fig:for_loop_orig_pruned} presents the relevant part of the proof of
 
 The \emph{for}-loop invariant proves this \texttt{up\_to} statement: at each round, \texttt{not\_my\_key(k, nth(index, ks))} is ensured, either because the cell is empty (\texttt{no\_busy\_no\_key} lemma), either because the hash does not match (\texttt{no\_hash\_no\_key} lemma), either because the key does not match (hence inferred by Verifast). 
 
-Finally, the \emph{for}-loop only proves that the \texttt{up\_to} statement holds when starting from \texttt{index = start} and looping. The lemma \texttt{by\_loop\_for\_all} prove that this loop access is equivalent to a continuous access from \texttt{0} to \texttt{length}.
+Finally, the \emph{for}-loop only proves that the \texttt{up\_to} statement holds when starting from \texttt{index = start} and looping. The lemma \texttt{by\_loop\_for\_all} proves that this loop access is equivalent to a continuous access from \texttt{0} to \texttt{length}.
 
 Example~\ref{expl:successful_search} represents a successful search in the map. The search starts at index $h(key3)$. As long as the key is not found at index $i$, \texttt{not\_my\_key(i)} is asserted. Finally, when $key3$ is found, it is ensured to be the right key and returned. 
 
 \begin{example}[Successful search]
 	\label{expl:successful_search}
+	\begin{center}
 		\begin{tikzpicture}
 			\draw (0, -3) node[anchor=east] (key3) {$h(\mathtt{key3})$};
 
@@ -209,6 +213,7 @@ Example~\ref{expl:successful_search} represents a successful search in the map. 
 			\draw[->, red, thick] (thirdCellOut) -- ++(1, 0) |- (fourthCellOut);
 			\draw[->, thick] (fourthCell) -- ++(-1, 0) |- (fifthCell);
 		\end{tikzpicture}
+	\end{center}
 \end{example}
 
 In case of unsuccessful search, as in Example~\ref{expl:unsuccessful_search}, \texttt{not\_my\_key(i)} is asserted for all indexes, ensuring that the key is not present in the map.
@@ -218,33 +223,36 @@ Hence, an invariant of the \emph{for}-loop is that \texttt{not\_my\_key} is asse
 \begin{example}
 	\label{expl:unsuccessful_search}
 	\texttt{not\_my\_key} is ensured both when the cell is empty (green cell in this example), or when the cell is busy, but occupied by an other key (a busy cell is in red in this example).
-	\begin{tikzpicture}
-		\draw (0, -5) node[anchor=east] (key4) {$h(\mathtt{key4})$};
 
-		\drawstruct{(8,0)}
-		\structcell[occupiedcell]{\texttt{not\_my\_key(1)}} ;
-		\structcell[occupiedcell]{\texttt{not\_my\_key(2)}} ;
-		\structcell[occupiedcell]{\texttt{not\_my\_key(3)}} ;
-		\structcell[occupiedcell]{\texttt{not\_my\_key(4)}} ;
-		\structcell[occupiedcell]{\texttt{not\_my\_key(5)}} ;
-		\structcell[occupiedcell]{\texttt{not\_my\_key(6)}} ;
+	\begin{center}
+		\begin{tikzpicture}
+			\draw (0, -5) node[anchor=east] (key4) {$h(\mathtt{key4})$};
 
-		\drawstruct{(3,0)}
-		\structcell[freecell]{\keyvalue{}{}} \coordinate(firstCell) at (currentcell.west) ; \coordinate(firstCellOut) at (currentcell.east);
-		\structcell[freecell]{\keyvalue{}{}} \coordinate(secondCell) at (currentcell.west); \coordinate (secondCellOut) at (currentcell.east);
-		\structcell[occupiedcell]{\keyvalue{key1}{value1}} \coordinate(thirdCell) at (currentcell.west); \coordinate(thirdCellOut) at (currentcell.east);
-		\structcell[occupiedcell]{\keyvalue{key2}{value2}} \coordinate(fourthCell) at (currentcell.west); \coordinate(fourthCellOut) at (currentcell.east);
-		\structcell[occupiedcell]{\keyvalue{key3}{value3}} \coordinate(fifthCell) at (currentcell.west); \coordinate(fifthCellOut) at (currentcell.east);
-		\structcell[freecell]{\keyvalue{}{}} \coordinate(sixthCell) at (currentcell.west); \coordinate (sixthCellOut) at (currentcell.east);
+			\drawstruct{(8,0)}
+			\structcell[occupiedcell]{\texttt{not\_my\_key(1)}} ;
+			\structcell[occupiedcell]{\texttt{not\_my\_key(2)}} ;
+			\structcell[occupiedcell]{\texttt{not\_my\_key(3)}} ;
+			\structcell[occupiedcell]{\texttt{not\_my\_key(4)}} ;
+			\structcell[occupiedcell]{\texttt{not\_my\_key(5)}} ;
+			\structcell[occupiedcell]{\texttt{not\_my\_key(6)}} ;
 
-		\draw[->, red, thick] (key4) -- (fifthCell);
-		\draw[->, red, thick] (thirdCellOut) -- ++(1, 0) |- (fourthCellOut);
-		\draw[->, red, thick] (fifthCellOut) -- ++ (1, 0) |- (sixthCellOut);
-		\draw[red, thick] (sixthCell) -| ++(-1, -0.5);
-		\draw[->, red, thick] (firstCell)+(-1, 0.5) |- (firstCell);
-		\draw[->, red, thick] (firstCellOut) -- ++(1, 0) |- (secondCellOut);
-		\draw[->, red, thick] (secondCell) -- ++(-1, 0) |- (thirdCell);
-	\end{tikzpicture}
+			\drawstruct{(3,0)}
+			\structcell[freecell]{\keyvalue{}{}} \coordinate(firstCell) at (currentcell.west) ; \coordinate(firstCellOut) at (currentcell.east);
+			\structcell[freecell]{\keyvalue{}{}} \coordinate(secondCell) at (currentcell.west); \coordinate (secondCellOut) at (currentcell.east);
+			\structcell[occupiedcell]{\keyvalue{key1}{value1}} \coordinate(thirdCell) at (currentcell.west); \coordinate(thirdCellOut) at (currentcell.east);
+			\structcell[occupiedcell]{\keyvalue{key2}{value2}} \coordinate(fourthCell) at (currentcell.west); \coordinate(fourthCellOut) at (currentcell.east);
+			\structcell[occupiedcell]{\keyvalue{key3}{value3}} \coordinate(fifthCell) at (currentcell.west); \coordinate(fifthCellOut) at (currentcell.east);
+			\structcell[freecell]{\keyvalue{}{}} \coordinate(sixthCell) at (currentcell.west); \coordinate (sixthCellOut) at (currentcell.east);
+
+			\draw[->, red, thick] (key4) -- (fifthCell);
+			\draw[->, red, thick] (thirdCellOut) -- ++(1, 0) |- (fourthCellOut);
+			\draw[->, red, thick] (fifthCellOut) -- ++ (1, 0) |- (sixthCellOut);
+			\draw[red, thick] (sixthCell) -| ++(-1, -0.5);
+			\draw[->, red, thick] (firstCell)+(-1, 0.5) |- (firstCell);
+			\draw[->, red, thick] (firstCellOut) -- ++(1, 0) |- (secondCellOut);
+			\draw[->, red, thick] (secondCell) -- ++(-1, 0) |- (thirdCell);
+		\end{tikzpicture}
+	\end{center}
 	
 \end{example}
 
@@ -259,19 +267,20 @@ Hence, an invariant of the \emph{for}-loop is that \texttt{not\_my\_key} is asse
 The modifications have two main impacts: first, the accesses are not performed in the same order. The second impact is that the specification is not true any more in the general case.
 
 \paragraph{Access order:}
-As explain above, with double hashing, cells of the map are not accessed by loop any more. Hence, the \texttt{by\_loop\_for\_all} lemma doesn't apply any more. Let $stripe$ be the function which, given a loop iteration, returns the index of the cell looked-up at this iteration (parametrized by $start$, $step$ and $capacity$). This problem is solved by computing the antecedent of each cell. 
+As explained above, with double hashing, cells of the map are not accessed by loop any more. Hence, the \texttt{by\_loop\_for\_all} lemma doesn't apply any more. Let $stripe$ be the function which, given a loop iteration, returns the index of the cell looked-up at this iteration (parametrized by $start$, $step$ and $capacity$). This problem is solved by computing the antecedent of each cell. 
 
 Hence, at iteration $i$, for any cell $map[\mathtt{index}]$, if the antecedent of $map[\mathtt{index}]$ is less than $i$, then \texttt{not\_my\_key(index)} is ensured.
 
 The new way to ensure \texttt{not\_my\_key} for all indexes is then to ensures that all index has an antecedent w.r.t. the $stripe$ function.
 
 \paragraph{New requirements:}
-However, it is not always the case that the loop eventually reach every cell. Example~\ref{expl:not_coprime} shows such a case. Actually, after the Chinese remainder theorem, the $step$ and the $capacity$ must be coprime in order to ensure that every cell is eventually tested.
+However, it is not always the case that the loop eventually reaches every cell. Example~\ref{expl:not_coprime} shows such a case. Actually, after the Chinese remainder theorem, the $step$ and the $capacity$ must be coprime in order to ensure that every cell is eventually tested.
 
-Hence, this coprimeness is a new requirement of the specification. Technically, it is sufficient to have a capacity being a power of $2$ and to have only odd $offset$ hashes.
+Hence, this coprimeness is a new requirement of the specification. Technically, it is sufficient to have a capacity being a power of $2$ and to have only odd $\text{\emph{offset}}$ hashes.
 
 \begin{example}
 	\label{expl:not_coprime}	
+	\begin{center}
 		\begin{tikzpicture}
 			\draw (0, -5) node[anchor=east] (key4) {$h(\mathtt{key4})$};
 
@@ -297,6 +306,7 @@ Hence, this coprimeness is a new requirement of the specification. Technically, 
 			\draw[->, red, thick] (firstCell) -- ++(-1, 0) |- (thirdCell);
 
 		\end{tikzpicture}
+	\end{center}
 \end{example}
 
 \subsection{The \texttt{stripe\_l\_fp} fixpoint}
@@ -508,7 +518,7 @@ We benchmarked the map to give an idea of the performance gain. Of course, perfo
 \end{itemize}
 
 \subsection{Forthcoming work}
-Although most of the work is completed, some parts remain to do: 
+Although most of the work is completed, some parts remain to be done: 
 \begin{itemize}
 	\item The \texttt{gcd\_mul} lemma is to be proved. A way to prove it is to use the prime factor decomposition, and showing that the prime factor decomposition of a product is the union of the prime factors of two factors.
 	\item Formally prove that a capacity of $2^n$ and an odd \emph{offset hash} are coprime.
