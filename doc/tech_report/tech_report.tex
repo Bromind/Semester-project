@@ -181,7 +181,7 @@ Compared to the naive C implementation, the results are quite good: the double h
 \marginnote{\texttt{up\_to(nat, prop)} verifies that \texttt{prop} is ensured for all \texttt{i} below \texttt{nat}: \\
 \texttt{up\_to(0, prop) = true}\\
 \texttt{up\_to(n, prop) = prop(n-1) \&\& up\_to(n-1, prop)}}
-Figure~\ref{fig:for_loop_orig_pruned} presents the relevant part of the proof of the original loop in \texttt{find\_key}. The last statement (\texttt{no\_key\_found(ks, k)}) requires the property \texttt{not\_my\_key(k)} to be verified for all current keys in the mapping, ensured by the \texttt{up\_to(nat\_of\_int(length(ks)), \ldots(not\_my\_key)(k)\ldots)} statement.
+Figure~\ref{fig:for_loop_orig_pruned} presents the relevant part of the proof of the original loop in \texttt{find\_key}. The last statement (\texttt{no\_key\_found(ks, k)}) requires the property \texttt{not\_my\_key(k)} to be verified for all current keys in the mapping. This is ensured by the \texttt{up\_to(nat\_of\_int(length(ks)), \ldots(not\_my\_key)(k)\ldots)} statement.
 
 The \emph{for}-loop invariant proves this \texttt{up\_to} statement: at each round, \texttt{not\_my\_key(k, nth(index, ks))} is ensured, either because the cell is empty (\texttt{no\_busy\_no\_key} lemma), either because the hash does not match (\texttt{no\_hash\_no\_key} lemma), either because the key does not match (hence inferred by Verifast). 
 
